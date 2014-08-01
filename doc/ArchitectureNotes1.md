@@ -1,4 +1,4 @@
-Notes on overall architecture and strategy (ArchitectureNotes1.md)
+Notes on overall architecture and strategy
 ====
 
 Lansing-Kremer model supposedly almost always achieves a pretty good
