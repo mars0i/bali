@@ -21,9 +21,11 @@ messiness in within-Subak politics.  Perhaps this scheme can be biased
 so that it favors what looks like short-term advantage.  e.g.  it also
 tries for more water more of the time, or something like that.
 
+ (Does this really make sense?)
+
  Experiment with this parameter and (try to) show that the system
 breaks down with this condition: It doesn't achieve the relatively
-optimal patterns.  It would be nice if the system is pretty senstive to
+optimal patterns.  It would be nice if the system is pretty sensitive to
 such noise--i.e. it gets very bad pretty easily.  But we'll have to
 experiment to see what will cause it to break down to what degree.
 
@@ -42,4 +44,20 @@ water/religious cultvar will simply be copied and preserved together.
 
 3. The religious cultvar also has this effect: For some of its values,
 the randomization of the copy-successful factor is damped down.  i.e.
-for some values of the religious cultvar, 
+for some values of the religious cultvar, the probability of not
+copying the most successful neighbor is lower.  Maybe this goes for
+both cultvar channels.
+
+
+4. A separate simulation would, instead of having
+single-dimensional cultvars in the second, religious channel, sends
+that work off to popco, where there is a more complex cultural
+transmission process.  In this case, it's only when there is a good
+analogy between bels representing water management stuff and bels
+representing religious stuff (analogies yet to be determined!) that the
+greed/fussing/rivalries/etc. noise is damped down.
+
+ So in the first simulation, try to write the religious cultvar
+transmission code so that it's hidden behind functions that can
+instead be made to call out to popco (by making popco a NetLogo
+extension).  Not sure if this fully makes sense.
