@@ -1,4 +1,4 @@
 src
 ====
 
-Various sorts of source code go here.  Obviously.
+Various sorts of source code go here, obviously.
