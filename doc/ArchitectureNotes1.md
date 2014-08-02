@@ -124,5 +124,6 @@ Something like that.
 
 (Information about calling Clojure from Java:
 [http://stackoverflow.com/questions/2181774/calling-clojure-from-java](http://stackoverflow.com/questions/2181774/calling-clojure-from-java).
-The Clojure code would be called from a NetLogo extension.  Use my
-**uneof** NetLogo extension as a starting point.)
+The Clojure code would be called from a NetLogo extension.  My
+[uneof](https://github.com/mars0i/uneof) NetLogo extension provides a
+simple starting point.)
