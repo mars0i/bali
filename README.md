@@ -2,10 +2,9 @@ bali
 ====
 
 Simulations building on ideas from Lansing and Kremer's simulations of
-Balinese irrigation water management.  See:
+Balinese irrigation water management.
 
-Articles listed on Lansing's site [www.slansing.org](www.slansing.org).
-Some are available as PDFs there.
+See:
 
 Stephen Lansing, *Priests and Programmers: Technologies of Power in the
 Engineered Landscape of Bali*. Princeton University Press, 1991. Revised
@@ -13,6 +12,9 @@ Engineered Landscape of Bali*. Princeton University Press, 1991. Revised
 
 Stephen Lansing, *Perfect Order: Recognizing Complexity in Bali*.
 Princeton University Press, 2006.
+
+Articles listed on Lansing's site [www.slansing.org](www.slansing.org).
+Some are available as PDFs there.
 
 [Marco Janssen's NetLogo implementation](http://www.openabm.org/model/2221/version/2)
 of the Lansing-Kremer model:  
