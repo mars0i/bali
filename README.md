@@ -33,4 +33,4 @@ the Lansing-Kremer model of Bali", *Agricultural Systems* (2007)
 93(1-3): 170-190.
 
 Several other articles listed on Lansing's site
-[www.slansing.org](www.slansing.org).  Some are available as PDFs there.
+[www.slansing.org](http://www.slansing.org).  Some are available as PDFs there.
