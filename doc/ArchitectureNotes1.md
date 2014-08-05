@@ -62,6 +62,8 @@ both cultvar channels.
 
 ## Model with analogies
 
+### General notes:
+
 A separate simulation would, instead of having single-dimensional
 cultvars in the second, religious channel, sends that work off to popco,
 where there is a more complex cultural transmission process.  In this
@@ -122,7 +124,17 @@ activn)`, the `activn` or `randnum` value is scaled as a function of the
 success information that's being sent over from the NetLogo side.
 Something like that.
 
-(Information about calling Clojure from Java:
+### Effect of subaks on analogies:
+
+What would be nice would be to run the analogy simulation in popco by
+itself, and show that you don't get a focus on the analogies that
+interact with irrigation and all that.  Maybe you get a spread.  But
+that when you add the reinforcement from the subak system, you get a
+narrowing or bias of analogy outcomes.  i.e. both sides reinforce each
+other.
+
+### Information about calling Clojure from Java:
+
 [http://stackoverflow.com/questions/2181774/calling-clojure-from-java](http://stackoverflow.com/questions/2181774/calling-clojure-from-java).
 The Clojure code would be called from a NetLogo extension.  My
 [uneof](https://github.com/mars0i/uneof) NetLogo extension provides a
