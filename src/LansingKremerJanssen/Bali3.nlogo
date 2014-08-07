@@ -28,7 +28,9 @@ damsubaks-own [a b distanceab]
 subakdams-own [a b distanceab]
 subaksubaks-own [a b distanceab]
 
-globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax pestsens growthrate cropuse totpestloss totpestlossarea totWS totWSarea avgharvestha]
+globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array 
+        damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax pestsens growthrate cropuse totpestloss 
+        totpestlossarea totWS totWSarea avgharvestha]
 
 to setup
   ;; (for this model to work with NetLogo's new plotting features,
@@ -836,12 +838,12 @@ CHOOSER
 Color_subaks
 Color_subaks
 "Temple groups" "cropping plans" "crops" "pests"
-2
+0
 
 @#$#@#$#@
 ## LICENSE
 
-This is a replication of the model reported in Lansing, J.S., J.N. Kremer (1993) Emergent properties of Balinese water temples. American Anthropologist 95 (1), 97�114, based on code provided by the authors
+This is a replication of the model reported in Lansing, J.S., J.N. Kremer (1993) Emergent properties of Balinese water temples. American Anthropologist 95 (1), 97-114, based on code provided by the authors
 
 The replication is performed by Marco A. Janssen, Arizona State University, November 2006.  
 Replication of Lansing and Kremer model Copyright (C) 1993 Lansing and Kremer ((original) Copyright (C) 2006 M.A. Janssen (replication)  
@@ -852,7 +854,7 @@ You should have received a copy of the GNU General Public License along with thi
 ## ODD DESCRIPTION
 
 The purpose of this model is to understand how local interactions between subaks, local irrigation communities, lead to high performance of rice production is a complex irrigation network.  
-Reference: Lansing, J. Stephen, and James N. Kremer (1993) Emergent properties of Balinese water temples. American Anthropologist 95:97�114.
+Reference: Lansing, J. Stephen, and James N. Kremer (1993) Emergent properties of Balinese water temples. American Anthropologist 95:97-114.
 
 State variables and scales
 
@@ -896,7 +898,7 @@ Submodels
 Demand for irrigation water  
 Demand for irrigation water for a subak depends on the difference between the water the crop needs per ha and the rain that fell per ha. This difference is multiplied by the area of land available in the subak.
 
-Demand = (cropuse � rain)*area
+Demand = (cropuse - rain)*area
 
      
 
@@ -915,10 +917,9 @@ Pests = growthrate * (Pests + 0.5 * dc)) + (0.5 * dc)
 
 Harvest  
 If it is time to harvest, the harvest of a subak is calculated as follows:  
-harvest = ricestage * yldmax * (1 � pests * pestsens) * area,
+harvest = ricestage * yldmax * (1 - pests * pestsens) * area,
 
 where ricestage is a value between 0 and 1 representing which fraction of the water demand is provided over the course of the time rice was on the land, yldmax is the maximum yield in optimal conditions, and pestsens is the amount of rice lost for a unit of pest on the land.
-
 @#$#@#$#@
 default
 true
@@ -1214,7 +1215,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.2
+NetLogo 5.1.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
