@@ -1,10 +1,10 @@
 patches-own [r1]
-breed [subaks]
-breed [dams]
-breed [damdam]
-breed [damsubaks damsubak]
-breed [subakdams subakdam]
-breed [subaksubaks subaksubak]
+breed [subaks]  ; Water-management collectives
+breed [dams]    ; Dams are used to manage how water is divided between subaks
+breed [damdam]  ; Links specifying how water travels directly from dam to dam (?)
+breed [damsubaks damsubak]     ; Links from subaks to the dams to which they can send water (?)
+breed [subakdams subakdam]     ; Links from dams to the subaks to which they can send water (?)
+breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine which subaks' cropping patterns can be copied, and how pests spread.
 
 subaks-own [old? mip stillgrowing dpests pestneighbors damneighbors totharvestarea area 
 SCC ;Subak's crop plan
@@ -13,8 +13,9 @@ SCCc; help variable during imitation process
 sdc ;help variable during imitation process
  pests 
  nMS ; counter for number of subaks in masceti
-  MS ; masceti
+  MS ; masceti (i.e. temple group: a group of subaks)
   dmd masceti ulunswi pyharvest pyharvestha WSS harvest crop ricestage Ymax pest-damage pestloss totLoss source return]
+
 dams-own [flow0 flow elevation 
 WSarea ; WSarea is area (ha) of dams' watershed
 damht rain 
@@ -23,14 +24,20 @@ areadam Runoff d1 d3 XS
 WSD ; Water Stress Dam
 totWSD]
 
+;; These are links between subaks and dams, so the distanceab is the distance between then (?)
 damdam-own [a b distanceab]
 damsubaks-own [a b distanceab]
 subakdams-own [a b distanceab]
 subaksubaks-own [a b distanceab]
 
 globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array 
-        damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax pestsens growthrate cropuse totpestloss 
-        totpestlossarea totWS totWSarea avgharvestha]
+        damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax pestsens growthrate cropuse 
+        totpestloss  ; reported in the Pestloss plot
+        totpestlossarea 
+        totWS ; total water stress (?), reported in the Waterstress plot
+        totWSarea ; total water stress area (?)
+        avgharvestha ; average harvest per hectare?
+        ]
 
 to setup
   ;; (for this model to work with NetLogo's new plotting features,
@@ -44,28 +51,43 @@ to setup
   set-default-shape damsubaks "line"
   set-default-shape subakdams "line"
   set-default-shape subaksubaks "line"
-  set subaks_array [ ]
+  
+  ;; These will be filled bo load-data (?)
+  set subaks_array []
   set dams_array []
   set subakdams_array []
   set damsubaks_array []
+  
+  ;; There are four possible crops: 3 varieties of rice, and a vegetable.  Not sure what order these are in, yet. (?)
+  ;; Note that the fastest-growing, highest max yield is also most sensitive to pests.
   set devtime [0 6 4 3] ; development time for crops
   set yldmax [0 5 5 10] ; maximum yld of rice crops
   set pestsens [0 0.5 0.75 1.0] ; sensitivity of crops to pests
+  
+  ;; There are 5 elements next, 4 above.  Maybe above is fallow + 3 rice varieties, and this includes also vegetable?
+  ;; Or above is vegetable plus rice, and we have fallow here as well?
+  ;; Maybe the fifth entries are for the vegetable, since the values are so different.  (?)
+  
+  ;; The middle 3 values in the next line will be ignored: They're about to be replaced by a value from a slider:
   set growthrate [0.1 2.2 2.2 2.2 0.33] ; monthly growth rate parameter
-  set cropuse [0 0.015 0.015 0.015 0.003]	; use of water per crop parameter
-  set growthrate replace-item 1 growthrate pestgrowth-rate 
-  set growthrate replace-item 2 growthrate pestgrowth-rate 
-  set growthrate replace-item 3 growthrate pestgrowth-rate 
+  set growthrate replace-item 1 growthrate pestgrowth-rate  ; i.e. replace the second element in growthrate with value of the pestgrowth-rate slider
+  set growthrate replace-item 2 growthrate pestgrowth-rate  ; i.e. replace the third element ...
+  set growthrate replace-item 3 growthrate pestgrowth-rate  ; etc.
+  
+  set cropuse [0 0.015 0.015 0.015 0.003]  ; use of water per crop parameter
+  
   set month 0
-  set totpestloss 0
+  set totpestloss 0       ; reported in the Pestloss plot
   set totpestlossarea 0
-  set totWS 0
+  set totWS 0             ; reported in the Waterstress plot
   set totWSarea 0
-  set avgharvestha 0
+  set avgharvestha 0      ; average harvest per hectare (?)
   set ET 50 / 30000  ;between 40 and 60 Evapotranspiration rate, mm/mon => m/d
   set RRT ET + 50 / 30000 ;between 0 and 100 Rain-Runoff threshold for 1:1, mm/mon => m/d
   set LRS 1 - ET / RRT  ;LowRainSlope, below threshold for RR relation
   set Xf 1.0 ;between 0.8 and 1.2 X factor for changing minimum groundwater flow
+
+  ask patches [set pcolor gray] ; choose a color that will make all subaks and dams visible under all settings [MA]
 
   load-data
 
@@ -355,47 +377,58 @@ to load-data
     [
       ;; file-read gives you variables.  
       ;; We store them in a double list (ex [[1 2 3 4 5 6] [1 2 3 4 5 6] ...
-      set subak-data sentence subak-data (list (list file-read file-read file-read file-read file-read file-read))
+      set subak-data sentence subak-data (list (list file-read file-read file-read file-read file-read file-read)) ; 6 reads
     ]
     file-close
+  ][ 
+    user-message "There is no subakdata.txt file in current directory!" 
   ]
-  [ user-message "There is no subakdata.txt file in current directory!" ]
   
   ifelse ( file-exists? "damdata.txt" )
   [
     set dam-data []
     file-open "damdata.txt"
     while [ not file-at-end? ]
-    [set dam-data sentence dam-data (list (list file-read file-read file-read file-read file-read file-read file-read))]
+      [set dam-data sentence dam-data (list (list file-read file-read file-read file-read file-read file-read file-read))] ; 7 reads
     file-close
+  ][ 
+    user-message "There is no damdata.txt file in current directory!" 
   ]
-  [ user-message "There is no damdata.txt file in current directory!" ]
 
   ifelse ( file-exists? "subaksubakdata.txt" )
   [
     set subaksubak-data []
     file-open "subaksubakdata.txt"
     while [ not file-at-end? ]
-    [set subaksubak-data sentence subaksubak-data (list (list file-read file-read))]
+      [set subaksubak-data sentence subaksubak-data (list (list file-read file-read))] ; 2 reads
     file-close
+  ][ 
+    user-message "There is no subaksubakdata.txt file in current directory!" 
   ]
-  [ user-message "There is no subaksubakdata.txt file in current directory!" ]
   
   ifelse ( file-exists? "subakdamdata.txt" )
   [
     set subakdam-data []
     file-open "subakdamdata.txt"
     while [ not file-at-end? ]
-    [ set subakdam-data sentence subakdam-data (list (list file-read file-read file-read))]
+      [ set subakdam-data sentence subakdam-data (list (list file-read file-read file-read))] ; 2 reads
     file-close
+  ][ 
+    user-message "There is no subakdamdata.txt file in current directory!" 
   ]
-  [ user-message "There is no subakdamdata.txt file in current directory!" ]
   
   foreach subak-data [  
-  create-subaks 1 [set color white setxy (item 1 ?) (item 2 ?) set area item 3 ? set masceti item 4 ? set ulunswi item 5 ?
-  set pestneighbors [] set damneighbors [] 
-  set subaks_array lput self subaks_array
-    if Color_subaks = "Temple groups" [
+    create-subaks 1 [
+      set color white 
+      ;; note we skip the 0th element, which is a subak id number.
+      setxy (item 1 ?) (item 2 ?) 
+      set area item 3 ? 
+      set masceti item 4 ? 
+      set ulunswi item 5 ? ; what is this? (?)
+      set pestneighbors [] 
+      set damneighbors [] 
+      set subaks_array lput self subaks_array
+      if Color_subaks = "Temple groups" [
         if masceti = 1 [set color white]
         if masceti = 2 [set color yellow]
         if masceti = 3 [set color red]
@@ -409,15 +442,27 @@ to load-data
         if masceti = 11 [set color magenta]
         if masceti = 12 [set color green]
         if masceti = 13 [set color turquoise]
-        if masceti = 14 [set color brown]
-     ]]]
+        if masceti = 14 [set color brown] 
+   ]]]
 
+
+;; MARSHALL HERE
   foreach dam-data [
-  create-dams 1 [ set color yellow setxy (item 1 ?) (item 2 ?) set flow0 item 3 ? set elevation item 4 ? set WSarea item 5 ? set damht item 6 ?
-  set dams_array lput self dams_array]]
+    create-dams 1 [ 
+      set color yellow
+      ;; we skip the 0th element 
+      setxy (item 1 ?) (item 2 ?) 
+      set flow0 item 3 ? 
+      set elevation item 4 ? 
+      set WSarea item 5 ? 
+      set damht item 6 ?
+      set dams_array lput self dams_array
+  ]]
 
   linkdams
+
   foreach subaksubak-data [make-subaksubak (item first ? subaks_array) (item last ? subaks_array)]
+
   foreach subakdam-data [make-subakdams (item first ? subaks_array) (item (item 1 ?) dams_array) (item last ? dams_array)]
 
 end
@@ -724,7 +769,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.2
+2.37
 0.01
 1
 NIL

@@ -34,3 +34,6 @@ pattern of the neighbor subak with the highest yield, if any neighbor
 had higher yield than the subak doing the copying.  Note that this is an
 "imitate the best" strategy on a network (cf.  Boyd & Richerson 1985,
 2005, etc., J. McKenzie Alexander 2007).
+
+Janssen provided explanatory comments many of the variables owned by
+subaks and dams.  See the `subaks-own` and `dams-own` statements.
