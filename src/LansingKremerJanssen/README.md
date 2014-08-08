@@ -1,23 +1,23 @@
 Janssen's Lansing-Kremer Bali simulation
 ========================================
 
-This directory contains  [Marco Janssen's NetLogo
-version](http://www.openabm.org/model/2221/version/2) of the
-Lansing-Kremer Balinese irrigation simulation:
+This directory contains a version [Marco Janssen's NetLogo
+model](http://www.openabm.org/model/2221/version/2) of the
+Lansing-Kremer Balinese irrigation simulation.  I'm keeping this version
+functionally identical to Janssen's model.  The main change is that I'm
+adding explanatory comments to the source code and the Info tab.  I'm
+also changing trivial things such as colors when that makes things
+easier, replacing characters in the Info section that don't print in
+NetLogo (in version 5 on OS X, at least) with their ASCII equivalents,
+etc.  
+
+To get the Janssen's version without my changes, use the link above,
+or see:
 
 Janssen, Marco A. (2012, October 18). "Lansing-Kremer model of the
 Balinese irrigation system" (Version 2). CoMSES Computational Model
 Library. Retrieved from: http://www.openabm.org/model/2221/version/2
 on 8/7/2014.
-
-Everything in this directory is by Marco Janssen, except for the .md
-files. I have changed the NetLogo model only in innocuous ways:
-
-* In the Info tab of the NetLogo model, I (Marshall) replaced high-bit
-minus-sign characters that weren't displaying correctly with the ASCII
-dash/minus.
-
-* I wrapped the globals declaration so that it wasn't so long.
 
 This model is described in the NetLogo Info tab, in the Janssen's PDF
 description of the model in this directory,
