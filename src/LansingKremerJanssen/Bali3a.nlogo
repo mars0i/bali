@@ -1,6 +1,6 @@
 patches-own [r1]
 breed [subaks]  ; Water-management collectives
-breed [dams]    ; Dams are used to manage how water is divided between subaks
+breed [dams]    ; Dams are used to manage ho  w water is divided between subaks
 breed [damdam]  ; Links specifying how water travels directly from dam to dam (?)
 breed [damsubaks damsubak]     ; Links from subaks to the dams to which they can send water (?)
 breed [subakdams subakdam]     ; Links from dams to the subaks to which they can send water (?)
@@ -97,8 +97,8 @@ to setup
 
   ask dams [set areadam 0]
   ask subaks [
-    let returndam self
- 	  let sourcedam self
+    let returndam self ; dummy value initialization: overwritten a few lines down
+ 	  let sourcedam self ; dummy value initialization: overwritten a few lines down
  	  let subak self
  	  set stillgrowing false
     set returndam [b] of one-of subakdams with [a = subak]
@@ -112,24 +112,25 @@ to setup
     set pyharvest 0
     set pyharvestha 0
     ; initial cropping plans are randomly allocated
-    set SCC random nrcropplans
-    set sd random 12
-    cropplan SCC sd
+    set SCC random nrcropplans  ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
+    set sd random 12            ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
+    cropplan SCC sd             ; set subak's current crop. Note: OVERWRITTEN A FEW LINES DOWN (why?)
     set totharvestarea 0
-    if Color_subaks = "cropping plans" [set color SCC * 6 + sd]
+    if Color_subaks = "cropping plans" [set color SCC * 6 + sd] ; Note: IGNORED A FEW LINES DOWN (why?)
   ]
 
   ask dams [set flow0 flow0 * Xf * 86400]
   ask dams [set EWS WSarea - areadam]
-; Effective Watershed Area EWS of each dam is reduced by cultiv'n area areadam because rain onto sawa enters the irrig'n system meeting immediate demand directly or passing on to the downstream irrigation point
+  ; Effective Watershed Area EWS of each dam is reduced by cultiv'n area areadam because rain onto sowa
+  ; enters the irrig'n system meeting immediate demand directly or passing on to the downstream irrigation point
 
   ask subaks [
     let sdhelp 0
-    set SCC random nrcropplans
-    set sd random 12
+    set SCC random nrcropplans ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
+    set sd random 12           ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
     set pests 0.01
     set old? false
-    cropplan SCC sd
+    cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
     ricestageplan SCC sd
     let subak1 self
     ask subaks [
@@ -335,7 +336,12 @@ to imitatebestneighbors
     set SCC SCCc
     set sd sdc
     if Color_subaks = "cropping plans" [
-      set color SCC * 6 + sd]]
+      set color SCC * 6 + sd
+      if-else id_subaks
+        [set label (word SCC ", " sd)]
+        [set label ""]
+    ]
+  ]
 end
 
 to setup-plot
@@ -467,7 +473,9 @@ to load-data
 
 end
 
-to cropplan [nr m]
+;; Procedure to set current subak's crop from a cropping plan and month
+;; A subak-local procedure: Must be called from within ask subaks [...].  References subaks-own variables.
+to cropplan [nr m]          ; cropping plan number, month number (zero-based)
   if m > 11 [set m m - 12]
   ; for each month a crop is defined
 	let cropplan0 [3 3 3 0 3 3 3 0 3 3 3 0]
@@ -492,7 +500,7 @@ to cropplan [nr m]
 	let cropplan19 [3 3 3 0 2 2 2 2 0 0 0 0]
 	let cropplan20 [3 3 3 0 0 0 0 2 2 2 2 0]
 
-  if nr = 0 [set crop item m cropplan0]
+  if nr = 0 [set crop item m cropplan0]  ; i.e. set this subak's crop var to the crop number at month m in cropping plan nr
   if nr = 1 [set crop item m cropplan1]
   if nr = 2 [set crop item m cropplan2]
   if nr = 3 [set crop item m cropplan3]
@@ -883,7 +891,38 @@ CHOOSER
 Color_subaks
 Color_subaks
 "Temple groups" "cropping plans" "crops" "pests"
-0
+1
+
+SWITCH
+1
+454
+120
+487
+id_subaks
+id_subaks
+1
+1
+-1000
+
+TEXTBOX
+5
+411
+155
+453
+If on, display identifiying info on whatever subak colors represent:
+11
+0.0
+1
+
+TEXTBOX
+5
+490
+155
+518
+(Not yet implemented for all choices.)
+11
+0.0
+1
 
 @#$#@#$#@
 ## LICENSE
