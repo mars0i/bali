@@ -6,15 +6,38 @@ breed [damsubaks damsubak]     ; Links from subaks to the dams to which they can
 breed [subakdams subakdam]     ; Links from dams to the subaks to which they can send water (?)
 breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine which subaks' cropping patterns can be copied, and how pests spread.
 
-subaks-own [old? mip stillgrowing dpests pestneighbors damneighbors totharvestarea area 
-SCC ;Subak's crop plan
-sd ; start date (month)
-SCCc; help variable during imitation process 
-sdc ;help variable during imitation process
- pests 
- nMS ; counter for number of subaks in masceti
-  MS ; masceti (i.e. temple group: a group of subaks)
-  dmd masceti ulunswi pyharvest pyharvestha WSS harvest crop ricestage Ymax pest-damage pestloss totLoss source return]
+subaks-own [
+  old? 
+  mip 
+  stillgrowing 
+  dpests 
+  pestneighbors 
+  damneighbors 
+  totharvestarea 
+  area 
+  SCC ;Subak's crop plan
+  sd ; start date (month)
+  SCCc; help variable during imitation process 
+  sdc ;help variable during imitation process
+  pests 
+  nMS ; counter for number of subaks in masceti  ; <- Janssen's comment.  Variable appears to be UNUSED.
+  MS ; masceti (i.e. temple group: a group of subaks)  ; <- Janssen's comment.  Variable appears to be UNUSED.
+  masceti ; group of subaks
+  dmd
+  ulunswi 
+  pyharvest 
+  pyharvestha 
+  WSS  ; seems to have something to do with water usage during rice growth 
+  harvest 
+  crop 
+  ricestage 
+  Ymax 
+  pest-damage 
+  pestloss 
+  totLoss 
+  source 
+  return
+]
 
 dams-own [flow0 flow elevation 
 WSarea ; WSarea is area (ha) of dams' watershed
@@ -58,7 +81,8 @@ to setup
   set subakdams_array []
   set damsubaks_array []
   
-  ;; There are four possible crops: 3 varieties of rice, and a vegetable.  Not sure what order these are in, yet. (?)
+  ;; There are four possible crops: 3 varieties of rice, and a vegetable.
+  ;; Based on procedure growrice, it appears that 0 reps fallow, and 1, 2, 3 rep rice varieties.  4 reps another crop, but that's never used here.
   ;; Note that the fastest-growing, highest max yield is also most sensitive to pests.
   set devtime [0 6 4 3] ; development time for crops
   set yldmax [0 5 5 10] ; maximum yld of rice crops
@@ -184,11 +208,11 @@ to demandwater
   ask subaks [
 ;    		cropuse is m/d demand for the 4 crops:
     if Color_subaks = "crops" [
-      if crop = 0 [ set color green]
-      if crop = 1 [ set color cyan]
-      if crop = 2 [ set color yellow]
-      if crop = 3 [ set color white]
-      if crop = 4 [ set color red]
+      if crop = 0 [ set color green]  ; fallow
+      if crop = 1 [ set color cyan]   ; rice variety 1
+      if crop = 2 [ set color yellow] ; rice variety 2
+      if crop = 3 [ set color white]  ; rice variety 3
+      if crop = 4 [ set color red]    ; alternate, non-rice crop (?)
       ]
     set dmd item crop cropuse - [rain] of return
     set dmd dmd * area * 10000
@@ -251,15 +275,17 @@ to determineflow
     set dmd dmd * WSS]
 end
 
+;; This is a subak-local procedure.
+;; If this subak is growing rice, then advance its growth states
 to growrice
     ask subaks [
-      let subak1 self
-      let WSDhelp self
-      if crop = 0 [set ricestage 0 set WSS 1] ;Fallow period
-      if crop = 4 [set ricestage 0 set WSS 1] ; Growing paliwiga
-      if ((crop = 1) or (crop = 2) or (crop = 3)) [
+      let subak1 self   ; UNUSED
+      let WSDhelp self  ; UNUSED
+      if crop = 0 [set ricestage 0 set WSS 1] ; Fallow period -- i.e. not growing anything
+      if crop = 4 [set ricestage 0 set WSS 1] ; Growing paliwiga -- i.e. not growing rice
+      if ((crop = 1) or (crop = 2) or (crop = 3)) [  ; i.e. 1, 2, and 3 are the rice varieties
         set WSS [WSD] of source 
-        set ricestage ricestage + (WSS / (item crop devtime)) 
+        set ricestage ricestage + (WSS / (item crop devtime)) ; i.e. advance growing stage as a function of the rice variety and available water?
  ]]
 end
 
@@ -477,7 +503,11 @@ end
 ;; A subak-local procedure: Must be called from within ask subaks [...].  References subaks-own variables.
 to cropplan [nr m]          ; cropping plan number, month number (zero-based)
   if m > 11 [set m m - 12]
-  ; for each month a crop is defined
+  ; For each month a crop is defined:
+  ; Based on procedure growrice, it appears that 0 represents a fallow period, and 1, 2, & 3 represent rice varieties,
+  ; and 4 reps an alternate non-rice crop.  Note none of these crop plans includes that crop.
+  ; It appears that variety 1 requires 6 months to grow, variety 2 requires 4 months to grow, and variety 3 requires 3 months to grow.
+  ; That's why not all possible combinations of 0's, 1's, 2's, and 3's are included.
 	let cropplan0 [3 3 3 0 3 3 3 0 3 3 3 0]
 	let cropplan1 [3 3 3 0 0 0 3 3 3 0 0 0]
 	let cropplan2 [3 3 3 0 3 3 3 0 0 0 0 0]
