@@ -111,7 +111,7 @@ to setup
   set LRS 1 - ET / RRT  ;LowRainSlope, below threshold for RR relation
   set Xf 1.0 ;between 0.8 and 1.2 X factor for changing minimum groundwater flow
 
-  ask patches [set pcolor gray] ; choose a color that will make all subaks and dams visible under all settings [MA]
+  ask patches [set pcolor (rgb 80 0 80)] ; choose a color that will make all subaks and dams visible under all settings [MA]
 
   load-data
 
@@ -152,6 +152,8 @@ to setup
     let sdhelp 0
     set SCC random nrcropplans ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
     set sd random 12           ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
+;    set SCC 0  ; MARSHALL EXPERIMENT
+;    set sd 0   ; MARSHALL EXPERIMENT
     set pests 0.01
     set old? false
     cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
@@ -363,7 +365,7 @@ to imitatebestneighbors
     set sd sdc
     if Color_subaks = "cropping plans" [
       set color SCC * 6 + sd
-      if-else id_subaks
+      if-else id_colors
         [set label (word SCC ", " sd)]
         [set label ""]
     ]
@@ -807,7 +809,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.37
+2.2
 0.01
 1
 NIL
@@ -928,8 +930,8 @@ SWITCH
 454
 120
 487
-id_subaks
-id_subaks
+id_colors
+id_colors
 1
 1
 -1000
