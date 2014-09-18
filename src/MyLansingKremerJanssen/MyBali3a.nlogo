@@ -115,6 +115,7 @@ to setup
 
   load-data
 
+  ask subaks [set size 2]
   ask subaks [set old? false]
   set dams_array sort-by [[who] of ?1 < [who] of ?2] dams
   set subaks_array sort-by [[who] of ?1 < [who] of ?2] subaks
@@ -166,10 +167,10 @@ to setup
 end
 
 to go
-  let gr2 0
-  let gr3 0
-  set gr2 pestgrowth-rate
-  set gr3 pestgrowth-rate
+  let gr2 0  ; UNUSED?
+  let gr3 0  ; UNUSED?
+  set gr2 pestgrowth-rate ; UNUSED?
+  set gr3 pestgrowth-rate ; UNUSED?
   ask subaks [set mip sd + month if mip > 11 [set mip mip - 12]]
   ask subaks [
     cropplan SCC mip
@@ -184,7 +185,7 @@ to go
 
   if month = 11 [set totpestloss totpestloss / totpestlossarea set totWS totWS / totWSarea]
   if month = 11 [plot-figs]
-  if month = 11 [imitatebestneighbors]
+  if month = 11 [imitatebestneighbors] ; CULTURAL TRANSMISSION
 
   ifelse month = 11 
   [set month 0 set totWSarea 0 set totWS 0 ask subaks [set pyharvest 0 set pyharvestha 0 set totpestloss 0 set totpestlossarea 0 set totharvestarea 0 set pests 0.01]]
@@ -366,7 +367,7 @@ to imitatebestneighbors
     if Color_subaks = "cropping plans" [
       set color SCC * 6 + sd
       if-else id_colors
-        [set label (word SCC ", " sd)]
+        [set label (word "[" SCC ":" sd "]")]
         [set label ""]
     ]
   ]
@@ -713,12 +714,12 @@ GRAPHICS-WINDOW
 178
 11
 798
-652
+672
 30
-30
+31
 10.0
 1
-10
+8
 1
 1
 1
@@ -728,8 +729,8 @@ GRAPHICS-WINDOW
 1
 -30
 30
--30
-30
+-31
+31
 0
 0
 1
@@ -808,8 +809,8 @@ SLIDER
 pestgrowth-rate
 pestgrowth-rate
 2
-2.4
-2.2
+20
+2
 0.01
 1
 NIL
@@ -823,8 +824,8 @@ SLIDER
 pestdispersal-rate
 pestdispersal-rate
 0.6
-1.5
-1
+50
+10
 0.01
 1
 NIL
@@ -856,7 +857,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-1
+0
 
 PLOT
 802
@@ -906,10 +907,10 @@ viewdamsubaks
 -1000
 
 CHOOSER
-1
-174
-176
-219
+0
+198
+175
+243
 nrcropplans
 nrcropplans
 6 21
@@ -952,6 +953,16 @@ TEXTBOX
 155
 518
 (Not yet implemented for all choices.)
+11
+0.0
+1
+
+TEXTBOX
+4
+171
+154
+189
+will be divided by 100
 11
 0.0
 1
