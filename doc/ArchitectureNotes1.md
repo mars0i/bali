@@ -32,6 +32,11 @@ optimal patterns.  It would be nice if the system is pretty sensitive to
 such noise--i.e. it gets very bad pretty easily.  But we'll have to
 experiment to see what will cause it to break down to what degree.
 
+Maybe the noise factor should be, instead of randomness in whether
+copying occurs, copying from non-neighbors.  i.e. let greediness of a
+subak be modeled as copying from those farther way, who maybe are
+doing even *better*.
+
 ### Add "religious" cultvar channel:
 
 Add a separate cultural transmission channel for a "religious"
