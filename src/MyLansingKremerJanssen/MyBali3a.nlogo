@@ -111,11 +111,14 @@ to setup
   set LRS 1 - ET / RRT  ;LowRainSlope, below threshold for RR relation
   set Xf 1.0 ;between 0.8 and 1.2 X factor for changing minimum groundwater flow
 
-  ask patches [set pcolor (rgb 80 0 80)] ; choose a color that will make all subaks and dams visible under all settings [MA]
-
+  ; choose a color that will make all subaks and dams visible under all settings [MA]
+  ask patches [set pcolor black]
+  ;ask patches [set pcolor white] ; requires pest and crop coloring to be updated, but it's easier to see cropping plans
+  ;ask patches [set pcolor (rgb 80 0 80)] ; a purple
+  
   load-data
 
-  ask subaks [set size 2]
+  ask subaks [set size 0.75]
   ask subaks [set old? false]
   set dams_array sort-by [[who] of ?1 < [who] of ?2] dams
   set subaks_array sort-by [[who] of ?1 < [who] of ?2] subaks
@@ -141,7 +144,10 @@ to setup
     set sd random 12            ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
     cropplan SCC sd             ; set subak's current crop. Note: OVERWRITTEN A FEW LINES DOWN (why?)
     set totharvestarea 0
-    if Color_subaks = "cropping plans" [set color SCC * 6 + sd] ; Note: IGNORED A FEW LINES DOWN (why?)
+    if Color_subaks = "cropping plans"
+       [display-cropping-plans] ; new version
+       ;[set color SCC * 6 + sd] ; original Janssen version
+
   ]
 
   ask dams [set flow0 flow0 * Xf * 86400]
@@ -365,12 +371,27 @@ to imitatebestneighbors
     set SCC SCCc
     set sd sdc
     if Color_subaks = "cropping plans" [
-      set color SCC * 6 + sd
-      if-else id_colors
-        [set label (word "[" SCC ":" sd "]")]
-        [set label ""]
+      ;set color SCC * 6 + sd  ; original Janssen version
+      display-cropping-plans ; new version
     ]
   ]
+end
+
+;; subak routine
+to display-cropping-plans
+  let low-scc-base-color 4
+  let high-scc-base-color 6
+  let sd-base-color 2
+  
+  if-else SCC < 14
+    [set color low-scc-base-color + (10 * SCC)]         ; colors from column low-scc-base-color of swatches
+    [set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
+  
+  ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
+  
+  if-else id_colors
+    [set label (word "[" SCC ":" sd "]")]
+    [set label ""]
 end
 
 to setup-plot
@@ -714,9 +735,9 @@ GRAPHICS-WINDOW
 178
 11
 798
-672
+650
 30
-31
+-1
 10.0
 1
 8
@@ -730,7 +751,7 @@ GRAPHICS-WINDOW
 -30
 30
 -31
-31
+29
 0
 0
 1
@@ -857,7 +878,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-0
+1
 
 PLOT
 802
