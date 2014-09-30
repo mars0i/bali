@@ -735,7 +735,7 @@ GRAPHICS-WINDOW
 178
 11
 798
-650
+652
 30
 -1
 10.0
@@ -984,6 +984,16 @@ TEXTBOX
 154
 189
 will be divided by 100
+11
+0.0
+1
+
+TEXTBOX
+4
+540
+154
+610
+Notes:\nCropping plan colors: circle represents crop plan, square represents start month.
 11
 0.0
 1
