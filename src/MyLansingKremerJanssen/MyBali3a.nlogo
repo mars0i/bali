@@ -8,7 +8,6 @@ breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine 
 
 subaks-own [
   old? 
-  mip 
   stillgrowing 
   dpests 
   pestneighbors 
@@ -17,20 +16,24 @@ subaks-own [
   area 
   SCC ;Subak's crop plan
   sd ; start date (month)
-  SCCc; help variable during imitation process 
-  sdc ;help variable during imitation process
+  mip ; "month in progres" or "month in plan"? how far we are in the cropping plan, I think, relative to the start date sd.
+  SCCc; help variable during imitation process ("c" means "copy"?)
+  sdc ;help variable during imitation process  ("c" means "copy"?)
   pests 
   nMS ; counter for number of subaks in masceti  ; <- Janssen's comment.  Variable appears to be UNUSED.
   MS ; masceti (i.e. temple group: a group of subaks)  ; <- Janssen's comment.  Variable appears to be UNUSED.
   masceti ; group of subaks
-  dmd
+  dmd  ; water demand. see comment in procedure demandwater.
   ulunswi 
-  pyharvest 
-  pyharvestha 
-  WSS  ; seems to have something to do with water usage during rice growth 
+  pyharvest   ; stores total of (harvest * area) over the course of a year. used to decide who to imitate.
+  pyharvestha ; stores total of (harvest) over the course of a year. used for harvest plot.
+  WSS  ; seems to have something to do with water usage during rice growth. "Water Stress Subak"?
   harvest 
-  crop 
-  ricestage 
+  crop ; crop number of the crop am I currently growing
+  ricestage ; How much of the water needed to grow this rice variety has already been received.
+            ; This is initially set by a call to ricestageplan in the setup routine.
+            ; After that, it's set in procedure growrice as a function of the water stress variable WSS
+            ; and the growing time (from global devtime) of the rice variety (represented by subak variable crop).
   Ymax 
   pest-damage 
   pestloss 
@@ -62,6 +65,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_ar
         avgharvestha ; average harvest per hectare?
         ]
 
+;;;;;;;;;;;;;;;
 to setup
   ;; (for this model to work with NetLogo's new plotting features,
   ;; __clear-all-and-reset-ticks should be replaced with clear-all at
@@ -84,7 +88,7 @@ to setup
   ;; There are four possible crops: 3 varieties of rice, and a vegetable.
   ;; Based on procedure growrice, it appears that 0 reps fallow, and 1, 2, 3 rep rice varieties.  4 reps another crop, but that's never used here.
   ;; Note that the fastest-growing, highest max yield is also most sensitive to pests.
-  set devtime [0 6 4 3] ; development time for crops
+  set devtime [0 6 4 3] ; development time for crops. first one is no-crop, i.e. fallow.  the rest are for the three varieties of rice.
   set yldmax [0 5 5 10] ; maximum yld of rice crops
   set pestsens [0 0.5 0.75 1.0] ; sensitivity of crops to pests
   
@@ -143,9 +147,10 @@ to setup
     set SCC random nrcropplans  ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
     set sd random 12            ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
     cropplan SCC sd             ; set subak's current crop. Note: OVERWRITTEN A FEW LINES DOWN (why?)
+                                ; and why don't we call ricestageplan here as well?
     set totharvestarea 0
-    if Color_subaks = "cropping plans"
-       [display-cropping-plans] ; new version
+    if Color_subaks = "cropping plans"         ; NOTE that since the crop plan is changed in a moment, this coloring will be inaccurate
+       [display-cropping-plans] ; new version  ; so I'm going to add in this coloring code below -MA
        ;[set color SCC * 6 + sd] ; original Janssen version
 
   ]
@@ -159,25 +164,28 @@ to setup
     let sdhelp 0
     set SCC random nrcropplans ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
     set sd random 12           ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
-;    set SCC 0  ; MARSHALL EXPERIMENT
-;    set sd 0   ; MARSHALL EXPERIMENT
     set pests 0.01
     set old? false
     cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
     ricestageplan SCC sd
+    if Color_subaks = "cropping plans"  ; added by Marshall. changes apparently irrelevant coloring above.
+       [display-cropping-plans] 
     let subak1 self
     ask subaks [
-      if [source] of self = [source] of subak1 [ask subak1 [set damneighbors lput self damneighbors]] 
+      if [source] of self = [source] of subak1 [ask subak1 [set damneighbors lput self damneighbors]] ; what is the conditional doing?? -MA
     ]
   ]
 end
+;;;;;;;;;;;;;;; end of setup
 
+
+;;;;;;;;;;;;;;;
 to go
-  let gr2 0  ; UNUSED?
-  let gr3 0  ; UNUSED?
-  set gr2 pestgrowth-rate ; UNUSED?
-  set gr3 pestgrowth-rate ; UNUSED?
-  ask subaks [set mip sd + month if mip > 11 [set mip mip - 12]]
+  ;let gr2 0  ; UNUSED?
+  ;let gr3 0  ; UNUSED?
+  ;set gr2 pestgrowth-rate ; UNUSED?
+  ;set gr3 pestgrowth-rate ; UNUSED?
+  ask subaks [set mip sd + month if mip > 11 [set mip mip - 12]] ; sd is start month. this line increments actual month. (month is inc'ed below.)
   ask subaks [
     cropplan SCC mip
     if stillgrowing [if ((crop = 0) or (crop = 4)) [set stillgrowing false]]
@@ -189,14 +197,28 @@ to go
   growpest
   determineharvest
 
+  ; at end of year, plot current average values, and implement cultural transmission
   if month = 11 [set totpestloss totpestloss / totpestlossarea set totWS totWS / totWSarea]
   if month = 11 [plot-figs]
   if month = 11 [imitatebestneighbors] ; CULTURAL TRANSMISSION
 
+  ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
+  ; (worry: do any of these variables affect operation? does zeroing them bias the process? -MA)
   ifelse month = 11 
-  [set month 0 set totWSarea 0 set totWS 0 ask subaks [set pyharvest 0 set pyharvestha 0 set totpestloss 0 set totpestlossarea 0 set totharvestarea 0 set pests 0.01]]
-  [set month month + 1]
+    [set month 0
+     set totWSarea 0 
+     set totWS 0 
+     ask subaks [
+       set pyharvest 0 
+       set pyharvestha 0 
+       set totpestloss 0 
+       set totpestlossarea 0 
+       set totharvestarea 0 
+       set pests 0.01]]
+    [set month month + 1]
 end
+;;;;;;;;;;;;;;; end of go
+
 
 to demandwater
   ; determine the water demand for different subaks
@@ -280,7 +302,7 @@ to determineflow
 	]]]
   ask subaks [
     let subak1 self
-    set WSS [WSD] of [a] of one-of damsubaks with [b = subak1]
+    set WSS [WSD] of [a] of one-of damsubaks with [b = subak1] ; Uh, this worries me.  Why a vs. b?  It's unidirectional.  -MA
     set dmd dmd * WSS]
 end
 
@@ -288,13 +310,14 @@ end
 ;; If this subak is growing rice, then advance its growth states
 to growrice
     ask subaks [
-      let subak1 self   ; UNUSED
-      let WSDhelp self  ; UNUSED
+      ;let subak1 self   ; UNUSED
+      ;let WSDhelp self  ; UNUSED
       if crop = 0 [set ricestage 0 set WSS 1] ; Fallow period -- i.e. not growing anything
       if crop = 4 [set ricestage 0 set WSS 1] ; Growing paliwiga -- i.e. not growing rice
       if ((crop = 1) or (crop = 2) or (crop = 3)) [  ; i.e. 1, 2, and 3 are the rice varieties
         set WSS [WSD] of source 
         set ricestage ricestage + (WSS / (item crop devtime)) ; i.e. advance growing stage as a function of the rice variety and available water?
+        ; devtime is a global that stores the growing time of the three rice varieties
  ]]
 end
 
@@ -352,21 +375,25 @@ end
 to imitatebestneighbors
   let minharvest 0
   let maxharvest 0
-    ask subaks [
+  ask subaks [
       if (crop = 1 or crop = 2 or crop = 3)[
-      let bestneighbor self
-      set minharvest pyharvestha
-      set maxharvest minharvest
+      let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
+      set minharvest pyharvestha ; set minharvest to my total harvest for the year
+      set maxharvest minharvest  ; set maxharvest to my total harvest for the year
       foreach pestneighbors [
         ask ? [
-          if pyharvestha > maxharvest
+          if pyharvestha > maxharvest   ; if your total harvest for the year is more than anyone else's so far
           [
-            set maxharvest pyharvestha
-            set bestneighbor self
+            set maxharvest pyharvestha  ; then my new max so far will be that value
+            set bestneighbor self       ; and you will be my best neighbor so far
       ]]
-      ifelse maxharvest > minharvest [set SCCc [SCC] of bestneighbor set sdc [sd] of bestneighbor][set SCCc SCC set sdc sd]]
-    ]]
+      ifelse maxharvest > minharvest  ; if I found a neighbor who did better than I did
+        [set SCCc [SCC] of bestneighbor ; copy its cropping plan
+         set sdc [sd] of bestneighbor]  ; and its start month
+        [set SCCc SCC set sdc sd]]   ; otherwise "copy" my own old values
+  ]]
 
+  ; now move the temporary copied values to my own operational variables and update the UI display if necessary
   ask subaks [
     set SCC SCCc
     set sd sdc
