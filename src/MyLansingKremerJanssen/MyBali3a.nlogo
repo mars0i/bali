@@ -1,14 +1,15 @@
 globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array 
-        damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax pestsens growthrate cropuse 
-        totpestloss  ; reported in the Pestloss plot
-        totpestlossarea 
-        totWS ; total water stress (?), reported in the Waterstress plot
-        totWSarea ; total water stress area (?)
-        avgharvestha ; average harvest per hectare?
-        cropplans
+          damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax pestsens growthrate cropuse 
+          totpestloss  ; reported in the Pestloss plot
+          totpestlossarea 
+          totWS ; total water stress (?), reported in the Waterstress plot
+          totWSarea ; total water stress area (?)
+          avgharvestha ; average harvest per hectare?
+          cropplans ; list all of allowed cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
+          ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan 
         ]
 
-patches-own [r1]
+;patches-own [r1]
 breed [subaks]  ; Water-management collectives
 breed [dams]    ; Dams are used to manage ho  w water is divided between subaks
 breed [damdam]  ; Links specifying how water travels directly from dam to dam (?)
@@ -93,6 +94,10 @@ to setup
   ;; There are four possible crops: 3 varieties of rice, and a vegetable.
   ;; Based on procedure growrice, it appears that 0 reps fallow, and 1, 2, 3 rep rice varieties.  4 reps another crop, but that's never used here.
   ;; Note that the fastest-growing, highest max yield is also most sensitive to pests.
+  ;; Based on procedure growrice, it appears that 0 represents a fallow period, and 1, 2, & 3 represent rice varieties,
+  ;; and 4 reps an alternate non-rice crop paliwiga (from a comment below).  Note none of these crop plans includes that crop.
+  ;; It appears that variety 1 requires 6 months to grow, variety 2 requires 4 months to grow, and variety 3 requires 3 months to grow.
+  ;; That's why not all possible combinations of 0's, 1's, 2's, and 3's are included.
  
   ;; The possible crop plans (indexed by SCC in subak) beginning from a start month (sd in subak)
   ;; 
@@ -609,103 +614,114 @@ end
 
 ;; Procedure to set current subak's crop from a cropping plan and month
 ;; A subak-local procedure: Must be called from within ask subaks [...].  References subaks-own variables.
-to cropplan [nr m]          ; cropping plan number, month number (zero-based)
-  if m > 11 [set m m - 12]
-  ; For each month a crop is defined:
-  ; Based on procedure growrice, it appears that 0 represents a fallow period, and 1, 2, & 3 represent rice varieties,
-  ; and 4 reps an alternate non-rice crop.  Note none of these crop plans includes that crop.
-  ; It appears that variety 1 requires 6 months to grow, variety 2 requires 4 months to grow, and variety 3 requires 3 months to grow.
-  ; That's why not all possible combinations of 0's, 1's, 2's, and 3's are included.
-	let cropplan0 [3 3 3 0 3 3 3 0 3 3 3 0]
-	let cropplan1 [3 3 3 0 0 0 3 3 3 0 0 0]
-	let cropplan2 [3 3 3 0 3 3 3 0 0 0 0 0]
-	let cropplan3 [3 3 3 0 0 3 3 3 0 0 0 0]
-	let cropplan4 [3 3 3 0 0 0 0 3 3 3 0 0]
-	let cropplan5 [3 3 3 0 0 0 0 0 3 3 3 0]
-	let cropplan6 [1 1 1 1 1 1 0 2 2 2 2 0]
-	let cropplan7 [1 1 1 1 1 1 0 3 3 3 0 0]
-	let cropplan8 [1 1 1 1 1 1 0 0 3 3 3 0]
-	let cropplan9 [1 1 1 1 1 1 0 0 0 0 0 0]
-	let cropplan10 [2 2 2 2 0 0 2 2 2 2 0 0]
-	let cropplan11 [2 2 2 2 0 2 2 2 2 0 0 0]
-	let cropplan12 [2 2 2 2 0 0 0 2 2 2 2 0]
-	let cropplan13 [2 2 2 2 0 0 3 3 3 0 0 0]
-	let cropplan14 [2 2 2 2 0 3 3 3 0 0 0 0]
-	let cropplan15 [2 2 2 2 0 0 0 3 3 3 0 0]
-	let cropplan16 [2 2 2 2 0 0 0 0 3 3 3 0]	
-	let cropplan17 [3 3 3 0 0 2 2 2 2 0 0 0]
-	let cropplan18 [3 3 3 0 0 0 2 2 2 2 0 0]
-	let cropplan19 [3 3 3 0 2 2 2 2 0 0 0 0]
-	let cropplan20 [3 3 3 0 0 0 0 2 2 2 2 0]
-
-  if nr = 0 [set crop item m cropplan0]  ; i.e. set this subak's crop var to the crop number at month m in cropping plan nr
-  if nr = 1 [set crop item m cropplan1]
-  if nr = 2 [set crop item m cropplan2]
-  if nr = 3 [set crop item m cropplan3]
-  if nr = 4 [set crop item m cropplan4]
-  if nr = 5 [set crop item m cropplan5]
-  if nr = 6 [set crop item m cropplan6]
-  if nr = 7 [set crop item m cropplan7]
-  if nr = 8 [set crop item m cropplan8]
-  if nr = 9 [set crop item m cropplan9]
-  if nr = 10 [set crop item m cropplan10]
-  if nr = 11 [set crop item m cropplan11]
-  if nr = 12 [set crop item m cropplan12]
-  if nr = 13 [set crop item m cropplan13]
-  if nr = 14 [set crop item m cropplan14]
-  if nr = 15 [set crop item m cropplan15]
-  if nr = 16 [set crop item m cropplan16]
-  if nr = 17 [set crop item m cropplan17]
-  if nr = 18 [set crop item m cropplan18]
-  if nr = 19 [set crop item m cropplan19]
-  if nr = 20 [set crop item m cropplan20]
+;; For each month a crop is defined:
+;; Based on procedure growrice, it appears that 0 represents a fallow period, and 1, 2, & 3 represent rice varieties,
+;; and 4 reps an alternate non-rice crop.  Note none of these crop plans includes that crop.
+;; It appears that variety 1 requires 6 months to grow, variety 2 requires 4 months to grow, and variety 3 requires 3 months to grow.
+;; That's why not all possible combinations of 0's, 1's, 2's, and 3's are included.
+to cropplan [plan-number mnth]
+  set crop item (mnth mod 12) (item plan-number cropplans)
 end
 
+; old version of cropplan:
+;to cropplan [nr m]          ; cropping plan number, month number (zero-based)
+;  if m > 11 [set m m - 12]
+;	let cropplan0 [3 3 3 0 3 3 3 0 3 3 3 0]
+;	let cropplan1 [3 3 3 0 0 0 3 3 3 0 0 0]
+;	let cropplan2 [3 3 3 0 3 3 3 0 0 0 0 0]
+;	let cropplan3 [3 3 3 0 0 3 3 3 0 0 0 0]
+;	let cropplan4 [3 3 3 0 0 0 0 3 3 3 0 0]
+;	let cropplan5 [3 3 3 0 0 0 0 0 3 3 3 0]
+;	let cropplan6 [1 1 1 1 1 1 0 2 2 2 2 0]
+;	let cropplan7 [1 1 1 1 1 1 0 3 3 3 0 0]
+;	let cropplan8 [1 1 1 1 1 1 0 0 3 3 3 0]
+;	let cropplan9 [1 1 1 1 1 1 0 0 0 0 0 0]
+;	let cropplan10 [2 2 2 2 0 0 2 2 2 2 0 0]
+;	let cropplan11 [2 2 2 2 0 2 2 2 2 0 0 0]
+;	let cropplan12 [2 2 2 2 0 0 0 2 2 2 2 0]
+;	let cropplan13 [2 2 2 2 0 0 3 3 3 0 0 0]
+;	let cropplan14 [2 2 2 2 0 3 3 3 0 0 0 0]
+;	let cropplan15 [2 2 2 2 0 0 0 3 3 3 0 0]
+;	let cropplan16 [2 2 2 2 0 0 0 0 3 3 3 0]	
+;	let cropplan17 [3 3 3 0 0 2 2 2 2 0 0 0]
+;	let cropplan18 [3 3 3 0 0 0 2 2 2 2 0 0]
+;	let cropplan19 [3 3 3 0 2 2 2 2 0 0 0 0]
+;	let cropplan20 [3 3 3 0 0 0 0 2 2 2 2 0]
+;
+;  if nr = 0 [set crop item m cropplan0]  ; i.e. set this subak's crop var to the crop number at month m in cropping plan nr
+;  if nr = 1 [set crop item m cropplan1]
+;  if nr = 2 [set crop item m cropplan2]
+;  if nr = 3 [set crop item m cropplan3]
+;  if nr = 4 [set crop item m cropplan4]
+;  if nr = 5 [set crop item m cropplan5]
+;  if nr = 6 [set crop item m cropplan6]
+;  if nr = 7 [set crop item m cropplan7]
+;  if nr = 8 [set crop item m cropplan8]
+;  if nr = 9 [set crop item m cropplan9]
+;  if nr = 10 [set crop item m cropplan10]
+;  if nr = 11 [set crop item m cropplan11]
+;  if nr = 12 [set crop item m cropplan12]
+;  if nr = 13 [set crop item m cropplan13]
+;  if nr = 14 [set crop item m cropplan14]
+;  if nr = 15 [set crop item m cropplan15]
+;  if nr = 16 [set crop item m cropplan16]
+;  if nr = 17 [set crop item m cropplan17]
+;  if nr = 18 [set crop item m cropplan18]
+;  if nr = 19 [set crop item m cropplan19]
+;  if nr = 20 [set crop item m cropplan20]
+;end
+
+; since only called during setup, and not due to incrementing month, there's no need to modulo the month
 to ricestageplan [nr m]
-	let ricestageplan0 [0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]
-	let ricestageplan1 [0 0.33 0.67 0 0 0 0 0.33 0.67 0 0 0]
-	let ricestageplan2 [0 0.33 0.67 0 0 0.33 0.67 0 0 0 0 0]
-	let ricestageplan3 [0 0.33 0.67 0 0 0 0.33 0.67 0 0 0 0]
-	let ricestageplan4 [0 0.33 0.67 0 0 0 0 0 0.33 0.67 0 0]
-	let ricestageplan5 [0 0.33 0.67 0 0 0 0 0 0 0.33 0.67 0]
-	let ricestageplan6 [0 0.16 0.33 0.5 0.67 0.84 0 0 0.25 0.5 0.75 0]
-	let ricestageplan7 [0 0.16 0.33 0.5 0.67 0.84 0 0 0.33 0.67 0 0]
-	let ricestageplan8 [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0.33 0.67 0]
-	let ricestageplan9 [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0 0 0]
-	let ricestageplan10 [0 0.25 0.5 0.75 0 0 0 0.25 0.5 0.75 0 0]
-	let ricestageplan11 [0 0.25 0.5 0.75 0 0 0.25 0.5 0.75 0 0 0]
-	let ricestageplan12 [0 0.25 0.5 0.75 0 0 0 0 0.25 0.5 0.75 0]
-	let ricestageplan13 [0 0.25 0.5 0.75 0 0 0 0.33 0.67 0 0 0]
-	let ricestageplan14 [0 0.25 0.5 0.75 0 0 0.33 0.67 0 0 0 0]
-	let ricestageplan15 [0 0.25 0.5 0.75 0 0 0 0 0.33 0.67 0 0]
-	let ricestageplan16 [0 0.25 0.5 0.75 0 0 0 0 0 0.33 0.67 0]	
-	let ricestageplan17 [0 0.33 0.67 0 0 0 0.25 0.5 0.75 0 0 0]
-	let ricestageplan18 [0 0.33 0.67 0 0 0 0 0.25 0.5 0.75 0 0]
-	let ricestageplan19 [0 0.33 0.67 0 0 0.25 0.5 0.75 0 0 0 0]
-	let ricestageplan20 [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]
-
-  if nr = 0 [set ricestage item m ricestageplan0]
-  if nr = 1 [set ricestage item m ricestageplan1]
-  if nr = 2 [set ricestage item m ricestageplan2]
-  if nr = 3 [set ricestage item m ricestageplan3]
-  if nr = 4 [set ricestage item m ricestageplan4]
-  if nr = 5 [set ricestage item m ricestageplan5]
-  if nr = 6 [set ricestage item m ricestageplan6]
-  if nr = 7 [set ricestage item m ricestageplan7]
-  if nr = 8 [set ricestage item m ricestageplan8]
-  if nr = 9 [set ricestage item m ricestageplan9]
-  if nr = 10 [set ricestage item m ricestageplan10]
-  if nr = 11 [set ricestage item m ricestageplan11]
-  if nr = 12 [set ricestage item m ricestageplan12]
-  if nr = 13 [set ricestage item m ricestageplan13]
-  if nr = 14 [set ricestage item m ricestageplan14]
-  if nr = 15 [set ricestage item m ricestageplan15]
-  if nr = 16 [set ricestage item m ricestageplan16]
-  if nr = 17 [set ricestage item m ricestageplan17]
-  if nr = 18 [set ricestage item m ricestageplan18]
-  if nr = 19 [set ricestage item m ricestageplan19]
-  if nr = 20 [set ricestage item m ricestageplan20]
+  set ricestage item m (item nr ricestageplans)
 end
+
+;old version:
+;to ricestageplan [nr m]
+;	let ricestageplan0 [0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]
+;	let ricestageplan1 [0 0.33 0.67 0 0 0 0 0.33 0.67 0 0 0]
+;	let ricestageplan2 [0 0.33 0.67 0 0 0.33 0.67 0 0 0 0 0]
+;	let ricestageplan3 [0 0.33 0.67 0 0 0 0.33 0.67 0 0 0 0]
+;	let ricestageplan4 [0 0.33 0.67 0 0 0 0 0 0.33 0.67 0 0]
+;	let ricestageplan5 [0 0.33 0.67 0 0 0 0 0 0 0.33 0.67 0]
+;	let ricestageplan6 [0 0.16 0.33 0.5 0.67 0.84 0 0 0.25 0.5 0.75 0]
+;	let ricestageplan7 [0 0.16 0.33 0.5 0.67 0.84 0 0 0.33 0.67 0 0]
+;	let ricestageplan8 [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0.33 0.67 0]
+;	let ricestageplan9 [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0 0 0]
+;	let ricestageplan10 [0 0.25 0.5 0.75 0 0 0 0.25 0.5 0.75 0 0]
+;	let ricestageplan11 [0 0.25 0.5 0.75 0 0 0.25 0.5 0.75 0 0 0]
+;	let ricestageplan12 [0 0.25 0.5 0.75 0 0 0 0 0.25 0.5 0.75 0]
+;	let ricestageplan13 [0 0.25 0.5 0.75 0 0 0 0.33 0.67 0 0 0]
+;	let ricestageplan14 [0 0.25 0.5 0.75 0 0 0.33 0.67 0 0 0 0]
+;	let ricestageplan15 [0 0.25 0.5 0.75 0 0 0 0 0.33 0.67 0 0]
+;	let ricestageplan16 [0 0.25 0.5 0.75 0 0 0 0 0 0.33 0.67 0]	
+;	let ricestageplan17 [0 0.33 0.67 0 0 0 0.25 0.5 0.75 0 0 0]
+;	let ricestageplan18 [0 0.33 0.67 0 0 0 0 0.25 0.5 0.75 0 0]
+;	let ricestageplan19 [0 0.33 0.67 0 0 0.25 0.5 0.75 0 0 0 0]
+;	let ricestageplan20 [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]
+;
+;  if nr = 0 [set ricestage item m ricestageplan0]
+;  if nr = 1 [set ricestage item m ricestageplan1]
+;  if nr = 2 [set ricestage item m ricestageplan2]
+;  if nr = 3 [set ricestage item m ricestageplan3]
+;  if nr = 4 [set ricestage item m ricestageplan4]
+;  if nr = 5 [set ricestage item m ricestageplan5]
+;  if nr = 6 [set ricestage item m ricestageplan6]
+;  if nr = 7 [set ricestage item m ricestageplan7]
+;  if nr = 8 [set ricestage item m ricestageplan8]
+;  if nr = 9 [set ricestage item m ricestageplan9]
+;  if nr = 10 [set ricestage item m ricestageplan10]
+;  if nr = 11 [set ricestage item m ricestageplan11]
+;  if nr = 12 [set ricestage item m ricestageplan12]
+;  if nr = 13 [set ricestage item m ricestageplan13]
+;  if nr = 14 [set ricestage item m ricestageplan14]
+;  if nr = 15 [set ricestage item m ricestageplan15]
+;  if nr = 16 [set ricestage item m ricestageplan16]
+;  if nr = 17 [set ricestage item m ricestageplan17]
+;  if nr = 18 [set ricestage item m ricestageplan18]
+;  if nr = 19 [set ricestage item m ricestageplan19]
+;  if nr = 20 [set ricestage item m ricestageplan20]
+;end
 
 to linkdams
   make-damdam (item 0 dams_array) (item 5 dams_array)
@@ -877,36 +893,6 @@ NIL
 1
 
 SLIDER
-7
-11
-99
-44
-num-subaks
-num-subaks
-172
-172
-172
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-7
-48
-99
-81
-num-dams
-num-dams
-12
-12
-12
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
 4
 96
 176
@@ -1019,7 +1005,7 @@ CHOOSER
 nrcropplans
 nrcropplans
 6 21
-1
+0
 
 CHOOSER
 0
