@@ -1,3 +1,13 @@
+globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array 
+        damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax pestsens growthrate cropuse 
+        totpestloss  ; reported in the Pestloss plot
+        totpestlossarea 
+        totWS ; total water stress (?), reported in the Waterstress plot
+        totWSarea ; total water stress area (?)
+        avgharvestha ; average harvest per hectare?
+        cropplans
+        ]
+
 patches-own [r1]
 breed [subaks]  ; Water-management collectives
 breed [dams]    ; Dams are used to manage ho  w water is divided between subaks
@@ -5,6 +15,8 @@ breed [damdam]  ; Links specifying how water travels directly from dam to dam (?
 breed [damsubaks damsubak]     ; Links from subaks to the dams to which they can send water (?)
 breed [subakdams subakdam]     ; Links from dams to the subaks to which they can send water (?)
 breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine which subaks' cropping patterns can be copied, and how pests spread.
+
+
 
 subaks-own [
   old? 
@@ -56,14 +68,7 @@ damsubaks-own [a b distanceab]
 subakdams-own [a b distanceab]
 subaksubaks-own [a b distanceab]
 
-globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array 
-        damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax pestsens growthrate cropuse 
-        totpestloss  ; reported in the Pestloss plot
-        totpestlossarea 
-        totWS ; total water stress (?), reported in the Waterstress plot
-        totWSarea ; total water stress area (?)
-        avgharvestha ; average harvest per hectare?
-        ]
+
 
 ;;;;;;;;;;;;;;;
 to setup
@@ -79,7 +84,7 @@ to setup
   set-default-shape subakdams "line"
   set-default-shape subaksubaks "line"
   
-  ;; These will be filled bo load-data (?)
+  ;; These will be filled by load-data (?)
   set subaks_array []
   set dams_array []
   set subakdams_array []
@@ -88,6 +93,58 @@ to setup
   ;; There are four possible crops: 3 varieties of rice, and a vegetable.
   ;; Based on procedure growrice, it appears that 0 reps fallow, and 1, 2, 3 rep rice varieties.  4 reps another crop, but that's never used here.
   ;; Note that the fastest-growing, highest max yield is also most sensitive to pests.
+ 
+  ;; The possible crop plans (indexed by SCC in subak) beginning from a start month (sd in subak)
+  ;; 
+  ;;            crop/fallow in month        crop plan number (SCC in subak)
+  set cropplans [[3 3 3 0 3 3 3 0 3 3 3 0]  ;  0  three fast-growing variety plantings
+                 [3 3 3 0 0 0 3 3 3 0 0 0]  ;  1  two fast-growing variety plantings
+                 [3 3 3 0 3 3 3 0 0 0 0 0]  ;  2  two fast-growing variety plantings
+                 [3 3 3 0 0 3 3 3 0 0 0 0]  ;  3  two fast-growing variety plantings
+                 [3 3 3 0 0 0 0 3 3 3 0 0]  ;  4  two fast-growing variety plantings
+                 [3 3 3 0 0 0 0 0 3 3 3 0]  ;  5  two fast-growing variety plantings
+                 [1 1 1 1 1 1 0 2 2 2 2 0]  ;  6  two multiple variety plantings
+                 [1 1 1 1 1 1 0 3 3 3 0 0]  ;  7  two multiple variety plantings
+                 [1 1 1 1 1 1 0 0 3 3 3 0]  ;  8  two multiple variety plantings
+                 [1 1 1 1 1 1 0 0 0 0 0 0]  ;  9  one planting, traditional variety
+                 [2 2 2 2 0 0 2 2 2 2 0 0]  ; 10  two traditional variety plantings
+                 [2 2 2 2 0 2 2 2 2 0 0 0]  ; 11  two traditional variety plantings
+                 [2 2 2 2 0 0 0 2 2 2 2 0]  ; 12  two traditional variety plantings
+                 [2 2 2 2 0 0 3 3 3 0 0 0]  ; 13  two multiple variety plantings
+                 [2 2 2 2 0 3 3 3 0 0 0 0]  ; 14  two multiple variety plantings
+                 [2 2 2 2 0 0 0 3 3 3 0 0]  ; 15  two multiple variety plantings
+                 [2 2 2 2 0 0 0 0 3 3 3 0]  ; 16  two multiple variety plantings
+                 [3 3 3 0 0 2 2 2 2 0 0 0]  ; 17  two multiple variety plantings
+                 [3 3 3 0 0 0 2 2 2 2 0 0]  ; 18  two multiple variety plantings
+                 [3 3 3 0 2 2 2 2 0 0 0 0]  ; 19  two multiple variety plantings
+                 [3 3 3 0 0 0 0 2 2 2 2 0]] ; 20  two multiple variety plantings
+
+  ;; These seem to be used only during initialization, in order to approximate how much water has
+  ;; already been used to grow a particular crop at the moment (month) when the simulation begins.
+  ;;
+  ;;                % of needed water gotten by month sd at tick 1   crop plan number (SCC in subak)
+set ricestageplans [[0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]      ; 0
+                    [0 0.33 0.67 0 0 0 0 0.33 0.67 0 0 0]            ; 1
+                    [0 0.33 0.67 0 0 0.33 0.67 0 0 0 0 0]            ; 2
+                    [0 0.33 0.67 0 0 0 0.33 0.67 0 0 0 0]            ; 3
+                    [0 0.33 0.67 0 0 0 0 0 0.33 0.67 0 0]            ; 4
+                    [0 0.33 0.67 0 0 0 0 0 0 0.33 0.67 0]            ; 5
+                    [0 0.16 0.33 0.5 0.67 0.84 0 0 0.25 0.5 0.75 0]  ; 6
+                    [0 0.16 0.33 0.5 0.67 0.84 0 0 0.33 0.67 0 0]    ; 7
+                    [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0.33 0.67 0]    ; 8
+                    [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0 0 0]          ; 9
+                    [0 0.25 0.5 0.75 0 0 0 0.25 0.5 0.75 0 0]        ; 10
+                    [0 0.25 0.5 0.75 0 0 0.25 0.5 0.75 0 0 0]        ; 11
+                    [0 0.25 0.5 0.75 0 0 0 0 0.25 0.5 0.75 0]        ; 12
+                    [0 0.25 0.5 0.75 0 0 0 0.33 0.67 0 0 0]          ; 13
+                    [0 0.25 0.5 0.75 0 0 0.33 0.67 0 0 0 0]          ; 14
+                    [0 0.25 0.5 0.75 0 0 0 0 0.33 0.67 0 0]          ; 15
+                    [0 0.25 0.5 0.75 0 0 0 0 0 0.33 0.67 0]       ; 16
+                    [0 0.33 0.67 0 0 0 0.25 0.5 0.75 0 0 0]          ; 17
+                    [0 0.33 0.67 0 0 0 0 0.25 0.5 0.75 0 0]          ; 18
+                    [0 0.33 0.67 0 0 0.25 0.5 0.75 0 0 0 0]          ; 19
+                    [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]]         ; 20
+ 
   set devtime [0 6 4 3] ; development time for crops. first one is no-crop, i.e. fallow.  the rest are for the three varieties of rice.
   set yldmax [0 5 5 10] ; maximum yld of rice crops
   set pestsens [0 0.5 0.75 1.0] ; sensitivity of crops to pests
