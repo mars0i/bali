@@ -830,6 +830,14 @@ to reposition-edges  ;; edges procedure
     jump size / 2
   ]
 end
+
+;;;;;;;;;;;;;;;;;;;;
+;; General utilities
+
+;; generate a list of values selected from vals in the order given by idxs
+to-report reorder-by [idxs vals]
+  report map [item ? vals] idxs
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 178
