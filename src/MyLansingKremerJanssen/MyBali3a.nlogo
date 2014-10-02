@@ -1,5 +1,9 @@
+extensions [matrix]
+
 globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array 
-          damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax pestsens growthrate cropuse 
+          damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax 
+          pestsens ; holds sensitivity to pests of each of the rice varieties 
+          growthrate cropuse 
           totpestloss  ; reported in the Pestloss plot
           totpestlossarea 
           totWS ; total water stress (?), reported in the Waterstress plot
@@ -102,7 +106,8 @@ to setup
   ;; The possible crop plans (indexed by SCC in subak) beginning from a start month (sd in subak)
   ;; 
   ;;            crop/fallow in month        crop plan number (SCC in subak)
-  set cropplans [[3 3 3 0 3 3 3 0 3 3 3 0]  ;  0  three fast-growing variety plantings
+  set cropplans [
+                 ;[3 3 3 0 3 3 3 0 3 3 3 0]  ;  0  three fast-growing variety plantings
                  [3 3 3 0 0 0 3 3 3 0 0 0]  ;  1  two fast-growing variety plantings
                  [3 3 3 0 3 3 3 0 0 0 0 0]  ;  2  two fast-growing variety plantings
                  [3 3 3 0 0 3 3 3 0 0 0 0]  ;  3  two fast-growing variety plantings
@@ -122,13 +127,15 @@ to setup
                  [3 3 3 0 0 2 2 2 2 0 0 0]  ; 17  two multiple variety plantings
                  [3 3 3 0 0 0 2 2 2 2 0 0]  ; 18  two multiple variety plantings
                  [3 3 3 0 2 2 2 2 0 0 0 0]  ; 19  two multiple variety plantings
-                 [3 3 3 0 0 0 0 2 2 2 2 0]] ; 20  two multiple variety plantings
+                 [3 3 3 0 0 0 0 2 2 2 2 0]  ; 20  two multiple variety plantings
+                ]
 
   ;; These seem to be used only during initialization, in order to approximate how much water has
   ;; already been used to grow a particular crop at the moment (month) when the simulation begins.
   ;;
   ;;                % of needed water gotten by month sd at tick 1   crop plan number (SCC in subak)
-set ricestageplans [[0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]      ; 0
+set ricestageplans [
+                    ;[0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]      ; 0
                     [0 0.33 0.67 0 0 0 0 0.33 0.67 0 0 0]            ; 1
                     [0 0.33 0.67 0 0 0.33 0.67 0 0 0 0 0]            ; 2
                     [0 0.33 0.67 0 0 0 0.33 0.67 0 0 0 0]            ; 3
@@ -144,12 +151,17 @@ set ricestageplans [[0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]      ; 0
                     [0 0.25 0.5 0.75 0 0 0 0.33 0.67 0 0 0]          ; 13
                     [0 0.25 0.5 0.75 0 0 0.33 0.67 0 0 0 0]          ; 14
                     [0 0.25 0.5 0.75 0 0 0 0 0.33 0.67 0 0]          ; 15
-                    [0 0.25 0.5 0.75 0 0 0 0 0 0.33 0.67 0]       ; 16
+                    [0 0.25 0.5 0.75 0 0 0 0 0 0.33 0.67 0]          ; 16
                     [0 0.33 0.67 0 0 0 0.25 0.5 0.75 0 0 0]          ; 17
                     [0 0.33 0.67 0 0 0 0 0.25 0.5 0.75 0 0]          ; 18
                     [0 0.33 0.67 0 0 0.25 0.5 0.75 0 0 0 0]          ; 19
-                    [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]]         ; 20
- 
+                    [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]          ; 20
+                   ]
+
+  if shuffle-cropplans? [shuffle-cropplans] ; see whether reordering cropplans affects outcomes 
+  
+  display-cropplans
+
   set devtime [0 6 4 3] ; development time for crops. first one is no-crop, i.e. fallow.  the rest are for the three varieties of rice.
   set yldmax [0 5 5 10] ; maximum yld of rice crops
   set pestsens [0 0.5 0.75 1.0] ; sensitivity of crops to pests
@@ -206,14 +218,14 @@ set ricestageplans [[0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]      ; 0
     set pyharvest 0
     set pyharvestha 0
     ; initial cropping plans are randomly allocated
-    set SCC random nrcropplans  ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
-    set sd random 12            ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
-    cropplan SCC sd             ; set subak's current crop. Note: OVERWRITTEN A FEW LINES DOWN (why?)
+    ;set SCC random nrcropplans  ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
+    ;set sd random 12            ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
+    ;cropplan SCC sd             ; set subak's current crop. Note: OVERWRITTEN A FEW LINES DOWN (why?)
                                 ; and why don't we call ricestageplan here as well?
     set totharvestarea 0
-    if Color_subaks = "cropping plans"         ; NOTE that since the crop plan is changed in a moment, this coloring will be inaccurate
-       [display-cropping-plans] ; new version  ; so I'm going to add in this coloring code below -MA
-       ;[set color SCC * 6 + sd] ; original Janssen version
+    ;if Color_subaks = "cropping plans"         ; NOTE that since the crop plan is changed in a moment, this coloring will be inaccurate
+    ;   [display-cropping-plans] ; new version  ; so I'm going to add in this coloring code below -MA
+    ;   ;[set color SCC * 6 + sd] ; original Janssen version
 
   ]
 
@@ -224,7 +236,7 @@ set ricestageplans [[0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]      ; 0
 
   ask subaks [
     let sdhelp 0
-    set SCC random nrcropplans ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
+    set SCC random (length cropplans) ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
     set sd random 12           ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
     set pests 0.01
     set old? false
@@ -278,9 +290,26 @@ to go
        set totharvestarea 0 
        set pests 0.01]]
     [set month month + 1]
+  tick
 end
 ;;;;;;;;;;;;;;; end of go
 
+;; shuffle globals cropplans and ricestageplans, preserving their correspondence
+to shuffle-cropplans
+  let shuffled-ints shuffle (pos-ints (length cropplans))
+  set cropplans reorder-by shuffled-ints cropplans
+  set ricestageplans reorder-by shuffled-ints ricestageplans
+end
+
+to display-cropplans
+  let i 0
+  foreach cropplans
+    [if (i < 10)
+       [output-type " "]
+     output-type (word i ": ")
+     output-print ?
+     set i i + 1]
+end
 
 to demandwater
   ; determine the water demand for different subaks
@@ -832,7 +861,20 @@ to reposition-edges  ;; edges procedure
 end
 
 ;;;;;;;;;;;;;;;;;;;;
-;; General utilities
+;; General-purpose utilities
+
+
+;; generate integers from 0 to n-1
+to-report pos-ints [n]
+  report pos-ints-aux n []
+end
+
+to-report pos-ints-aux [n lst]
+  let ndec n - 1
+  if-else (n <= 0)
+    [report lst]
+    [report pos-ints-aux ndec (fput ndec lst)] ; this will handle recursion to at least 50K
+end
 
 ;; generate a list of values selected from vals in the order given by idxs
 to-report reorder-by [idxs vals]
@@ -863,14 +905,14 @@ GRAPHICS-WINDOW
 0
 0
 1
-ticks
+months
 30.0
 
 BUTTON
-108
-11
-171
-44
+3
+10
+66
+43
 NIL
 setup
 NIL
@@ -884,10 +926,10 @@ NIL
 1
 
 BUTTON
-108
-48
-171
-81
+3
+47
+66
+80
 NIL
 go
 T
@@ -924,7 +966,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 50
-10
+5
 0.01
 1
 NIL
@@ -949,10 +991,10 @@ PENS
 "harvest" 1.0 0 -10899396 true "" ""
 
 CHOOSER
-1
-268
-176
-313
+0
+299
+175
+344
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
@@ -967,7 +1009,7 @@ Pestloss
 NIL
 NIL
 0.0
-1.0
+10.0
 0.0
 0.1
 true
@@ -985,7 +1027,7 @@ Waterstress
 NIL
 NIL
 0.0
-1.0
+10.0
 0.0
 0.1
 true
@@ -995,10 +1037,10 @@ PENS
 "totWS" 1.0 0 -13345367 true "" ""
 
 SWITCH
-2
-318
-146
-351
+1
+349
+145
+382
 viewdamsubaks
 viewdamsubaks
 1
@@ -1006,30 +1048,20 @@ viewdamsubaks
 -1000
 
 CHOOSER
-0
-198
-175
-243
-nrcropplans
-nrcropplans
-6 21
-0
-
-CHOOSER
-0
-358
-148
-403
+-1
+389
+147
+434
 Color_subaks
 Color_subaks
 "Temple groups" "cropping plans" "crops" "pests"
 1
 
 SWITCH
-1
-454
-120
-487
+0
+485
+119
+518
 id_colors
 id_colors
 1
@@ -1037,20 +1069,20 @@ id_colors
 -1000
 
 TEXTBOX
-5
-411
-155
-453
+4
+442
+154
+484
 If on, display identifiying info on whatever subak colors represent:
 11
 0.0
 1
 
 TEXTBOX
-5
-490
-155
-518
+4
+521
+154
+549
 (Not yet implemented for all choices.)
 11
 0.0
@@ -1068,13 +1100,31 @@ will be divided by 100
 
 TEXTBOX
 4
-540
+551
 154
-610
+621
 Notes:\nCropping plan colors: circle represents crop plan, square represents start month.
 11
 0.0
 1
+
+SWITCH
+0
+245
+174
+278
+shuffle-cropplans?
+shuffle-cropplans?
+1
+1
+-1000
+
+OUTPUT
+1146
+15
+1443
+622
+11
 
 @#$#@#$#@
 ## LICENSE
