@@ -24,9 +24,13 @@ Lansing, J.S., M.P. Cox, S.S. Downey, M.A. Janssen and J.W. Schoenfelder
 Archaeology* (2009) 41(1): 112-133.
 
 Lansing, J. Stephen, James N. Kremer and Barbara B. Smuts,
-“System-dependent selection, ecological feedback and the emergence of
-functional structure in ecosystems”, *Journal of Theoretical Biology*
-(1998) 192, 377-391.
+"System-dependent selection, ecological feedback and the emergence of
+functional structure in ecosystems", *Journal of Theoretical Biology*
+1998, 192, 377-391.
+
+Lansing, J. Stephen, and James N. Kremer, "Emergent Properties of
+Balinese Water Temple Networks: Coadaptation on a Rugged Fitness
+Landscape", *American Anthropologist* 1993, 95(1), pp. 97-114.
 
 Marco A. Janssen, "Coordination in irrigation systems: An analysis of
 the Lansing-Kremer model of Bali", *Agricultural Systems* (2007)
