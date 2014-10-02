@@ -3,7 +3,7 @@ extensions [matrix]
 globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array 
           damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax 
           pestsens ; holds sensitivity to pests of each of the rice varieties 
-          growthrate cropuse 
+          growthrates cropuse 
           totpestloss  ; reported in the Pestloss plot
           totpestlossarea 
           totWS ; total water stress (?), reported in the Waterstress plot
@@ -26,7 +26,7 @@ breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine 
 subaks-own [
   old? 
   stillgrowing 
-  dpests 
+  dpests ; deprecated: used in old vesion of one procedure, so I changed it to a local var, now called newpests -MA
   pestneighbors 
   damneighbors 
   totharvestarea 
@@ -46,7 +46,7 @@ subaks-own [
   pyharvestha ; stores total of (harvest) over the course of a year. used for harvest plot.
   WSS  ; seems to have something to do with water usage during rice growth. "Water Stress Subak"?
   harvest 
-  crop ; crop number of the crop am I currently growing
+  crop ; crop number of the crop am I currently growing this month
   ricestage ; How much of the water needed to grow this rice variety has already been received.
             ; This is initially set by a call to ricestageplan in the setup routine.
             ; After that, it's set in procedure growrice as a function of the water stress variable WSS
@@ -107,7 +107,7 @@ to setup
   ;; 
   ;;            crop/fallow in month        crop plan number (SCC in subak)
   set cropplans [
-                 ;[3 3 3 0 3 3 3 0 3 3 3 0]  ;  0  three fast-growing variety plantings
+                 [3 3 3 0 3 3 3 0 3 3 3 0]  ;  0  three fast-growing variety plantings
                  [3 3 3 0 0 0 3 3 3 0 0 0]  ;  1  two fast-growing variety plantings
                  [3 3 3 0 3 3 3 0 0 0 0 0]  ;  2  two fast-growing variety plantings
                  [3 3 3 0 0 3 3 3 0 0 0 0]  ;  3  two fast-growing variety plantings
@@ -135,7 +135,7 @@ to setup
   ;;
   ;;                % of needed water gotten by month sd at tick 1   crop plan number (SCC in subak)
 set ricestageplans [
-                    ;[0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]      ; 0
+                    [0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]      ; 0
                     [0 0.33 0.67 0 0 0 0 0.33 0.67 0 0 0]            ; 1
                     [0 0.33 0.67 0 0 0.33 0.67 0 0 0 0 0]            ; 2
                     [0 0.33 0.67 0 0 0 0.33 0.67 0 0 0 0]            ; 3
@@ -171,10 +171,10 @@ set ricestageplans [
   ;; Maybe the fifth entries are for the vegetable, since the values are so different.  (?)
   
   ;; The middle 3 values in the next line will be ignored: They're about to be replaced by a value from a slider:
-  set growthrate [0.1 2.2 2.2 2.2 0.33] ; monthly growth rate parameter
-  set growthrate replace-item 1 growthrate pestgrowth-rate  ; i.e. replace the second element in growthrate with value of the pestgrowth-rate slider
-  set growthrate replace-item 2 growthrate pestgrowth-rate  ; i.e. replace the third element ...
-  set growthrate replace-item 3 growthrate pestgrowth-rate  ; etc.
+  set growthrates [0.1 2.2 2.2 2.2 0.33] ; monthly growth rate parameter
+  set growthrates replace-item 1 growthrates pestgrowth-rate  ; i.e. replace the second element in growthrates with value of the pestgrowth-rate slider
+  set growthrates replace-item 2 growthrates pestgrowth-rate  ; i.e. replace the third element ...
+  set growthrates replace-item 3 growthrates pestgrowth-rate  ; etc.
   
   set cropuse [0 0.015 0.015 0.015 0.003]  ; use of water per crop parameter
   
@@ -412,26 +412,118 @@ to growrice
  ]]
 end
 
+
+;; UH OH: This is supposed to be mathematically equivalent to the earlier versions (see below), but the behavior of the model is radically different!
+;;
+;; cf. ODD in the Info tab, ODD_LansingKremer.pdf p. 3, Janssen 2006 p. 173,
+;; and the note below on differences between versions of this function.
+;; non-local vars used:
+;;   subak-local: pests, pestneighbors, crop
+;;   globals: growthrates
+;;   UI-defined: pestdispersal-rate
 to growpest
-  let dxx 100
-  let dt 30 ;days
-  let dc 0
-  let cs 0
-  let cN 0
-  let minimumpests 0.01
+  let dxx 100           ; i.e. dx as in "dt/dx" in the ODD. causes pestdispersal-rate to be treated as a percentage. ("dx" is the name of a built-in function in NetLogo.)
+  let dt 30             ; days (i.e. per month. this is why the ODD makes dx/dt = 0.3)
+  let minimumpests 0.01 ; clamp lower values of pests to this number
+  
   ask subaks [
     let subak1 self
-		set cs 4 * pests
-		ask subaks [
-		    let subak2 self
-        ifelse member? subak1 pestneighbors [set cN pests - [pests] of subak1][set cN 0]
-        set cs cs + cN]
-    set dc (pestdispersal-rate / dxx) * ( cs - (4 * pests)) * dt ; this is the net change in pest dispersed to or from the subak
-		set dpests ((item crop growthrate) * (pests + 0.5 * dc)) + (0.5 * dc)	
-		if dpests < minimumpests [set dpests minimumpests]]
-		
-    ask subaks [set pests dpests if Color_subaks = "pests" [set color 62 + pests ]]
+    let newpests 0        ; temp var: next-tick value for subak's pests
+    let sumpestdif 0      ; holds a sum of diffs with other subaks' pests (formerly cs)
+    let dc 0              ; intermediate var in calc of newpests
+    
+    ;; The following lines implement the equation on p. 173 of Janssen 2006
+    ;; without its assumption that there are exactly 4 neighbors.  Correspondences:
+    ;;   Here:                    Janssen 2006 p. 173:
+    ;;   pests                    p_j, p_(ni,j)
+    ;;   sumpestdif               the expressions in the two inner parentheses on p. 173
+    ;;   dxx/dt                   d
+    ;;   (item crop growthrate)   g(x_j)
+    ;;
+		ask subaks [  ; for each neighbor, sum diff tween its pests and my pests into sumpestdif:
+      let pestdif 0         ; temp var for diff with another subak's pests (formerly cN)
+      ifelse member? subak1 pestneighbors   ; CONSIDER SIMPLIFYING by making pestneighbors into an agentset.
+        [set pestdif pests - [pests] of subak1]
+        [set pestdif 0]
+      set sumpestdif sumpestdif + pestdif]
+    set dc (pestdispersal-rate / dxx) * sumpestdif * dt ; this is the net change in pest dispersed to or from the subak.
+		set newpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)	; Janssen 2006 doesn't explain why 0.5.
+
+		if newpests < minimumpests
+      [set newpests minimumpests]
+    set pests newpests
+
+    if Color_subaks = "pests" 
+      [set color 62 + pests ]
+  ]
 end
+
+;; NOTE on difference between new Abrams version growpest and older versions:
+;; note that in the old versions,
+;; cs = 4*pests + sum(cN) over pestneighbors
+;; so cs - 4*pests = sum(cN) over pestneighbors
+;; so we can just take the 4*pests out of cs, and then don't subtract 4*pests from it in calculating dc.
+;; (I think the 4*pests may have been mistakenly derived from Janssen 2006 p. 173,
+;; but the mistake was neutralized, and didn't affect outcomes.)
+;; Also, in the version above I renamed cs to sumpestdif, which is clearer and fits what's written in Janssen's ODDs.
+
+;; ABRAMS VERSION of Janssen version of growpest with changes only for clarity; the logic and math is the same:
+;;
+;; cf. ODD in the Info tab, ODD_LansingKremer.pdf p. 3, Janssen 2006 p. 173.
+;to growpest
+;  ;; non-local vars used:
+;  ;;   subak-local: pests, pestneighbors, crop
+;  ;;   globals: growthrates
+;  ;;   UI-defined: pestdispersal-rate
+;  let dxx 100    ; i.e. dx as in "dt/dx" in the ODD. causes pestdispersal-rate to be treated as a percentage. ("dx" is the name of a built-in function in NetLogo.)
+;  let dt 30      ; days (i.e. per month. this is why the ODD makes dx/dt = 0.3)
+;  let newpests 0 ; temp var: next-tick value for subak's pests
+;  let dc 0       ; intermediate var in calc of newpests
+;  let cs 0       ; holds a sum of diffs with other subaks' pests
+;  let cN 0       ; temp var for diff with another subak's pests
+;  let minimumpests 0.01
+;  ask subaks [
+;    let subak1 self
+;    set cs 4 * pests  ; pests is a subak-local var btw
+;    ; for each neighbor, sum diff tween its pests and my pests into cs:
+;    ask subaks [
+;      ifelse member? subak1 pestneighbors   ; CONSIDER SIMPLIFYING by making pestneighbors into an agentset.
+;        [set cN pests - [pests] of subak1]
+;        [set cN 0]
+;      set cs cs + cN]
+;    set dc (pestdispersal-rate / dxx) * (cs - (4 * pests)) * dt ; this is the net change in pest dispersed to or from the subak. (cs-(4*pests)) is sumpestdif on p. 3 of the ODD file
+;    set newpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)  ; Janssen 2006 doesn't explain why 0.5.
+;    if newpests < minimumpests
+;      [set newpests minimumpests]
+;    set pests newpests
+;    if Color_subaks = "pests" 
+;      [set color 62 + pests ]
+;  ]
+;end
+
+;; ORIGINAL JANSSEN VERSION of growpest (except that I renamed growthrate to growthrates -M)
+;;
+;to growpest
+;  let dxx 100
+;  let dt 30 ;days
+;  let dc 0
+;  let cs 0
+;  let cN 0
+;  let minimumpests 0.01
+;  ask subaks [
+;    let subak1 self
+;    set cs 4 * pests
+;    ask subaks [
+;        let subak2 self
+;        ifelse member? subak1 pestneighbors [set cN pests - [pests] of subak1][set cN 0]
+;        set cs cs + cN]
+;    set dc (pestdispersal-rate / dxx) * ( cs - (4 * pests)) * dt ; this is the net change in pest dispersed to or from the subak
+;    set dpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)  
+;    if dpests < minimumpests [set dpests minimumpests]]
+;    
+;    ask subaks [set pests dpests if Color_subaks = "pests" [set color 62 + pests ]]
+;end
+
 
 to determineharvest
     let hy 0
@@ -951,7 +1043,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 20
-2
+2.2
 0.01
 1
 NIL
@@ -966,8 +1058,8 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 50
-5
-0.01
+30
+0.1
 1
 NIL
 HORIZONTAL
@@ -1011,7 +1103,7 @@ NIL
 0.0
 10.0
 0.0
-0.1
+10.0
 true
 false
 "" ""
