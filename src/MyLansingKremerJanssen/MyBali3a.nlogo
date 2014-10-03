@@ -421,6 +421,15 @@ end
 ;;   subak-local: pests, pestneighbors, crop
 ;;   globals: growthrates
 ;;   UI-defined: pestdispersal-rate
+;; Notes:
+;; Inner ask subaks implement the equation on p. 173 of Janssen 2006
+;; without its assumption that there are exactly 4 neighbors.  Correspondences:
+;;   Here:                    Janssen 2006 p. 173:
+;;   pests                    p_j, p_(ni,j)
+;;   sumpestdif               the expressions in the two inner parentheses on p. 173
+;;   dxx/dt                   d
+;;   (item crop growthrate)   g(x_j)
+;;
 to growpest
   let dxx 100           ; i.e. dx as in "dt/dx" in the ODD. causes pestdispersal-rate to be treated as a percentage. ("dx" is the name of a built-in function in NetLogo.)
   let dt 30             ; days (i.e. per month. this is why the ODD makes dx/dt = 0.3)
@@ -431,15 +440,7 @@ to growpest
     let newpests 0        ; temp var: next-tick value for subak's pests
     let sumpestdif 0      ; holds a sum of diffs with other subaks' pests (formerly cs)
     let dc 0              ; intermediate var in calc of newpests
-    
-    ;; The following lines implement the equation on p. 173 of Janssen 2006
-    ;; without its assumption that there are exactly 4 neighbors.  Correspondences:
-    ;;   Here:                    Janssen 2006 p. 173:
-    ;;   pests                    p_j, p_(ni,j)
-    ;;   sumpestdif               the expressions in the two inner parentheses on p. 173
-    ;;   dxx/dt                   d
-    ;;   (item crop growthrate)   g(x_j)
-    ;;
+
 		ask subaks [  ; for each neighbor, sum diff tween its pests and my pests into sumpestdif:
       let pestdif 0         ; temp var for diff with another subak's pests (formerly cN)
       ifelse member? subak1 pestneighbors   ; CONSIDER SIMPLIFYING by making pestneighbors into an agentset.
