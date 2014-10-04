@@ -268,7 +268,14 @@ to go
   demandwater
   determineflow
   growrice
-  growpest
+
+  ;; DEBUG: TESTING ALTERNATIVE DEFS OF GROWPEST:  
+  growpest-curr
+  ;growpest-janssen
+  ;ask subaks [show pests - (growpest-janssen-fn self)]
+  ;ask subaks [show pests]
+  ;show "========================================"
+
   determineharvest
 
   ; at end of year, plot current average values, and implement cultural transmission
@@ -430,7 +437,7 @@ end
 ;;   dxx/dt                   d
 ;;   (item crop growthrate)   g(x_j)
 ;;
-to growpest
+to growpest-curr
   let dxx 100           ; i.e. dx as in "dt/dx" in the ODD. causes pestdispersal-rate to be treated as a percentage. ("dx" is the name of a built-in function in NetLogo.)
   let dt 30             ; days (i.e. per month. this is why the ODD makes dx/dt = 0.3)
   let minimumpests 0.01 ; clamp lower values of pests to this number
@@ -459,6 +466,55 @@ to growpest
   ]
 end
 
+;; ORIGINAL JANSSEN VERSION of growpest (except that I renamed growthrate to growthrates -M)
+to growpest-janssen
+  let dxx 100
+  let dt 30 ;days
+  let dc 0
+  let cs 0
+  let cN 0
+  let minimumpests 0.01
+  ask subaks [
+    let subak1 self
+    set cs 4 * pests
+    ask subaks [
+        let subak2 self
+        ifelse member? subak1 pestneighbors [set cN pests - [pests] of subak1][set cN 0]
+        set cs cs + cN]
+    set dc (pestdispersal-rate / dxx) * ( cs - (4 * pests)) * dt ; this is the net change in pest dispersed to or from the subak
+    set dpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)  
+    if dpests < minimumpests [set dpests minimumpests]]
+    
+    ask subaks [set pests dpests if Color_subaks = "pests" [set color 62 + pests ]]
+end
+
+;; version of guts of growpest based on Janssen's version, but slightly modified to make it into a function/reporter.
+;; designed to be run within an ask subak block.
+to-report growpest-janssen-fn [subk]
+  let dxx 100
+  let dt 30 ;days
+  let dc 0
+  let cs 0
+  let cN 0
+  let minimumpests 0.01
+  let local-dpests 0
+;  ask subaks [
+    let subak1 self
+    set cs 4 * pests
+    ask subaks [
+        let subak2 self
+        ifelse member? subak1 pestneighbors [set cN pests - [pests] of subak1][set cN 0]
+        set cs cs + cN]
+    set dc (pestdispersal-rate / dxx) * ( cs - (4 * pests)) * dt ; this is the net change in pest dispersed to or from the subak
+    set local-dpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)  
+    if local-dpests < minimumpests [set local-dpests minimumpests]
+;  ]
+  
+  report local-dpests
+;  ask subaks [set pests dpests if Color_subaks = "pests" [set color 62 + pests ]]
+end
+
+
 ;; NOTE on difference between new Abrams version growpest and older versions:
 ;; note that in the old versions,
 ;; cs = 4*pests + sum(cN) over pestneighbors
@@ -468,7 +524,7 @@ end
 ;; but the mistake was neutralized, and didn't affect outcomes.)
 ;; Also, in the version above I renamed cs to sumpestdif, which is clearer and fits what's written in Janssen's ODDs.
 
-;; ABRAMS VERSION of Janssen version of growpest with changes only for clarity; the logic and math is the same:
+;; ABRAMS INTERMEDIATE VERSION of Janssen version of growpest with changes only for clarity; the logic and math should be the same:
 ;;
 ;; cf. ODD in the Info tab, ODD_LansingKremer.pdf p. 3, Janssen 2006 p. 173.
 ;to growpest
@@ -502,28 +558,6 @@ end
 ;  ]
 ;end
 
-;; ORIGINAL JANSSEN VERSION of growpest (except that I renamed growthrate to growthrates -M)
-;;
-;to growpest
-;  let dxx 100
-;  let dt 30 ;days
-;  let dc 0
-;  let cs 0
-;  let cN 0
-;  let minimumpests 0.01
-;  ask subaks [
-;    let subak1 self
-;    set cs 4 * pests
-;    ask subaks [
-;        let subak2 self
-;        ifelse member? subak1 pestneighbors [set cN pests - [pests] of subak1][set cN 0]
-;        set cs cs + cN]
-;    set dc (pestdispersal-rate / dxx) * ( cs - (4 * pests)) * dt ; this is the net change in pest dispersed to or from the subak
-;    set dpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)  
-;    if dpests < minimumpests [set dpests minimumpests]]
-;    
-;    ask subaks [set pests dpests if Color_subaks = "pests" [set color 62 + pests ]]
-;end
 
 
 to determineharvest
@@ -1058,9 +1092,9 @@ SLIDER
 pestdispersal-rate
 pestdispersal-rate
 0.6
-50
-30
-0.1
+1.5
+1
+0.01
 1
 NIL
 HORIZONTAL
