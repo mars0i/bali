@@ -1058,9 +1058,9 @@ SLIDER
 pestdispersal-rate
 pestdispersal-rate
 0.6
-50
-30
-0.1
+1.5
+1
+0.01
 1
 NIL
 HORIZONTAL
@@ -1177,16 +1177,6 @@ TEXTBOX
 154
 549
 (Not yet implemented for all choices.)
-11
-0.0
-1
-
-TEXTBOX
-4
-171
-154
-189
-will be divided by 100
 11
 0.0
 1
