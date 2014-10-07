@@ -1,5 +1,3 @@
-extensions [matrix]
-
 globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array 
           damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax 
           pestsens ; holds sensitivity to pests of each of the rice varieties 
@@ -171,7 +169,7 @@ set ricestageplans [
   ;; Maybe the fifth entries are for the vegetable, since the values are so different.  (?)
   
   ;; The middle 3 values in the next line will be ignored: They're about to be replaced by a value from a slider:
-  set growthrates [0.1 2.2 2.2 2.2 0.33] ; monthly growth rate parameter
+  set growthrates [0.1 2.2 2.2 2.2 0.33] ; monthly pest growth rate parameter. cf. Janssen 2006 pp. 173, 177, 178.  Rice values usually between 2.0 and 2.4 per Janssen 2006 pp. 173, 180
   set growthrates replace-item 1 growthrates pestgrowth-rate  ; i.e. replace the second element in growthrates with value of the pestgrowth-rate slider
   set growthrates replace-item 2 growthrates pestgrowth-rate  ; i.e. replace the third element ...
   set growthrates replace-item 3 growthrates pestgrowth-rate  ; etc.
@@ -273,6 +271,7 @@ to go
   growpest-curr
   ;growpest-janssen
   ;ask subaks [show pests - (growpest-janssen-fn self)]
+  ;show [(word who ":" (pests - (growpest-janssen-fn self)))] of subaks
   ;ask subaks [show pests]
   ;show "========================================"
 
@@ -430,12 +429,19 @@ end
 ;;   UI-defined: pestdispersal-rate
 ;; Notes:
 ;; Inner ask subaks implement the equation on p. 173 of Janssen 2006
-;; without its assumption that there are exactly 4 neighbors.  Correspondences:
-;;   Here:                    Janssen 2006 p. 173:
-;;   pests                    p_j, p_(ni,j)
-;;   sumpestdif               the expressions in the two inner parentheses on p. 173
-;;   dxx/dt                   d
-;;   (item crop growthrate)   g(x_j)
+;; without its assumption that there are exactly 4 neighbors.
+;;
+;; Janssen 2006 p. 173 eq. (1) correspondences:
+;;  NetLogo                        2006
+;; (item crop growthrates)        g(x_j)
+;; pests                          p_j,t
+;; pestdisperal-rate * dt / dxx   d       [p. 173 says eq. (1) is for monthly timesteps]
+;; cs                             p_n1,j,t + p_n2,j,t + p_n3,j,t + p_n4,j,t - 4p_j,t
+;;
+;;   [note: The "- 4p_j,t" in eq. (1) in Janssen 2006 is needed because in that equation, the 
+;;    comparison is with 4 neighbors.  In the NetLogo version, the number of neighbors varies from
+;;    0 to 4, and subtracting the current subak's pest count (p_j,t or pests) is done in the inner
+;;    ask subaks used to calculate cs.]
 ;;
 to growpest-curr
   let dxx 100           ; i.e. dx as in "dt/dx" in the ODD. causes pestdispersal-rate to be treated as a percentage. ("dx" is the name of a built-in function in NetLogo.)
@@ -459,7 +465,12 @@ to growpest-curr
 
 		if newpests < minimumpests
       [set newpests minimumpests]
+    ;show (newpests - (growpest-janssen-fn self)) ; DEBUG: how far is this value from the original Janssen calculation?
+    
     set pests newpests
+    ;show (pests - (growpest-janssen-fn self)) ; DEBUG: how far is this value from the original Janssen calculation?
+    ;; VERY BIZARRE: This last line shows significant differences, but comparison with newpests doesn't, and pest,newpests comparison = 0, as expected.
+    ;show pests - newpests
 
     if Color_subaks = "pests" 
       [set color 62 + pests ]
@@ -467,9 +478,22 @@ to growpest-curr
 end
 
 ;; ORIGINAL JANSSEN VERSION of growpest (except that I renamed growthrate to growthrates -M)
+;; Janssen 2006 p. 173 eq. (1) correspondences:
+;;  NetLogo                        2006
+;; (item crop growthrates)        g(x_j)
+;; pests                          p_j,t
+;; pestdisperal-rate * dt / dxx   d       [p. 173 says eq. (1) is for monthly timesteps]
+;; cs                             p_n1,j,t + p_n2,j,t + p_n3,j,t + p_n4,j,t - 4p_j,t
+;;
+;;   [note: The "- 4p_j,t" in eq. (1) is needed because in that equation, the comparison is
+;;    with 4 neighbors.  In the NetLogo version, the number of neighbors varies from 0 to 4,
+;;    and subtracting the current subak's pest count (p_j,t or pests) is done in the inner
+;;    ask subaks used to calculate cs.  Here the "- (4 * pests)" merely undoes the addition
+;;    this value in the initial value given to cs in the outer ask subaks.  (However, it might
+;;    affect numerical rounding.)]
 to growpest-janssen
   let dxx 100
-  let dt 30 ;days
+  let dt 30 ;days [<-- Janssen's comment]
   let dc 0
   let cs 0
   let cN 0
@@ -489,7 +513,9 @@ to growpest-janssen
 end
 
 ;; version of guts of growpest based on Janssen's version, but slightly modified to make it into a function/reporter.
-;; designed to be run within an ask subak block.
+;; designed to be run within an ask subak block.  To test this function, add
+;;     show dpests - (growpest-janssen-fn self)]
+;; at the end of the outer ask subaks block.
 to-report growpest-janssen-fn [subk]
   let dxx 100
   let dt 30 ;days
@@ -1077,7 +1103,7 @@ SLIDER
 pestgrowth-rate
 pestgrowth-rate
 2
-20
+2.4
 2.2
 0.01
 1
@@ -1218,10 +1244,10 @@ TEXTBOX
 TEXTBOX
 4
 171
-154
-189
-will be divided by 100
-11
+172
+236
+          Correspondences\npestdispersal-rate  d, Janssen 2006\n0.6                          0.18\n0.3                          0.3\n1.5                          0.45
+9
 0.0
 1
 
