@@ -465,12 +465,12 @@ to growpest-curr
 
 		if newpests < minimumpests
       [set newpests minimumpests]
-    ;show (newpests - (growpest-janssen-fn self)) ; DEBUG: how far is this value from the original Janssen calculation?
+    
+    ;let janssen-dpest growpest-janssen-fn self
+    ;show newpests - janssen-dpest ; DEBUG: how far is this value from the original Janssen calculation?
     
     set pests newpests
-    ;show (pests - (growpest-janssen-fn self)) ; DEBUG: how far is this value from the original Janssen calculation?
-    ;; VERY BIZARRE: This last line shows significant differences, but comparison with newpests doesn't, and pest,newpests comparison = 0, as expected.
-    ;show pests - newpests
+    ;show pests - janssen-dpest ; DEBUG (note: to do this, you must run growpest-janssen-fn before setting pests, so that it can use the old version of pest)
 
     if Color_subaks = "pests" 
       [set color 62 + pests ]
@@ -1244,9 +1244,9 @@ TEXTBOX
 TEXTBOX
 4
 171
-172
-236
-          Correspondences\npestdispersal-rate  d, Janssen 2006\n0.6                          0.18\n0.3                          0.3\n1.5                          0.45
+180
+237
+          Correspondences\npestdispersal-rate    d (Janssen 2006)\n     0.6                       0.18\n     0.3                       0.3\n     1.5                       0.45
 9
 0.0
 1
