@@ -7,8 +7,11 @@ globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_ar
           totWS ; total water stress (?), reported in the Waterstress plot
           totWSarea ; total water stress area (?)
           avgharvestha ; average harvest per hectare?
-          cropplans ; list all of allowed cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
-          ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan 
+          all-cropplans ; list all of possible cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
+          cropplans ; list all of chosen cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
+          all-ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan in all-cropplans
+          ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan in cropplans
+          cropplan-idxs ; list of indexes used to select cropplans from all-cropplans and ricestageplans from all-ricestageplans. Controlled by UI.
         ]
 
 ;patches-own [r1]
@@ -104,57 +107,61 @@ to setup
   ;; The possible crop plans (indexed by SCC in subak) beginning from a start month (sd in subak)
   ;; 
   ;;            crop/fallow in month        crop plan number (SCC in subak)
-  set cropplans [
-                 [3 3 3 0 3 3 3 0 3 3 3 0]  ;  0  three fast-growing variety plantings
-                 [3 3 3 0 0 0 3 3 3 0 0 0]  ;  1  two fast-growing variety plantings
-                 [3 3 3 0 3 3 3 0 0 0 0 0]  ;  2  two fast-growing variety plantings
-                 [3 3 3 0 0 3 3 3 0 0 0 0]  ;  3  two fast-growing variety plantings
-                 [3 3 3 0 0 0 0 3 3 3 0 0]  ;  4  two fast-growing variety plantings
-                 [3 3 3 0 0 0 0 0 3 3 3 0]  ;  5  two fast-growing variety plantings
-                 [1 1 1 1 1 1 0 2 2 2 2 0]  ;  6  two multiple variety plantings
-                 [1 1 1 1 1 1 0 3 3 3 0 0]  ;  7  two multiple variety plantings
-                 [1 1 1 1 1 1 0 0 3 3 3 0]  ;  8  two multiple variety plantings
-                 [1 1 1 1 1 1 0 0 0 0 0 0]  ;  9  one planting, traditional variety
-                 [2 2 2 2 0 0 2 2 2 2 0 0]  ; 10  two traditional variety plantings
-                 [2 2 2 2 0 2 2 2 2 0 0 0]  ; 11  two traditional variety plantings
-                 [2 2 2 2 0 0 0 2 2 2 2 0]  ; 12  two traditional variety plantings
-                 [2 2 2 2 0 0 3 3 3 0 0 0]  ; 13  two multiple variety plantings
-                 [2 2 2 2 0 3 3 3 0 0 0 0]  ; 14  two multiple variety plantings
-                 [2 2 2 2 0 0 0 3 3 3 0 0]  ; 15  two multiple variety plantings
-                 [2 2 2 2 0 0 0 0 3 3 3 0]  ; 16  two multiple variety plantings
-                 [3 3 3 0 0 2 2 2 2 0 0 0]  ; 17  two multiple variety plantings
-                 [3 3 3 0 0 0 2 2 2 2 0 0]  ; 18  two multiple variety plantings
-                 [3 3 3 0 2 2 2 2 0 0 0 0]  ; 19  two multiple variety plantings
-                 [3 3 3 0 0 0 0 2 2 2 2 0]  ; 20  two multiple variety plantings
-                ]
+  set all-cropplans [
+                     [3 3 3 0 3 3 3 0 3 3 3 0]  ;  0  three fast-growing variety plantings
+                     [3 3 3 0 0 0 3 3 3 0 0 0]  ;  1  two fast-growing variety plantings
+                     [3 3 3 0 3 3 3 0 0 0 0 0]  ;  2  two fast-growing variety plantings
+                     [3 3 3 0 0 3 3 3 0 0 0 0]  ;  3  two fast-growing variety plantings
+                     [3 3 3 0 0 0 0 3 3 3 0 0]  ;  4  two fast-growing variety plantings
+                     [3 3 3 0 0 0 0 0 3 3 3 0]  ;  5  two fast-growing variety plantings
+                     [1 1 1 1 1 1 0 2 2 2 2 0]  ;  6  two multiple variety plantings
+                     [1 1 1 1 1 1 0 3 3 3 0 0]  ;  7  two multiple variety plantings
+                     [1 1 1 1 1 1 0 0 3 3 3 0]  ;  8  two multiple variety plantings
+                     [1 1 1 1 1 1 0 0 0 0 0 0]  ;  9  one planting, traditional variety
+                     [2 2 2 2 0 0 2 2 2 2 0 0]  ; 10  two traditional variety plantings
+                     [2 2 2 2 0 2 2 2 2 0 0 0]  ; 11  two traditional variety plantings
+                     [2 2 2 2 0 0 0 2 2 2 2 0]  ; 12  two traditional variety plantings
+                     [2 2 2 2 0 0 3 3 3 0 0 0]  ; 13  two multiple variety plantings
+                     [2 2 2 2 0 3 3 3 0 0 0 0]  ; 14  two multiple variety plantings
+                     [2 2 2 2 0 0 0 3 3 3 0 0]  ; 15  two multiple variety plantings
+                     [2 2 2 2 0 0 0 0 3 3 3 0]  ; 16  two multiple variety plantings
+                     [3 3 3 0 0 2 2 2 2 0 0 0]  ; 17  two multiple variety plantings
+                     [3 3 3 0 0 0 2 2 2 2 0 0]  ; 18  two multiple variety plantings
+                     [3 3 3 0 2 2 2 2 0 0 0 0]  ; 19  two multiple variety plantings
+                     [3 3 3 0 0 0 0 2 2 2 2 0]  ; 20  two multiple variety plantings
+                    ]
 
   ;; These seem to be used only during initialization, in order to approximate how much water has
   ;; already been used to grow a particular crop at the moment (month) when the simulation begins.
   ;;
   ;;                % of needed water gotten by month sd at tick 1   crop plan number (SCC in subak)
-set ricestageplans [
-                    [0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]      ; 0
-                    [0 0.33 0.67 0 0 0 0 0.33 0.67 0 0 0]            ; 1
-                    [0 0.33 0.67 0 0 0.33 0.67 0 0 0 0 0]            ; 2
-                    [0 0.33 0.67 0 0 0 0.33 0.67 0 0 0 0]            ; 3
-                    [0 0.33 0.67 0 0 0 0 0 0.33 0.67 0 0]            ; 4
-                    [0 0.33 0.67 0 0 0 0 0 0 0.33 0.67 0]            ; 5
-                    [0 0.16 0.33 0.5 0.67 0.84 0 0 0.25 0.5 0.75 0]  ; 6
-                    [0 0.16 0.33 0.5 0.67 0.84 0 0 0.33 0.67 0 0]    ; 7
-                    [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0.33 0.67 0]    ; 8
-                    [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0 0 0]          ; 9
-                    [0 0.25 0.5 0.75 0 0 0 0.25 0.5 0.75 0 0]        ; 10
-                    [0 0.25 0.5 0.75 0 0 0.25 0.5 0.75 0 0 0]        ; 11
-                    [0 0.25 0.5 0.75 0 0 0 0 0.25 0.5 0.75 0]        ; 12
-                    [0 0.25 0.5 0.75 0 0 0 0.33 0.67 0 0 0]          ; 13
-                    [0 0.25 0.5 0.75 0 0 0.33 0.67 0 0 0 0]          ; 14
-                    [0 0.25 0.5 0.75 0 0 0 0 0.33 0.67 0 0]          ; 15
-                    [0 0.25 0.5 0.75 0 0 0 0 0 0.33 0.67 0]          ; 16
-                    [0 0.33 0.67 0 0 0 0.25 0.5 0.75 0 0 0]          ; 17
-                    [0 0.33 0.67 0 0 0 0 0.25 0.5 0.75 0 0]          ; 18
-                    [0 0.33 0.67 0 0 0.25 0.5 0.75 0 0 0 0]          ; 19
-                    [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]          ; 20
-                   ]
+  set all-ricestageplans [
+                          [0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]      ; 0
+                          [0 0.33 0.67 0 0 0 0 0.33 0.67 0 0 0]            ; 1
+                          [0 0.33 0.67 0 0 0.33 0.67 0 0 0 0 0]            ; 2
+                          [0 0.33 0.67 0 0 0 0.33 0.67 0 0 0 0]            ; 3
+                          [0 0.33 0.67 0 0 0 0 0 0.33 0.67 0 0]            ; 4
+                          [0 0.33 0.67 0 0 0 0 0 0 0.33 0.67 0]            ; 5
+                          [0 0.16 0.33 0.5 0.67 0.84 0 0 0.25 0.5 0.75 0]  ; 6
+                          [0 0.16 0.33 0.5 0.67 0.84 0 0 0.33 0.67 0 0]    ; 7
+                          [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0.33 0.67 0]    ; 8
+                          [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0 0 0]          ; 9
+                          [0 0.25 0.5 0.75 0 0 0 0.25 0.5 0.75 0 0]        ; 10
+                          [0 0.25 0.5 0.75 0 0 0.25 0.5 0.75 0 0 0]        ; 11
+                          [0 0.25 0.5 0.75 0 0 0 0 0.25 0.5 0.75 0]        ; 12
+                          [0 0.25 0.5 0.75 0 0 0 0.33 0.67 0 0 0]          ; 13
+                          [0 0.25 0.5 0.75 0 0 0.33 0.67 0 0 0 0]          ; 14
+                          [0 0.25 0.5 0.75 0 0 0 0 0.33 0.67 0 0]          ; 15
+                          [0 0.25 0.5 0.75 0 0 0 0 0 0.33 0.67 0]          ; 16
+                          [0 0.33 0.67 0 0 0 0.25 0.5 0.75 0 0 0]          ; 17
+                          [0 0.33 0.67 0 0 0 0 0.25 0.5 0.75 0 0]          ; 18
+                          [0 0.33 0.67 0 0 0.25 0.5 0.75 0 0 0 0]          ; 19
+                          [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]          ; 20
+                         ]
+  
+  set cropplan-idxs chosen-cropplan-idxs ; that's a reporter/function btw  
+  set cropplans all-cropplans ; FIXME
+  set ricestageplans all-ricestageplans ; FIXME
 
   if shuffle-cropplans? [shuffle-cropplans] ; see whether reordering cropplans affects outcomes 
   
@@ -299,6 +306,24 @@ to go
   tick
 end
 ;;;;;;;;;;;;;;; end of go
+
+to-report chosen-cropplan-idxs
+  ;; These variables are from switches in the UI:
+  let bools (list cropplan0  cropplan1  cropplan2  cropplan3  cropplan4  cropplan5  cropplan6
+                  cropplan7  cropplan8  cropplan9  cropplan10 cropplan11 cropplan12 cropplan13
+                  cropplan14 cropplan15 cropplan16 cropplan17 cropplan18 cropplan19 cropplan20)
+  let idxs []
+  let idx 0
+  
+  while [not empty? bools] [
+    if (first bools)
+      [set idxs lput idx idxs]
+    set bools but-first bools
+    set idx idx + 1
+  ]
+  
+  report idxs
+end
 
 ;; shuffle globals cropplans and ricestageplans, preserving their correspondence
 to shuffle-cropplans
@@ -1268,99 +1293,99 @@ SWITCH
 278
 shuffle-cropplans?
 shuffle-cropplans?
-0
+1
 1
 -1000
 
 OUTPUT
 1146
 15
-1443
+1389
 622
 11
 
 SWITCH
-1448
-19
-1568
-52
+1393
+16
+1513
+49
 cropplan0
 cropplan0
-1
+0
 1
 -1000
 
 SWITCH
-1448
-52
-1568
-85
+1393
+49
+1513
+82
 cropplan1
 cropplan1
-1
+0
 1
 -1000
 
 SWITCH
-1448
-85
-1568
-118
+1393
+82
+1513
+115
 cropplan2
 cropplan2
-1
+0
 1
 -1000
 
 SWITCH
-1448
-118
-1568
-151
+1393
+115
+1513
+148
 cropplan3
 cropplan3
-1
+0
 1
 -1000
 
 SWITCH
-1448
-151
-1568
-184
+1393
+148
+1513
+181
 cropplan4
 cropplan4
-1
+0
 1
 -1000
 
 SWITCH
-1448
-184
-1568
-217
+1393
+181
+1513
+214
 cropplan5
 cropplan5
-1
-1
--1000
-
-SWITCH
-1448
-217
-1568
-250
-cropplan6
-cropplan6
-1
+0
 1
 -1000
 
 SWITCH
-1448
-250
-1568
-283
+1393
+214
+1513
+247
+cropplan6
+cropplan6
+0
+1
+-1000
+
+SWITCH
+1393
+247
+1513
+280
 cropplan7
 cropplan7
 1
@@ -1368,43 +1393,43 @@ cropplan7
 -1000
 
 SWITCH
-1448
-283
-1568
-316
+1393
+280
+1513
+313
 cropplan8
 cropplan8
-1
+0
 1
 -1000
 
 SWITCH
-1448
-316
-1568
-349
+1393
+313
+1513
+346
 cropplan9
 cropplan9
-1
-1
--1000
-
-SWITCH
-1448
-349
-1568
-382
-cropplan10
-cropplan10
-1
+0
 1
 -1000
 
 SWITCH
-1448
-382
-1568
-415
+1393
+346
+1513
+379
+cropplan10
+cropplan10
+0
+1
+-1000
+
+SWITCH
+1393
+379
+1513
+412
 cropplan11
 cropplan11
 1
@@ -1412,101 +1437,101 @@ cropplan11
 -1000
 
 SWITCH
-1448
-415
-1568
-448
+1393
+412
+1513
+445
 cropplan12
 cropplan12
-1
+0
 1
 -1000
 
 SWITCH
-1448
-448
-1568
-481
+1393
+445
+1513
+478
 cropplan13
 cropplan13
-1
+0
 1
 -1000
 
 SWITCH
-1448
-481
-1568
-514
+1393
+478
+1513
+511
 cropplan14
 cropplan14
-1
+0
 1
 -1000
 
 SWITCH
-1448
-514
-1568
-547
+1393
+511
+1513
+544
 cropplan15
 cropplan15
-1
+0
 1
 -1000
 
 SWITCH
-1448
-547
-1568
-580
+1393
+544
+1513
+577
 cropplan16
 cropplan16
-1
+0
 1
 -1000
 
 SWITCH
-1448
-580
-1568
-613
+1393
+577
+1513
+610
 cropplan17
 cropplan17
-1
+0
 1
 -1000
 
 SWITCH
-1448
-613
-1568
-646
+1393
+610
+1513
+643
 cropplan18
 cropplan18
-1
-1
--1000
-
-SWITCH
-1448
-646
-1568
-679
-cropplan19
-cropplan19
-1
+0
 1
 -1000
 
 SWITCH
-1448
-679
-1568
-712
-cropplan20
-cropplan20
+1393
+643
+1513
+676
+cropplan19
+cropplan19
+0
 1
+-1000
+
+SWITCH
+1393
+676
+1513
+709
+cropplan20
+cropplan20
+0
 1
 -1000
 
