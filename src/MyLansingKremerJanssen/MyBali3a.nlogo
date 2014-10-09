@@ -11,7 +11,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_ar
           cropplans ; list all of chosen cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
           all-ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan in all-cropplans
           ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan in cropplans
-          cropplan-idxs ; list of indexes used to select cropplans from all-cropplans and ricestageplans from all-ricestageplans. Controlled by UI.
+          cropplan-bools
         ]
 
 ;patches-own [r1]
@@ -103,6 +103,11 @@ to setup
   ;; and 4 reps an alternate non-rice crop paliwiga (from a comment below).  Note none of these crop plans includes that crop.
   ;; It appears that variety 1 requires 6 months to grow, variety 2 requires 4 months to grow, and variety 3 requires 3 months to grow.
   ;; That's why not all possible combinations of 0's, 1's, 2's, and 3's are included.
+  
+  ;; These are from switches in the UI:
+  set cropplan-bools (list cropplan0  cropplan1  cropplan2  cropplan3  cropplan4  cropplan5  cropplan6
+                           cropplan7  cropplan8  cropplan9  cropplan10 cropplan11 cropplan12 cropplan13
+                           cropplan14 cropplan15 cropplan16 cropplan17 cropplan18 cropplan19 cropplan20)
  
   ;; The possible crop plans (indexed by SCC in subak) beginning from a start month (sd in subak)
   ;; 
@@ -159,7 +164,6 @@ to setup
                           [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]          ; 20
                          ]
   
-  set cropplan-idxs chosen-cropplan-idxs ; that's a reporter/function btw  
   set cropplans all-cropplans ; FIXME
   set ricestageplans all-ricestageplans ; FIXME
 
@@ -299,22 +303,21 @@ to go
 end
 ;;;;;;;;;;;;;;; end of go
 
-to-report chosen-cropplan-idxs
-  ;; These variables are from switches in the UI:
-  let bools (list cropplan0  cropplan1  cropplan2  cropplan3  cropplan4  cropplan5  cropplan6
-                  cropplan7  cropplan8  cropplan9  cropplan10 cropplan11 cropplan12 cropplan13
-                  cropplan14 cropplan15 cropplan16 cropplan17 cropplan18 cropplan19 cropplan20)
-  let idxs []
-  let idx 0
-  
-  while [not empty? bools] [
-    if (first bools)
-      [set idxs lput idx idxs]
-    set bools but-first bools
-    set idx idx + 1
-  ]
-  
-  report idxs
+
+
+to-report filter-plans [plans]
+  report filter-plans-helper plans cropplan-bools
+end
+
+to-report filter-plans-helper [plans bools]
+  if-else (empty? bools)
+    [report []]
+    [if-else (first bools)
+      [report (fput (first plans)
+                    (filter-plans-helper (but-first plans)
+                                         (but-first bools)))]
+      [report (filter-plans-helper (but-first plans)
+                                   (but-first bools))]]
 end
 
 ;; shuffle globals cropplans and ricestageplans, preserving their correspondence
@@ -1250,7 +1253,7 @@ SWITCH
 278
 shuffle-cropplans?
 shuffle-cropplans?
-0
+1
 1
 -1000
 
@@ -1259,7 +1262,7 @@ OUTPUT
 15
 1389
 622
-11
+10
 
 SWITCH
 1393
@@ -1345,7 +1348,7 @@ SWITCH
 280
 cropplan7
 cropplan7
-1
+0
 1
 -1000
 
@@ -1389,7 +1392,7 @@ SWITCH
 412
 cropplan11
 cropplan11
-1
+0
 1
 -1000
 
