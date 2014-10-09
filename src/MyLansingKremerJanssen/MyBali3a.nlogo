@@ -164,9 +164,9 @@ to setup
                           [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]          ; 20
                          ]
   
-  set cropplans filter-plans all-cropplans ; FIXME
-  set ricestageplans filter-plans all-ricestageplans ; FIXME
-
+  set cropplans filter-plans all-cropplans
+  set ricestageplans filter-plans all-ricestageplans
+  
   if shuffle-cropplans? [shuffle-cropplans] ; see whether reordering cropplans affects outcomes 
   
   display-cropplans
@@ -258,6 +258,9 @@ to setup
       if [source] of self = [source] of subak1 [ask subak1 [set damneighbors lput self damneighbors]] ; what is the conditional doing?? -MA
     ]
   ]
+  
+  show length cropplans
+  set-histogram-num-bars (length cropplans) ; will apply to whatever is the first histogram
 end
 ;;;;;;;;;;;;;;; end of setup
 
@@ -998,6 +1001,24 @@ to reposition-edges  ;; edges procedure
   ]
 end
 
+to-report modal-cropplan
+  report modes [SCC] of subaks
+end
+
+to-report num-with-modal-cropplan
+  let mcp first modal-cropplan
+  report count subaks with [SCC = mcp]
+end
+
+to-report modal-start-month
+  report modes [sd] of subaks
+end
+
+to-report num-with-modal-month
+  let mm first modal-start-month
+  report count subaks with [sd = mm]
+end
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; General-purpose utilities
 
@@ -1089,7 +1110,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2
+2.4
 0.01
 1
 NIL
@@ -1261,7 +1282,7 @@ OUTPUT
 1146
 15
 1389
-622
+335
 10
 
 SWITCH
@@ -1494,6 +1515,68 @@ cropplan20
 0
 1
 -1000
+
+MONITOR
+1146
+336
+1244
+381
+modal cropplan
+modal-cropplan
+17
+1
+11
+
+MONITOR
+1146
+382
+1317
+427
+# subaks with modal cropplan
+num-with-modal-cropplan
+17
+1
+11
+
+PLOT
+1147
+521
+1364
+689
+crop plan distribution
+NIL
+NIL
+0.0
+21.0
+0.0
+175.0
+false
+false
+"set-plot-pen-mode 1" ""
+PENS
+"default" 1.0 0 -16777216 true "" "histogram [SCC] of subaks"
+
+MONITOR
+1146
+426
+1273
+471
+modal start month
+modal-start-month
+17
+1
+11
+
+MONITOR
+1146
+472
+1316
+517
+# subaks with modal month
+num-with-modal-month
+17
+1
+11
 
 @#$#@#$#@
 ## LICENSE
