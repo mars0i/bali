@@ -316,7 +316,7 @@ to-report filter-plans-helper [plans bools]
       [report (fput (first plans)
                     (filter-plans-helper (but-first plans)
                                          (but-first bools)))]
-      [report (filter-plans-helper (but-first plans)
+      [show (first plans) report (filter-plans-helper (but-first plans)
                                    (but-first bools))]]
 end
 
@@ -1282,7 +1282,7 @@ SWITCH
 82
 cropplan1
 cropplan1
-1
+0
 1
 -1000
 
@@ -1304,7 +1304,7 @@ SWITCH
 148
 cropplan3
 cropplan3
-1
+0
 1
 -1000
 
@@ -1326,7 +1326,7 @@ SWITCH
 214
 cropplan5
 cropplan5
-1
+0
 1
 -1000
 
