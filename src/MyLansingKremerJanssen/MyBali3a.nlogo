@@ -164,8 +164,8 @@ to setup
                           [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]          ; 20
                          ]
   
-  set cropplans all-cropplans ; FIXME
-  set ricestageplans all-ricestageplans ; FIXME
+  set cropplans filter-plans all-cropplans ; FIXME
+  set ricestageplans filter-plans all-ricestageplans ; FIXME
 
   if shuffle-cropplans? [shuffle-cropplans] ; see whether reordering cropplans affects outcomes 
   
@@ -1282,7 +1282,7 @@ SWITCH
 82
 cropplan1
 cropplan1
-0
+1
 1
 -1000
 
@@ -1304,7 +1304,7 @@ SWITCH
 148
 cropplan3
 cropplan3
-0
+1
 1
 -1000
 
@@ -1326,7 +1326,7 @@ SWITCH
 214
 cropplan5
 cropplan5
-0
+1
 1
 -1000
 
