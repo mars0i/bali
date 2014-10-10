@@ -105,9 +105,11 @@ to setup
   ;; That's why not all possible combinations of 0's, 1's, 2's, and 3's are included.
   
   ;; These are from switches in the UI:
-  set cropplan-bools (list cropplan0  cropplan1  cropplan2  cropplan3  cropplan4  cropplan5  cropplan6
-                           cropplan7  cropplan8  cropplan9  cropplan10 cropplan11 cropplan12 cropplan13
-                           cropplan14 cropplan15 cropplan16 cropplan17 cropplan18 cropplan19 cropplan20)
+  if not set-cropplans-from-beh-space 
+    [set cropplan-bools (list cropplan0  cropplan1  cropplan2  cropplan3  cropplan4  cropplan5  cropplan6
+                              cropplan7  cropplan8  cropplan9  cropplan10 cropplan11 cropplan12 cropplan13
+                              cropplan14 cropplan15 cropplan16 cropplan17 cropplan18 cropplan19 cropplan20)]
+  ;; if set-cropplans-from-beh-space, then let the Behavior Space spec determine the value of this.
  
   ;; The possible crop plans (indexed by SCC in subak) beginning from a start month (sd in subak)
   ;; 
@@ -660,7 +662,9 @@ to-report compute-avg-harvest
     set totarea totarea + totharvestarea
     set totharvest totharvest + pyharvest
   ]
-  report totharvest / totarea
+  if-else totarea = 0
+    [report "totarea is 0"]
+    [report totharvest / totarea]
 end
 
 to setup-plot
@@ -1052,10 +1056,10 @@ to-report reorder-by [idxs vals]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-178
-11
-798
-652
+180
+10
+800
+651
 30
 -1
 10.0
@@ -1589,6 +1593,17 @@ num-with-modal-month
 1
 11
 
+SWITCH
+540
+655
+794
+688
+set-cropplans-from-beh-space
+set-cropplans-from-beh-space
+1
+1
+-1000
+
 @#$#@#$#@
 ## LICENSE
 
@@ -1969,13 +1984,16 @@ NetLogo 5.1.0
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="single cropplans, no shuffle, middle rates" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="single-cropplans-middle-rates" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
     <metric>compute-avg-harvest</metric>
-    <metric>[totpestloss]</metric>
-    <metric>[totWS]</metric>
+    <metric>totpestloss</metric>
+    <metric>totWS</metric>
+    <enumeratedValueSet variable="set-cropplans-from-beh-space">
+      <value value="true"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="shuffle-cropplans?">
       <value value="false"/>
     </enumeratedValueSet>
@@ -2019,6 +2037,69 @@ NetLogo 5.1.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="viewdamsubaks">
       <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan0">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan1">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan2">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan3">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan4">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan5">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan6">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan7">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan8">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan9">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan10">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan11">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan12">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan13">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan14">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan15">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan16">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan17">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan18">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan19">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan20">
+      <value value="true"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
