@@ -1016,6 +1016,8 @@ to reposition-edges  ;; edges procedure
   ]
 end
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 to-report modal-cropplan
   report modes [SCC] of subaks
 end
@@ -1032,6 +1034,55 @@ end
 to-report num-with-modal-month
   let mm first modal-start-month
   report count subaks with [sd = mm]
+end
+
+;; convenience functions for UI
+to set-cropplans-off
+  set cropplan0 false
+  set cropplan1 false
+  set cropplan2 false
+  set cropplan3 false
+  set cropplan4 false
+  set cropplan5 false
+  set cropplan6 false
+  set cropplan7 false
+  set cropplan8 false
+  set cropplan9 false
+  set cropplan10 false
+  set cropplan11 false
+  set cropplan12 false
+  set cropplan13 false
+  set cropplan14 false
+  set cropplan15 false
+  set cropplan16 false
+  set cropplan17 false
+  set cropplan18 false
+  set cropplan19 false
+  set cropplan20 false
+end
+
+to set-cropplans-on
+  set cropplan0 true
+  set cropplan1 true
+  set cropplan2 true
+  set cropplan3 true
+  set cropplan4 true
+  set cropplan5 true
+  set cropplan6 true
+  set cropplan7 true
+  set cropplan8 true
+  set cropplan9 true
+  set cropplan10 true
+  set cropplan11 true
+  set cropplan12 true
+  set cropplan13 true
+  set cropplan14 true
+  set cropplan15 true
+  set cropplan16 true
+  set cropplan17 true
+  set cropplan18 true
+  set cropplan19 true
+  set cropplan20 true
 end
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -1294,9 +1345,9 @@ shuffle-cropplans?
 -1000
 
 OUTPUT
-1146
+1130
 15
-1389
+1373
 335
 10
 
@@ -1532,9 +1583,9 @@ cropplan20
 -1000
 
 MONITOR
-1146
+1130
 336
-1244
+1224
 381
 modal cropplan
 modal-cropplan
@@ -1543,9 +1594,9 @@ modal-cropplan
 11
 
 MONITOR
-1146
+1130
 382
-1317
+1301
 427
 # subaks with modal cropplan
 num-with-modal-cropplan
@@ -1554,9 +1605,9 @@ num-with-modal-cropplan
 11
 
 PLOT
-1147
+1131
 521
-1364
+1348
 689
 crop plan distribution
 NIL
@@ -1572,9 +1623,9 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [SCC] of subaks"
 
 MONITOR
-1146
+1130
 426
-1273
+1257
 471
 modal start month
 modal-start-month
@@ -1583,9 +1634,9 @@ modal-start-month
 11
 
 MONITOR
-1146
+1130
 472
-1316
+1300
 517
 # subaks with modal month
 num-with-modal-month
@@ -1600,9 +1651,43 @@ SWITCH
 688
 set-cropplans-from-beh-space
 set-cropplans-from-beh-space
-1
+0
 1
 -1000
+
+BUTTON
+1228
+336
+1308
+369
+cropplans on
+set-cropplans-on
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+1308
+336
+1390
+369
+cropplans off
+set-cropplans-off
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## LICENSE
@@ -2100,6 +2185,101 @@ NetLogo 5.1.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="cropplan20">
       <value value="true"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="120"/>
+    <metric>compute-avg-harvest</metric>
+    <metric>totpestloss</metric>
+    <metric>totWS</metric>
+    <enumeratedValueSet variable="cropplan16">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan19">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="viewdamsubaks">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan17">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan5">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan15">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan1">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan14">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan20">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan0">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan2">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="id_colors">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="set-cropplans-from-beh-space">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan11">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan8">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan9">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan7">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan12">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan3">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan10">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Color_subaks">
+      <value value="&quot;cropping plans&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan18">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan4">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestgrowth-rate">
+      <value value="2.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan13">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan6">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rainfall-scenario">
+      <value value="&quot;middle&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestdispersal-rate">
+      <value value="0.95"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="shuffle-cropplans?">
+      <value value="false"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
