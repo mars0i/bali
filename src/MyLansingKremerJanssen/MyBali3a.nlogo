@@ -653,6 +653,16 @@ to display-cropping-plans
     [set label ""]
 end
 
+to-report compute-avg-harvest
+  let totarea 0
+  let totharvest 0
+  ask subaks [
+    set totarea totarea + totharvestarea
+    set totharvest totharvest + pyharvest
+  ]
+  report totharvest / totarea
+end
+
 to setup-plot
   set-current-plot "Harvest"
   set-plot-y-range 0 30
@@ -663,6 +673,7 @@ to setup-plot
 end
 
 to plot-figs
+  ;; REPLACE WITH comput-avg-harvest
   let totarea 0
   let totharvest 0
   set-current-plot "Harvest"
@@ -1110,7 +1121,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.4
+2.2
 0.01
 1
 NIL
@@ -1958,91 +1969,53 @@ NetLogo 5.1.0
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="experiment" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="single cropplans, no shuffle, middle rates" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="600"/>
-    <metric>avgharvestha</metric>
-    <steppedValueSet variable="pestdispersal-rate" first="0.6" step="0.1" last="1.5"/>
-    <enumeratedValueSet variable="num-dams">
-      <value value="12"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="num-subaks">
-      <value value="172"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Templeview">
+    <timeLimit steps="120"/>
+    <metric>compute-avg-harvest</metric>
+    <metric>[totpestloss]</metric>
+    <metric>[totWS]</metric>
+    <enumeratedValueSet variable="shuffle-cropplans?">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="who_to_imitate">
-      <value value="&quot;pest-neighbors&quot;"/>
+    <enumeratedValueSet variable="pestdispersal-rate">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestgrowth-rate">
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
       <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="pestgrowth-rate" first="2" step="0.05" last="2.4"/>
-  </experiment>
-  <experiment name="experiment2" repetitions="1" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <timeLimit steps="600"/>
-    <metric>avgharvestha</metric>
-    <enumeratedValueSet variable="num-subaks">
-      <value value="172"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;middle&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="nrcropplans">
-      <value value="21"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="viewdamsubaks">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="pestgrowth-rate" first="2" step="0.05" last="2.4"/>
-    <enumeratedValueSet variable="who_to_imitate">
-      <value value="&quot;pestdam-neighbors&quot;"/>
+    <enumeratedValueSet variable="cropplan-bools">
+      <value value="[false false false false false false false false false false false false false false false false false false false false true]"/>
+      <value value="[false false false false false false false false false false false false false false false false false false false true false]"/>
+      <value value="[false false false false false false false false false false false false false false false false false false true false false]"/>
+      <value value="[false false false false false false false false false false false false false false false false false true false false false]"/>
+      <value value="[false false false false false false false false false false false false false false false false true false false false false]"/>
+      <value value="[false false false false false false false false false false false false false false false true false false false false false]"/>
+      <value value="[false false false false false false false false false false false false false false true false false false false false false]"/>
+      <value value="[false false false false false false false false false false false false false true false false false false false false false]"/>
+      <value value="[false false false false false false false false false false false false true false false false false false false false false]"/>
+      <value value="[false false false false false false false false false false false true false false false false false false false false false]"/>
+      <value value="[false false false false false false false false false false true false false false false false false false false false false]"/>
+      <value value="[false false false false false false false false false true false false false false false false false false false false false]"/>
+      <value value="[false false false false false false false false true false false false false false false false false false false false false]"/>
+      <value value="[false false false false false false false true false false false false false false false false false false false false false]"/>
+      <value value="[false false false false false false true false false false false false false false false false false false false false false]"/>
+      <value value="[false false false false false true false false false false false false false false false false false false false false false]"/>
+      <value value="[false false false false true false false false false false false false false false false false false false false false false]"/>
+      <value value="[false false false true false false false false false false false false false false false false false false false false false]"/>
+      <value value="[false false true false false false false false false false false false false false false false false false false false false]"/>
+      <value value="[false true false false false false false false false false false false false false false false false false false false false]"/>
+      <value value="[true false false false false false false false false false false false false false false false false false false false false]"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
       <value value="&quot;cropping plans&quot;"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="pestdispersal-rate" first="0.6" step="0.1" last="1.5"/>
-    <enumeratedValueSet variable="num-dams">
-      <value value="12"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="experiment3" repetitions="100" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <timeLimit steps="121"/>
-    <metric>avgharvestha</metric>
-    <metric>totpestloss</metric>
-    <metric>totWS</metric>
-    <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
-      <value value="2.1"/>
-      <value value="2.2"/>
-      <value value="2.3"/>
-      <value value="2.4"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;middle&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="num-subaks">
-      <value value="172"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="num-dams">
-      <value value="12"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="nrcropplans">
-      <value value="21"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
-      <value value="1"/>
-      <value value="1.5"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Color_subaks">
-      <value value="&quot;crops&quot;"/>
+    <enumeratedValueSet variable="id_colors">
+      <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="viewdamsubaks">
       <value value="false"/>
