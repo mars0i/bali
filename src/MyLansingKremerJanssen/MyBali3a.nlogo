@@ -104,12 +104,15 @@ to setup
   ;; It appears that variety 1 requires 6 months to grow, variety 2 requires 4 months to grow, and variety 3 requires 3 months to grow.
   ;; That's why not all possible combinations of 0's, 1's, 2's, and 3's are included.
   
-  ;; These are from switches in the UI:
-  if not set-cropplans-from-beh-space 
-    [set cropplan-bools (list cropplan0  cropplan1  cropplan2  cropplan3  cropplan4  cropplan5  cropplan6
-                              cropplan7  cropplan8  cropplan9  cropplan10 cropplan11 cropplan12 cropplan13
-                              cropplan14 cropplan15 cropplan16 cropplan17 cropplan18 cropplan19 cropplan20)]
-  ;; if set-cropplans-from-beh-space, then let the Behavior Space spec determine the value of this.
+  show (word "initial cropplan-bools: " cropplan-bools)
+  if-else cropplan-bools = 0
+    [show "initial cropplan-bools was 0.  Really!"]
+    [show "initial cropplan-bools was actually not 0."]
+  
+  ;; COMMENT OUT TO SET THIS DIRECTLY IN BEHAVIOR SPACE??
+  set cropplan-bools (list cropplan0  cropplan1  cropplan2  cropplan3  cropplan4  cropplan5  cropplan6 cropplan7 cropplan8  cropplan9  cropplan10 cropplan11 cropplan12 cropplan13 cropplan14 cropplan15 cropplan16 cropplan17 cropplan18 cropplan19 cropplan20)
+
+  show (word "cropplan-bools after possibly setting: " cropplan-bools)
  
   ;; The possible crop plans (indexed by SCC in subak) beginning from a start month (sd in subak)
   ;; 
@@ -260,9 +263,9 @@ to setup
       if [source] of self = [source] of subak1 [ask subak1 [set damneighbors lput self damneighbors]] ; what is the conditional doing?? -MA
     ]
   ]
-  
-  show length cropplans
+
   set-histogram-num-bars (length cropplans) ; will apply to whatever is the first histogram
+  show "=============="
 end
 ;;;;;;;;;;;;;;; end of setup
 
@@ -311,6 +314,9 @@ end
 
 
 to-report filter-plans [plans]
+  if not is-list? cropplan-bools [error (word "croppplan-bools has value: " cropplan-bools)]
+  if cropplan-bools = 0 [error (word "croppplan-bools has value: " cropplan-bools)]
+    
   report filter-plans-helper plans cropplan-bools
 end
 
@@ -321,7 +327,7 @@ to-report filter-plans-helper [plans bools]
       [report (fput (first plans)
                     (filter-plans-helper (but-first plans)
                                          (but-first bools)))]
-      [show (first plans) report (filter-plans-helper (but-first plans)
+      [report (filter-plans-helper (but-first plans)
                                    (but-first bools))]]
 end
 
@@ -1191,7 +1197,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1
+0.95
 0.01
 1
 NIL
@@ -1644,17 +1650,6 @@ num-with-modal-month
 1
 11
 
-SWITCH
-540
-655
-794
-688
-set-cropplans-from-beh-space
-set-cropplans-from-beh-space
-0
-1
--1000
-
 BUTTON
 1228
 336
@@ -2069,217 +2064,117 @@ NetLogo 5.1.0
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="single-cropplans-middle-rates" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
-    <metric>compute-avg-harvest</metric>
-    <metric>totpestloss</metric>
-    <metric>totWS</metric>
-    <enumeratedValueSet variable="set-cropplans-from-beh-space">
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="cropplan-bools">
+      <value value="[true false false false false false false false false false false false false false false false false false false false false]"/>
+      <value value="[false true false false false false false false false false false false false false false false false false false false false]"/>
+      <value value="[false false true false false false false false false false false false false false false false false false false false false]"/>
+      <value value="[false false false true false false false false false false false false false false false false false false false false false]"/>
+      <value value="[false false false false true false false false false false false false false false false false false false false false false]"/>
+      <value value="[false false false false false true false false false false false false false false false false false false false false false]"/>
+      <value value="[false false false false false false true false false false false false false false false false false false false false false]"/>
+      <value value="[false false false false false false false true false false false false false false false false false false false false false]"/>
+      <value value="[false false false false false false false false true false false false false false false false false false false false false]"/>
+      <value value="[false false false false false false false false false true false false false false false false false false false false false]"/>
+      <value value="[false false false false false false false false false false true false false false false false false false false false false]"/>
+      <value value="[false false false false false false false false false false false true false false false false false false false false false]"/>
+      <value value="[false false false false false false false false false false false false true false false false false false false false false]"/>
+      <value value="[false false false false false false false false false false false false false true false false false false false false false]"/>
+      <value value="[false false false false false false false false false false false false false false true false false false false false false]"/>
+      <value value="[false false false false false false false false false false false false false false false true false false false false false]"/>
+      <value value="[false false false false false false false false false false false false false false false false true false false false false]"/>
+      <value value="[false false false false false false false false false false false false false false false false false true false false false]"/>
+      <value value="[false false false false false false false false false false false false false false false false false false true false false]"/>
+      <value value="[false false false false false false false false false false false false false false false false false false false true false]"/>
+      <value value="[false false false false false false false false false false false false false false false false false false false false true]"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan10">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan18">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan13">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan2">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan16">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rainfall-scenario">
+      <value value="&quot;middle&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan15">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan12">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan7">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan0">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestgrowth-rate">
+      <value value="2.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Color_subaks">
+      <value value="&quot;cropping plans&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan3">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan4">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan20">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan19">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan8">
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="shuffle-cropplans?">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.2"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;middle&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan-bools">
-      <value value="[false false false false false false false false false false false false false false false false false false false false true]"/>
-      <value value="[false false false false false false false false false false false false false false false false false false false true false]"/>
-      <value value="[false false false false false false false false false false false false false false false false false false true false false]"/>
-      <value value="[false false false false false false false false false false false false false false false false false true false false false]"/>
-      <value value="[false false false false false false false false false false false false false false false false true false false false false]"/>
-      <value value="[false false false false false false false false false false false false false false false true false false false false false]"/>
-      <value value="[false false false false false false false false false false false false false false true false false false false false false]"/>
-      <value value="[false false false false false false false false false false false false false true false false false false false false false]"/>
-      <value value="[false false false false false false false false false false false false true false false false false false false false false]"/>
-      <value value="[false false false false false false false false false false false true false false false false false false false false false]"/>
-      <value value="[false false false false false false false false false false true false false false false false false false false false false]"/>
-      <value value="[false false false false false false false false false true false false false false false false false false false false false]"/>
-      <value value="[false false false false false false false false true false false false false false false false false false false false false]"/>
-      <value value="[false false false false false false false true false false false false false false false false false false false false false]"/>
-      <value value="[false false false false false false true false false false false false false false false false false false false false false]"/>
-      <value value="[false false false false false true false false false false false false false false false false false false false false false]"/>
-      <value value="[false false false false true false false false false false false false false false false false false false false false false]"/>
-      <value value="[false false false true false false false false false false false false false false false false false false false false false]"/>
-      <value value="[false false true false false false false false false false false false false false false false false false false false false]"/>
-      <value value="[false true false false false false false false false false false false false false false false false false false false false]"/>
-      <value value="[true false false false false false false false false false false false false false false false false false false false false]"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Color_subaks">
-      <value value="&quot;cropping plans&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="id_colors">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="viewdamsubaks">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan0">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan17">
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="cropplan14">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
-      <value value="true"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="experiment" repetitions="1" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <timeLimit steps="120"/>
-    <metric>compute-avg-harvest</metric>
-    <metric>totpestloss</metric>
-    <metric>totWS</metric>
-    <enumeratedValueSet variable="cropplan16">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="viewdamsubaks">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan0">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
-      <value value="false"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="id_colors">
       <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="set-cropplans-from-beh-space">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Color_subaks">
-      <value value="&quot;cropping plans&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.2"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="0.95"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="shuffle-cropplans?">
+    <enumeratedValueSet variable="cropplan5">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan6">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan1">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="viewdamsubaks">
       <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan11">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan9">
+      <value value="true"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
