@@ -1397,7 +1397,7 @@ SWITCH
 148
 cropplan3
 cropplan3
-0
+1
 1
 -1000
 
@@ -1408,7 +1408,7 @@ SWITCH
 181
 cropplan4
 cropplan4
-1
+0
 1
 -1000
 
@@ -2561,7 +2561,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan4only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan5only" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -2585,10 +2585,10 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="cropplan4">
-      <value value="true"/>
+      <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="cropplan5">
-      <value value="false"/>
+      <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="cropplan6">
       <value value="false"/>
