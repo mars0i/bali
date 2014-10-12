@@ -28,3 +28,14 @@ More interesting results can be found e.g. by excluding the first 6
 mixture.  The yield isn't anywhere near as high, but it does go up
 before plateauing, the pestloss does plateau, and the waterstress does
 go down to a low level.
+
+--------------------------------
+
+Single-crop runs do *not* seem to fix mainly on start month = 0.
+(But need to check the beh space output data files.)
+
+But in general when I run with multiple cropplans, it seems as if it
+does fix on month = 0.  Maybe this is because *the last month is the
+only one that's always fallow in every crop plan*.  So it's never bad to
+start your plan on the first month, because then you'll share at least
+one fallow month with any possible neighbor.
