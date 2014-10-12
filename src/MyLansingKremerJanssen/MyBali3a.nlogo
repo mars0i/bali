@@ -1367,7 +1367,7 @@ SWITCH
 49
 cropplan0
 cropplan0
-1
+0
 1
 -1000
 
@@ -1378,7 +1378,7 @@ SWITCH
 82
 cropplan1
 cropplan1
-1
+0
 1
 -1000
 
@@ -1389,7 +1389,7 @@ SWITCH
 115
 cropplan2
 cropplan2
-1
+0
 1
 -1000
 
@@ -1400,7 +1400,7 @@ SWITCH
 148
 cropplan3
 cropplan3
-1
+0
 1
 -1000
 
@@ -1411,7 +1411,7 @@ SWITCH
 181
 cropplan4
 cropplan4
-1
+0
 1
 -1000
 
@@ -1422,7 +1422,7 @@ SWITCH
 214
 cropplan5
 cropplan5
-1
+0
 1
 -1000
 
@@ -1433,7 +1433,7 @@ SWITCH
 247
 cropplan6
 cropplan6
-1
+0
 1
 -1000
 
@@ -1444,7 +1444,7 @@ SWITCH
 280
 cropplan7
 cropplan7
-1
+0
 1
 -1000
 
@@ -1455,7 +1455,7 @@ SWITCH
 313
 cropplan8
 cropplan8
-1
+0
 1
 -1000
 
@@ -1466,7 +1466,7 @@ SWITCH
 346
 cropplan9
 cropplan9
-1
+0
 1
 -1000
 
@@ -1477,7 +1477,7 @@ SWITCH
 379
 cropplan10
 cropplan10
-1
+0
 1
 -1000
 
@@ -1488,7 +1488,7 @@ SWITCH
 412
 cropplan11
 cropplan11
-1
+0
 1
 -1000
 
@@ -1499,7 +1499,7 @@ SWITCH
 445
 cropplan12
 cropplan12
-1
+0
 1
 -1000
 
@@ -1510,7 +1510,7 @@ SWITCH
 478
 cropplan13
 cropplan13
-1
+0
 1
 -1000
 
@@ -1521,7 +1521,7 @@ SWITCH
 511
 cropplan14
 cropplan14
-1
+0
 1
 -1000
 
@@ -1532,7 +1532,7 @@ SWITCH
 544
 cropplan15
 cropplan15
-1
+0
 1
 -1000
 
@@ -1543,7 +1543,7 @@ SWITCH
 577
 cropplan16
 cropplan16
-1
+0
 1
 -1000
 
@@ -1554,7 +1554,7 @@ SWITCH
 610
 cropplan17
 cropplan17
-1
+0
 1
 -1000
 
@@ -1565,7 +1565,7 @@ SWITCH
 643
 cropplan18
 cropplan18
-1
+0
 1
 -1000
 
@@ -1576,7 +1576,7 @@ SWITCH
 676
 cropplan19
 cropplan19
-1
+0
 1
 -1000
 
@@ -1587,7 +1587,7 @@ SWITCH
 709
 cropplan20
 cropplan20
-1
+0
 1
 -1000
 
@@ -4210,7 +4210,7 @@ NetLogo 5.1.0
   <experiment name="allCropplansWithShuffle" repetitions="500" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="120"/>
+    <timeLimit steps="240"/>
     <metric>compute-avg-harvest</metric>
     <metric>totpestloss</metric>
     <metric>totWS</metric>
