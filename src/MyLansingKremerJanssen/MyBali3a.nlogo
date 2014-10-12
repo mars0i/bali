@@ -1028,7 +1028,7 @@ to-report modal-cropplan
 end
 
 to-report modal-cropplan-seq
-  report item (first modal-cropplan) all-cropplans
+  report item (first modal-cropplan) cropplans ; note we are indexing into the list of cropplans actually used, not the original base list
 end
 
 to-report num-with-modal-cropplan
