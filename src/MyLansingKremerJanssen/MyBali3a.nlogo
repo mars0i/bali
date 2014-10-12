@@ -190,7 +190,7 @@ to setup
   set growthrates replace-item 2 growthrates pestgrowth-rate  ; i.e. replace the third element ...
   set growthrates replace-item 3 growthrates pestgrowth-rate  ; etc.
   
-  set cropuse [0 0.015 0.015 0.015 0.003]  ; use of water per crop parameter
+  set cropuse [0 0.015 0.015 0.015 0.003]  ; use of water per crop parameter. i.e. fallow uses no water, rice use is 0.015, and paliwiga use is 0.003.
   
   set month 0
   set totpestloss 0       ; reported in the Pestloss plot
@@ -611,35 +611,42 @@ to determineharvest
 				]]
 end
 
+;; A top-level procedure, not an in-subak procedure.
 to imitatebestneighbors
   let minharvest 0
   let maxharvest 0
   ask subaks [
-      if (crop = 1 or crop = 2 or crop = 3)[
-      let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
-      set minharvest pyharvestha ; set minharvest to my total harvest for the year
-      set maxharvest minharvest  ; set maxharvest to my total harvest for the year
-      foreach pestneighbors [
-        ask ? [
-          if pyharvestha > maxharvest   ; if your total harvest for the year is more than anyone else's so far
-          [
-            set maxharvest pyharvestha  ; then my new max so far will be that value
-            set bestneighbor self       ; and you will be my best neighbor so far
-      ]]
-      ifelse maxharvest > minharvest  ; if I found a neighbor who did better than I did
-        [set SCCc [SCC] of bestneighbor ; copy its cropping plan
-         set sdc [sd] of bestneighbor]  ; and its start month
-        [set SCCc SCC set sdc sd]]   ; otherwise "copy" my own old values
-  ]]
+     let asker self
+     ;show (word " month = " sd)
+     if (crop = 1 or crop = 2 or crop = 3) ; only those growing rice at the moment will imitiate.  THIS SEEMS WRONG. WHY CAN'T I IMITATE DURING A FALLOW PERIOD?
+        [
+         ;show "imitating ..."
+         ;if sd = 11 [show "imititating while in month 11!"] ; this should never fire, because month 11 (December) is always fallow, i.e. crop = 0.  Yet it does fire, sometimes.
+         let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
+         set minharvest pyharvestha ; set minharvest to my total harvest for the year
+         set maxharvest minharvest  ; set maxharvest to my total harvest for the year
+         foreach pestneighbors
+            [ask ?
+               [if pyharvestha > maxharvest  ; if your total harvest for the year is more than anyone else's so far
+                  [set maxharvest pyharvestha  ; then my new max so far will be that value
+                   set bestneighbor self]]     ; and you will be my best neighbor so far
+              ifelse maxharvest > minharvest    ; if I found a neighbor who did better than I did
+                 [;show (word "found better - mine: " ([SCC] of asker) ":" ([sd] of asker) ", neighbor's: " ([SCC] of ?) ":" ([sd] of ?))
+                  set SCCc [SCC] of bestneighbor ; copy its cropping plan
+                  set sdc [sd] of bestneighbor]  ; and its start month
+                 [set SCCc SCC                   ; otherwise "copy" my own old values
+                  set sdc sd]]
+            ]
+  ]
 
-  ; now move the temporary copied values to my own operational variables and update the UI display if necessary
+  ; now, in each subak move its temporary copied values to its own operational variables, and update the UI if necessary
   ask subaks [
-    set SCC SCCc
-    set sd sdc
-    if Color_subaks = "cropping plans" [
-      ;set color SCC * 6 + sd  ; original Janssen version
-      display-cropping-plans ; new version
-    ]
+     set SCC SCCc
+     set sd sdc
+     if Color_subaks = "cropping plans" [
+       display-cropping-plans ; new version
+       ;set color SCC * 6 + sd  ; original Janssen version
+     ]
   ]
 end
 
@@ -1349,7 +1356,7 @@ SWITCH
 278
 shuffle-cropplans?
 shuffle-cropplans?
-0
+1
 1
 -1000
 
