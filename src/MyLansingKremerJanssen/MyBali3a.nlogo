@@ -1430,7 +1430,7 @@ SWITCH
 247
 cropplan6
 cropplan6
-0
+1
 1
 -1000
 
@@ -1452,7 +1452,7 @@ SWITCH
 313
 cropplan8
 cropplan8
-1
+0
 1
 -1000
 
@@ -2694,6 +2694,198 @@ NetLogo 5.1.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="cropplan8">
       <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan9">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan10">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan11">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan12">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan13">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan14">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan15">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan16">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan17">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan18">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan19">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan20">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Color_subaks">
+      <value value="&quot;cropping plans&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="id_colors">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestdispersal-rate">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestgrowth-rate">
+      <value value="2.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rainfall-scenario">
+      <value value="&quot;middle&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="shuffle-cropplans?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="viewdamsubaks">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="cropplan7only" repetitions="100" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="120"/>
+    <metric>compute-avg-harvest</metric>
+    <metric>totpestloss</metric>
+    <metric>totWS</metric>
+    <metric>modal-cropplan</metric>
+    <metric>num-with-modal-cropplan</metric>
+    <metric>modal-start-month</metric>
+    <metric>num-with-modal-month</metric>
+    <enumeratedValueSet variable="cropplan0">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan1">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan2">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan3">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan4">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan5">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan6">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan7">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan8">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan9">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan10">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan11">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan12">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan13">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan14">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan15">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan16">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan17">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan18">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan19">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan20">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Color_subaks">
+      <value value="&quot;cropping plans&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="id_colors">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestdispersal-rate">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestgrowth-rate">
+      <value value="2.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rainfall-scenario">
+      <value value="&quot;middle&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="shuffle-cropplans?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="viewdamsubaks">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="cropplan8only" repetitions="100" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="120"/>
+    <metric>compute-avg-harvest</metric>
+    <metric>totpestloss</metric>
+    <metric>totWS</metric>
+    <metric>modal-cropplan</metric>
+    <metric>num-with-modal-cropplan</metric>
+    <metric>modal-start-month</metric>
+    <metric>num-with-modal-month</metric>
+    <enumeratedValueSet variable="cropplan0">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan1">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan2">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan3">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan4">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan5">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan6">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan7">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan8">
+      <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="cropplan9">
       <value value="false"/>
