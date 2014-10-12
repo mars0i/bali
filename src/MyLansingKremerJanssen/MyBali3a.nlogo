@@ -104,15 +104,15 @@ to setup
   ;; It appears that variety 1 requires 6 months to grow, variety 2 requires 4 months to grow, and variety 3 requires 3 months to grow.
   ;; That's why not all possible combinations of 0's, 1's, 2's, and 3's are included.
   
-  show (word "initial cropplan-bools: " cropplan-bools)
-  if-else cropplan-bools = 0
-    [show "initial cropplan-bools was 0.  Really!"]
-    [show "initial cropplan-bools was actually not 0."]
+  ;show (word "initial cropplan-bools: " cropplan-bools)
+  ;if-else cropplan-bools = 0
+  ;  [show "initial cropplan-bools was 0.  Really!"]
+  ;  [show "initial cropplan-bools was actually not 0."]
   
   ;; COMMENT OUT TO SET THIS DIRECTLY IN BEHAVIOR SPACE??
   set cropplan-bools (list cropplan0  cropplan1  cropplan2  cropplan3  cropplan4  cropplan5  cropplan6 cropplan7 cropplan8  cropplan9  cropplan10 cropplan11 cropplan12 cropplan13 cropplan14 cropplan15 cropplan16 cropplan17 cropplan18 cropplan19 cropplan20)
 
-  show (word "cropplan-bools after possibly setting: " cropplan-bools)
+  ;show (word "cropplan-bools after possibly setting: " cropplan-bools)
  
   ;; The possible crop plans (indexed by SCC in subak) beginning from a start month (sd in subak)
   ;; 
@@ -265,7 +265,6 @@ to setup
   ]
 
   set-histogram-num-bars (length cropplans) ; will apply to whatever is the first histogram
-  show "=============="
 end
 ;;;;;;;;;;;;;;; end of setup
 
