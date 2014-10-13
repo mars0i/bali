@@ -1,5 +1,7 @@
 globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array 
-          damsubaks_array Rel Rem Reh month ET RRT LRS Xf devtime yldmax 
+          damsubaks_array Rel Rem Reh 
+          month ; actual month in the current year
+          ET RRT LRS Xf devtime yldmax 
           pestsens ; holds sensitivity to pests of each of the rice varieties 
           growthrates cropuse 
           totpestloss  ; reported in the Pestloss plot
@@ -33,8 +35,8 @@ subaks-own [
   totharvestarea 
   area 
   SCC ;Subak's crop plan
-  sd ; start date (month)
-  mip ; "month in progres" or "month in plan"? how far we are in the cropping plan, I think, relative to the start date sd.
+  sd ; start date (month).  This is an offset added to the actual month (in global month).
+  mip ; "month in progress" or "month in plan"? mip is always = sd + the global var month  (Note never init'ed just takes default val of 0.)
   SCCc; help variable during imitation process ("c" means "copy"?)
   sdc ;help variable during imitation process  ("c" means "copy"?)
   pests 
@@ -192,7 +194,7 @@ to setup
   
   set cropuse [0 0.015 0.015 0.015 0.003]  ; use of water per crop parameter. i.e. fallow uses no water, rice use is 0.015, and paliwiga use is 0.003.
   
-  set month 0
+  set month 0  ; actual month in this year starts with zero
   set totpestloss 0       ; reported in the Pestloss plot
   set totpestlossarea 0
   set totWS 0             ; reported in the Waterstress plot
@@ -248,13 +250,14 @@ to setup
   ; Effective Watershed Area EWS of each dam is reduced by cultiv'n area areadam because rain onto sowa
   ; enters the irrig'n system meeting immediate demand directly or passing on to the downstream irrigation point
 
+  ; maybe init mip var here to zero, which it has by default anyway
   ask subaks [
     let sdhelp 0
     set SCC random (length cropplans) ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
     set sd random 12           ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
     set pests 0.01
     set old? false
-    cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
+    cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?). Note we use sd here since initially, mip = sd. In go we use mip.
     ricestageplan SCC sd
     if Color_subaks = "cropping plans"  ; added by Marshall. changes apparently irrelevant coloring above.
        [display-cropping-plans] 
@@ -277,13 +280,14 @@ to go
   ;set gr3 pestgrowth-rate ; UNUSED?
   
   
-  ;; UPDATE SUBAK VARIBLES
+  ;; UPDATE INTERNAL SUBAK GROWING/PLANTING MONTH (actual month offset by start month sd)
   ask subaks [
-    set mip sd + month 
-    if mip > 11 [set mip mip - 12] ; sd is start month. this line increments actual month. (month is inc'ed below.)
+    set mip sd + month
+    if mip > 11 [set mip mip - 12] ; sd is start month. this line increments subak's internal growing month month. (month is inc'ed below.
   ]
+  
   ask subaks [
-    cropplan SCC mip
+    cropplan SCC mip ; note we use mip, not sd.  sd is start month.  mip is subak's internal month in the cycle.
     if stillgrowing [if ((crop = 0) or (crop = 4)) [set stillgrowing false]]
   ]
   
@@ -630,11 +634,16 @@ to imitatebestneighbors
   let maxharvest 0
   ask subaks [
      let asker self
-     ;show (word " month = " sd)
-     if (crop = 1 or crop = 2 or crop = 3) ; only those growing rice at the moment will imitiate.  THIS SEEMS WRONG. WHY CAN'T I IMITATE DURING A FALLOW PERIOD?
+     ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
+     
+     ;; THIS SEEMS WRONG. WHY CAN'T I IMITATE DURING A FALLOW PERIOD?:
+     ;; This means that 
+     ;; (a) subaks with cropplans with more fallow periods examine neighbors to see if they're better less often.
+     ;; (b) subaks with sd = 0 never imitate, since this procedure is only called when month = 11, so mip = 0 + 11 = 11.  Every cropplan has crop = 0 in month 11.
+     if (crop = 1 or crop = 2 or crop = 3) ; only those growing rice at the moment will imitiate.  
         [
          ;show "imitating ..."
-         ;if sd = 11 [show "imititating while in month 11!"] ; this should never fire, because month 11 (December) is always fallow, i.e. crop = 0.  Yet it does fire, sometimes.
+         ;ifmip = 11 [show "imititating while in month 11!"] ; this should never fire, because the final month, 11, is always fallow, i.e. crop = 0.  Yet it does fire, sometimes.
          let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
          set minharvest pyharvestha ; set minharvest to my total harvest for the year
          set maxharvest minharvest  ; set maxharvest to my total harvest for the year
