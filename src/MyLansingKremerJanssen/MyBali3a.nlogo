@@ -646,7 +646,7 @@ to imitatebestneighbors
      ;; This means that 
      ;; (a) subaks with cropplans with more fallow periods examine neighbors to see if they're better less often.
      ;; (b) subaks with sd = 0 never imitate, since this procedure is only called when month = 11, so mip = 0 + 11 = 11.  Every cropplan has crop = 0 in month 11.
-     if (crop = 1 or crop = 2 or crop = 3) ; only those growing rice at the moment will imitiate.  
+     if (crop = 1 or crop = 2 or crop = 3 or (imitate-when-fallow and crop = 0)) ; only those growing rice at the moment will imitiate.  
         [
          ;show "imitating ..."
          ;ifmip = 11 [show "imititating while in month 11!"] ; this should never fire, because the final month, 11, is always fallow, i.e. crop = 0.  Yet it does fire, sometimes.
@@ -1267,7 +1267,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-2
+1
 
 PLOT
 802
@@ -1732,6 +1732,27 @@ modal-cropplan-seq
 17
 1
 11
+
+SWITCH
+1
+631
+161
+664
+imitate-when-fallow
+imitate-when-fallow
+1
+1
+-1000
+
+TEXTBOX
+0
+664
+306
+730
+Temporary (for comparison of versions of code): Run imidatebestneighbors with (new) and without (old) imitation when the imitating subak is in a fallow period.
+11
+0.0
+1
 
 @#$#@#$#@
 ## LICENSE
