@@ -84,7 +84,9 @@ to setup
   ;; __clear-all-and-reset-ticks should be replaced with clear-all at
   ;; the beginning of your setup procedure and reset-ticks at the end
   ;; of the procedure.)
-  __clear-all-and-reset-ticks
+  ;; __clear-all-and-reset-ticks
+  clear-all
+
   set-default-shape subaks "circle"
   set-default-shape dams "square"
   set-default-shape damdam "line"
@@ -174,7 +176,9 @@ to setup
   set cropplans filter-plans all-cropplans
   set ricestageplans filter-plans all-ricestageplans
   
-  if shuffle-cropplans? [shuffle-cropplans] ; see whether reordering cropplans affects outcomes 
+  if shuffle-cropplans? [shuffle-cropplans] ; see whether reordering cropplans affects outcomes
+  
+  set-histogram-num-bars (length cropplans) ; will apply to whatever is the first histogram
   
   display-cropplans
 
@@ -267,7 +271,9 @@ to setup
     ]
   ]
 
-  set-histogram-num-bars (length cropplans) ; will apply to whatever is the first histogram
+
+  
+  reset-ticks
 end
 ;;;;;;;;;;;;;;; end of setup
 
@@ -1261,7 +1267,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-1
+2
 
 PLOT
 802
