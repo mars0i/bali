@@ -275,22 +275,34 @@ to go
   ;let gr3 0  ; UNUSED?
   ;set gr2 pestgrowth-rate ; UNUSED?
   ;set gr3 pestgrowth-rate ; UNUSED?
-  ask subaks [set mip sd + month if mip > 11 [set mip mip - 12]] ; sd is start month. this line increments actual month. (month is inc'ed below.)
+  
+  
+  ;; UPDATE SUBAK VARIBLES
+  ask subaks [
+    set mip sd + month 
+    if mip > 11 [set mip mip - 12] ; sd is start month. this line increments actual month. (month is inc'ed below.)
+  ]
   ask subaks [
     cropplan SCC mip
     if stillgrowing [if ((crop = 0) or (crop = 4)) [set stillgrowing false]]
- ]
+  ]
   
+  ;; CORE AGRICULTURAL PROCESSES: water use, grow rice, pests, harvest amount:
   demandwater
   determineflow
   growrice
   growpest
   determineharvest
 
-  ; at end of year, plot current average values, and implement cultural transmission
-  if month = 11 [set totpestloss totpestloss / totpestlossarea set totWS totWS / totWSarea]
-  if month = 11 [plot-figs]
-  if month = 11 [imitatebestneighbors] ; CULTURAL TRANSMISSION
+  ; at end of year, plot summary data on harvest, pests, and water stress
+  if month = 11 [
+    set totpestloss totpestloss / totpestlossarea ; average loss due to pests
+    set totWS totWS / totWSarea                   ; average water stress
+    plot-figs
+  ]
+
+  ;; CULTURAL TRANSMISSION
+  if month = 11 [imitatebestneighbors]
 
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
   ; (worry: do any of these variables affect operation? does zeroing them bias the process? -MA)
@@ -306,6 +318,7 @@ to go
        set totharvestarea 0 
        set pests 0.01]]
     [set month month + 1]
+
   tick
 end
 ;;;;;;;;;;;;;;; end of go
@@ -1698,7 +1711,7 @@ MONITOR
 1227
 337
 1376
-383
+382
 NIL
 modal-cropplan-seq
 17
