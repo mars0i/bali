@@ -1,7 +1,7 @@
 Notes on architecture & strategy 2
 ====
 
-##### 1. Simple two-channel model (NetLogo only)
+#### 1. Simple two-channel model (NetLogo only)
 
 The way the simple two-channel transmission model (all in NetLogo)
 works is this:
@@ -28,9 +28,9 @@ the greed, bhutakala, etc. hypotheses.
 (btw if you're not careful noise could be an advantage.
 Mutation is good, as long as variation is still heritable)
 
+---------------
 
-
-##### 2. Analogical two-channel model (Popco/NetLogo)
+#### 2. Analogical two-channel model (Popco/NetLogo)
 
 In this model, again, what you choose in the second channel should be
 driven by harvest success.  So maybe the way to do it is that NetLogo
@@ -61,3 +61,16 @@ imitation routines, and in fact within that part of them that deals
 with the second channel.
 
 Question: What is neural net settling doing in this model?
+
+.....
+
+If my neighbor is doing well, that's because it has adopted a lot of
+the right analogy.  (Maybe I need to allow this spread to take place
+independently, randomly, at first.  Maybe I won't get homogeneity
+immediately since I've got network structure in the transmission network.)
+So if I draw propositions from it repeatedly, I'll (a) start to collect
+the "good" propositions, and (b) tend to suppress the bad propositions.
+
+Note that those with the right analogy will have more influence.  They
+will be like pundits.  (Pundits embedded in a corner of the network
+structure.)
