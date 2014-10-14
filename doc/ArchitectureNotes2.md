@@ -59,3 +59,5 @@ model.
 Note that the calling out to Popco can all be contained in the NetLogo
 imitation routines, and in fact within that part of them that deals
 with the second channel.
+
+Question: What is neural net settling doing in this model?
