@@ -39,3 +39,8 @@ does fix on month = 0.  Maybe this is because *the last month is the
 only one that's always fallow in every crop plan*.  So it's never bad to
 start your plan on the first month, because then you'll share at least
 one fallow month with any possible neighbor.
+
+MAYBE I fixed this by allowing imitation when fallow, which was
+previously prevented, which seems wrong.
+
+--------------------------------
