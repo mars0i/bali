@@ -1267,7 +1267,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-1
+0
 
 PLOT
 802
@@ -1298,7 +1298,7 @@ NIL
 0.0
 10.0
 0.0
-0.1
+1.0
 true
 false
 "" ""
@@ -1740,7 +1740,7 @@ SWITCH
 664
 imitate-when-fallow
 imitate-when-fallow
-1
+0
 1
 -1000
 
