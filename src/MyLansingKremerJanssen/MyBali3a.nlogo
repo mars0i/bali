@@ -271,7 +271,6 @@ to setup
     ]
   ]
 
-
   
   reset-ticks
 end
@@ -285,6 +284,13 @@ to go
   ;set gr2 pestgrowth-rate ; UNUSED?
   ;set gr3 pestgrowth-rate ; UNUSED?
   
+  if-else viewdamsubaks [
+    ask damsubaks [set size distanceab]
+    ask subakdams [set size distanceab]
+  ][
+    ask damsubaks [set size 0]
+    ask subakdams [set size 0]
+  ]
   
   ;; UPDATE INTERNAL SUBAK GROWING/PLANTING MONTH (actual month offset by start month sd)
   ask subaks [
@@ -1025,7 +1031,7 @@ end
 to make-subakdams [s1 s2 s3]
   create-subakdams 1
   [
-    set color blue
+    set color gray
     set a s1
     set b s2
     reposition-edges
@@ -1033,7 +1039,7 @@ to make-subakdams [s1 s2 s3]
   ]
     create-damsubaks 1
   [
-    set color blue
+    set color gray
     set a s3
     set b s1
     reposition-edges
