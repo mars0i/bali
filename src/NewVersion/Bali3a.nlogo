@@ -254,11 +254,17 @@ to setup
   ; Effective Watershed Area EWS of each dam is reduced by cultiv'n area areadam because rain onto sowa
   ; enters the irrig'n system meeting immediate demand directly or passing on to the downstream irrigation point
 
+  let global-sd random 12 ; used only if global-startmonth switch is on
+
   ; maybe init mip var here to zero, which it has by default anyway
   ask subaks [
-    let sdhelp 0
+    ;let sdhelp 0
     set SCC random (length cropplans) ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
-    set sd random 12           ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
+    
+    if-else global-startmonth
+      [set sd global-sd]       ; experiment: what happens when all share same start month?
+      [set sd random 12]       ; normal behavior. Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
+
     set pests 0.01
     set old? false
     cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?). Note we use sd here since initially, mip = sd. In go we use mip.
@@ -1359,8 +1365,8 @@ If on, display identifiying info on whatever subak colors represent:
 TEXTBOX
 4
 521
-154
-577
+175
+569
 Display #s corresp to subak coloring (not yet implemented for all choices)
 11
 0.0
@@ -1377,10 +1383,10 @@ TEXTBOX
 1
 
 TEXTBOX
-298
-655
-775
-673
+244
+652
+721
+670
 Notes: Cropping plan colors: circle represents crop plan, square represents start month.
 11
 0.0
@@ -1393,7 +1399,7 @@ SWITCH
 278
 shuffle-cropplans?
 shuffle-cropplans?
-1
+0
 1
 -1000
 
@@ -1744,9 +1750,9 @@ modal-cropplan-seq
 
 SWITCH
 1
-631
+639
 161
-664
+672
 imitate-when-fallow
 imitate-when-fallow
 0
@@ -1754,11 +1760,32 @@ imitate-when-fallow
 -1000
 
 TEXTBOX
-0
-664
-306
-730
+3
+677
+309
+743
 Temporary (for comparison of versions of code): Run imidatebestneighbors with (new) and without (old) imitation when the imitating subak is in a fallow period.
+11
+0.0
+1
+
+SWITCH
+2
+572
+173
+605
+global-startmonth
+global-startmonth
+0
+1
+-1000
+
+TEXTBOX
+3
+605
+153
+633
+If true, all subaks use same random start month.
 11
 0.0
 1
