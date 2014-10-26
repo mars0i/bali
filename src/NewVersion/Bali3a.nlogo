@@ -58,8 +58,8 @@ subaks-own [
   pest-damage 
   pestloss 
   totLoss 
-  source 
-  return
+  source ; dam from which I get water (?)
+  return ; dam to which I send leftover water (?)
 ]
 
 dams-own [flow0 flow elevation 
@@ -267,7 +267,8 @@ to setup
        [display-cropping-plans] 
     let subak1 self
     ask subaks [
-      if [source] of self = [source] of subak1 [ask subak1 [set damneighbors lput self damneighbors]] ; what is the conditional doing?? -MA
+      if [source] of self = [source] of subak1                   ; if subak1 and I get water from the same dam (source)
+        [ask subak1 [set damneighbors lput myself damneighbors]] ; changed "self" to "myself" 10/26/2014, which appears intended, rather than collecting instances of the same subak -MA
     ]
   ]
 
@@ -821,8 +822,6 @@ to load-data
         if masceti = 14 [set color brown] 
    ]]]
 
-
-;; MARSHALL HERE
   foreach dam-data [
     create-dams 1 [ 
       set color yellow
@@ -1028,6 +1027,10 @@ to make-subaksubak [s1 s2]
   ask s1 [set pestneighbors lput s2 pestneighbors] 
 end
 
+;; I think:
+;; s1: subak
+;; s2: dam
+;; s3: dam
 to make-subakdams [s1 s2 s3]
   create-subakdams 1
   [
@@ -1399,7 +1402,7 @@ OUTPUT
 15
 1373
 335
-9
+8
 
 SWITCH
 1393
