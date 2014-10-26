@@ -697,7 +697,7 @@ to display-cropping-plans
   
   ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
   
-  if-else id_colors
+  if-else show-subak-values
     [set label (word "[" SCC ":" sd "]")]
     [set label ""]
 end
@@ -1338,10 +1338,10 @@ Color_subaks
 SWITCH
 0
 485
-119
+179
 518
-id_colors
-id_colors
+show-subak-values
+show-subak-values
 1
 1
 -1000
@@ -1360,8 +1360,8 @@ TEXTBOX
 4
 521
 154
-549
-(Not yet implemented for all choices.)
+577
+Display #s corresp to subak coloring (not yet implemented for all choices)
 11
 0.0
 1
@@ -1377,11 +1377,11 @@ TEXTBOX
 1
 
 TEXTBOX
-4
-551
-154
-621
-Notes:\nCropping plan colors: circle represents crop plan, square represents start month.
+298
+655
+775
+673
+Notes: Cropping plan colors: circle represents crop plan, square represents start month.
 11
 0.0
 1
