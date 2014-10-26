@@ -114,7 +114,7 @@ to setup
   ;  [show "initial cropplan-bools was actually not 0."]
   
   ;; COMMENT OUT TO SET THIS DIRECTLY IN BEHAVIOR SPACE??
-  set cropplan-bools (list cropplan0  cropplan1  cropplan2  cropplan3  cropplan4  cropplan5  cropplan6 cropplan7 cropplan8  cropplan9  cropplan10 cropplan11 cropplan12 cropplan13 cropplan14 cropplan15 cropplan16 cropplan17 cropplan18 cropplan19 cropplan20)
+  set cropplan-bools (list cropplan-a  cropplan-b  cropplan-c  cropplan-d  cropplan-e  cropplan-f  cropplan-g cropplan-h cropplan-i  cropplan-j  cropplan-k cropplan-l cropplan-m cropplan-n cropplan-o cropplan-p cropplan-q cropplan-r cropplan-s cropplan-t cropplan-u)
 
   ;show (word "cropplan-bools after possibly setting: " cropplan-bools)
  
@@ -857,49 +857,49 @@ end
 ; old version of cropplan:
 ;to cropplan [nr m]          ; cropping plan number, month number (zero-based)
 ;  if m > 11 [set m m - 12]
-;	let cropplan0 [3 3 3 0 3 3 3 0 3 3 3 0]
-;	let cropplan1 [3 3 3 0 0 0 3 3 3 0 0 0]
-;	let cropplan2 [3 3 3 0 3 3 3 0 0 0 0 0]
-;	let cropplan3 [3 3 3 0 0 3 3 3 0 0 0 0]
-;	let cropplan4 [3 3 3 0 0 0 0 3 3 3 0 0]
-;	let cropplan5 [3 3 3 0 0 0 0 0 3 3 3 0]
-;	let cropplan6 [1 1 1 1 1 1 0 2 2 2 2 0]
-;	let cropplan7 [1 1 1 1 1 1 0 3 3 3 0 0]
-;	let cropplan8 [1 1 1 1 1 1 0 0 3 3 3 0]
-;	let cropplan9 [1 1 1 1 1 1 0 0 0 0 0 0]
-;	let cropplan10 [2 2 2 2 0 0 2 2 2 2 0 0]
-;	let cropplan11 [2 2 2 2 0 2 2 2 2 0 0 0]
-;	let cropplan12 [2 2 2 2 0 0 0 2 2 2 2 0]
-;	let cropplan13 [2 2 2 2 0 0 3 3 3 0 0 0]
-;	let cropplan14 [2 2 2 2 0 3 3 3 0 0 0 0]
-;	let cropplan15 [2 2 2 2 0 0 0 3 3 3 0 0]
-;	let cropplan16 [2 2 2 2 0 0 0 0 3 3 3 0]	
-;	let cropplan17 [3 3 3 0 0 2 2 2 2 0 0 0]
-;	let cropplan18 [3 3 3 0 0 0 2 2 2 2 0 0]
-;	let cropplan19 [3 3 3 0 2 2 2 2 0 0 0 0]
-;	let cropplan20 [3 3 3 0 0 0 0 2 2 2 2 0]
+;	let cropplan-a [3 3 3 0 3 3 3 0 3 3 3 0]
+;	let cropplan-b [3 3 3 0 0 0 3 3 3 0 0 0]
+;	let cropplan-c [3 3 3 0 3 3 3 0 0 0 0 0]
+;	let cropplan-d [3 3 3 0 0 3 3 3 0 0 0 0]
+;	let cropplan-e [3 3 3 0 0 0 0 3 3 3 0 0]
+;	let cropplan-f [3 3 3 0 0 0 0 0 3 3 3 0]
+;	let cropplan-g [1 1 1 1 1 1 0 2 2 2 2 0]
+;	let cropplan-h [1 1 1 1 1 1 0 3 3 3 0 0]
+;	let cropplan-i [1 1 1 1 1 1 0 0 3 3 3 0]
+;	let cropplan-j [1 1 1 1 1 1 0 0 0 0 0 0]
+;	let cropplan-k [2 2 2 2 0 0 2 2 2 2 0 0]
+;	let cropplan-l [2 2 2 2 0 2 2 2 2 0 0 0]
+;	let cropplan-m [2 2 2 2 0 0 0 2 2 2 2 0]
+;	let cropplan-n [2 2 2 2 0 0 3 3 3 0 0 0]
+;	let cropplan-o [2 2 2 2 0 3 3 3 0 0 0 0]
+;	let cropplan-p [2 2 2 2 0 0 0 3 3 3 0 0]
+;	let cropplan-q [2 2 2 2 0 0 0 0 3 3 3 0]	
+;	let cropplan-r [3 3 3 0 0 2 2 2 2 0 0 0]
+;	let cropplan-s [3 3 3 0 0 0 2 2 2 2 0 0]
+;	let cropplan-t [3 3 3 0 2 2 2 2 0 0 0 0]
+;	let cropplan-u [3 3 3 0 0 0 0 2 2 2 2 0]
 ;
-;  if nr = 0 [set crop item m cropplan0]  ; i.e. set this subak's crop var to the crop number at month m in cropping plan nr
-;  if nr = 1 [set crop item m cropplan1]
-;  if nr = 2 [set crop item m cropplan2]
-;  if nr = 3 [set crop item m cropplan3]
-;  if nr = 4 [set crop item m cropplan4]
-;  if nr = 5 [set crop item m cropplan5]
-;  if nr = 6 [set crop item m cropplan6]
-;  if nr = 7 [set crop item m cropplan7]
-;  if nr = 8 [set crop item m cropplan8]
-;  if nr = 9 [set crop item m cropplan9]
-;  if nr = 10 [set crop item m cropplan10]
-;  if nr = 11 [set crop item m cropplan11]
-;  if nr = 12 [set crop item m cropplan12]
-;  if nr = 13 [set crop item m cropplan13]
-;  if nr = 14 [set crop item m cropplan14]
-;  if nr = 15 [set crop item m cropplan15]
-;  if nr = 16 [set crop item m cropplan16]
-;  if nr = 17 [set crop item m cropplan17]
-;  if nr = 18 [set crop item m cropplan18]
-;  if nr = 19 [set crop item m cropplan19]
-;  if nr = 20 [set crop item m cropplan20]
+;  if nr = 0 [set crop item m cropplan-a]  ; i.e. set this subak's crop var to the crop number at month m in cropping plan nr
+;  if nr = 1 [set crop item m cropplan-b]
+;  if nr = 2 [set crop item m cropplan-c]
+;  if nr = 3 [set crop item m cropplan-d]
+;  if nr = 4 [set crop item m cropplan-e]
+;  if nr = 5 [set crop item m cropplan-f]
+;  if nr = 6 [set crop item m cropplan-g]
+;  if nr = 7 [set crop item m cropplan-h]
+;  if nr = 8 [set crop item m cropplan-i]
+;  if nr = 9 [set crop item m cropplan-j]
+;  if nr = 10 [set crop item m cropplan-k]
+;  if nr = 11 [set crop item m cropplan-l]
+;  if nr = 12 [set crop item m cropplan-m]
+;  if nr = 13 [set crop item m cropplan-n]
+;  if nr = 14 [set crop item m cropplan-o]
+;  if nr = 15 [set crop item m cropplan-p]
+;  if nr = 16 [set crop item m cropplan-q]
+;  if nr = 17 [set crop item m cropplan-r]
+;  if nr = 18 [set crop item m cropplan-s]
+;  if nr = 19 [set crop item m cropplan-t]
+;  if nr = 20 [set crop item m cropplan-u]
 ;end
 
 ; since only called during setup, and not due to incrementing month, there's no need to modulo the month
@@ -1088,51 +1088,51 @@ end
 
 ;; convenience functions for UI
 to set-cropplans-off
-  set cropplan0 false
-  set cropplan1 false
-  set cropplan2 false
-  set cropplan3 false
-  set cropplan4 false
-  set cropplan5 false
-  set cropplan6 false
-  set cropplan7 false
-  set cropplan8 false
-  set cropplan9 false
-  set cropplan10 false
-  set cropplan11 false
-  set cropplan12 false
-  set cropplan13 false
-  set cropplan14 false
-  set cropplan15 false
-  set cropplan16 false
-  set cropplan17 false
-  set cropplan18 false
-  set cropplan19 false
-  set cropplan20 false
+  set cropplan-a false
+  set cropplan-b false
+  set cropplan-c false
+  set cropplan-d false
+  set cropplan-e false
+  set cropplan-f false
+  set cropplan-g false
+  set cropplan-h false
+  set cropplan-i false
+  set cropplan-j false
+  set cropplan-k false
+  set cropplan-l false
+  set cropplan-m false
+  set cropplan-n false
+  set cropplan-o false
+  set cropplan-p false
+  set cropplan-q false
+  set cropplan-r false
+  set cropplan-s false
+  set cropplan-t false
+  set cropplan-u false
 end
 
 to set-cropplans-on
-  set cropplan0 true
-  set cropplan1 true
-  set cropplan2 true
-  set cropplan3 true
-  set cropplan4 true
-  set cropplan5 true
-  set cropplan6 true
-  set cropplan7 true
-  set cropplan8 true
-  set cropplan9 true
-  set cropplan10 true
-  set cropplan11 true
-  set cropplan12 true
-  set cropplan13 true
-  set cropplan14 true
-  set cropplan15 true
-  set cropplan16 true
-  set cropplan17 true
-  set cropplan18 true
-  set cropplan19 true
-  set cropplan20 true
+  set cropplan-a true
+  set cropplan-b true
+  set cropplan-c true
+  set cropplan-d true
+  set cropplan-e true
+  set cropplan-f true
+  set cropplan-g true
+  set cropplan-h true
+  set cropplan-i true
+  set cropplan-j true
+  set cropplan-k true
+  set cropplan-l true
+  set cropplan-m true
+  set cropplan-n true
+  set cropplan-o true
+  set cropplan-p true
+  set cropplan-q true
+  set cropplan-r true
+  set cropplan-s true
+  set cropplan-t true
+  set cropplan-u true
 end
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -1406,8 +1406,8 @@ SWITCH
 16
 1513
 49
-cropplan0
-cropplan0
+cropplan-a
+cropplan-a
 0
 1
 -1000
@@ -1417,8 +1417,8 @@ SWITCH
 49
 1513
 82
-cropplan1
-cropplan1
+cropplan-b
+cropplan-b
 0
 1
 -1000
@@ -1428,8 +1428,8 @@ SWITCH
 82
 1513
 115
-cropplan2
-cropplan2
+cropplan-c
+cropplan-c
 0
 1
 -1000
@@ -1439,8 +1439,8 @@ SWITCH
 115
 1513
 148
-cropplan3
-cropplan3
+cropplan-d
+cropplan-d
 0
 1
 -1000
@@ -1450,8 +1450,8 @@ SWITCH
 148
 1513
 181
-cropplan4
-cropplan4
+cropplan-e
+cropplan-e
 0
 1
 -1000
@@ -1461,8 +1461,8 @@ SWITCH
 181
 1513
 214
-cropplan5
-cropplan5
+cropplan-f
+cropplan-f
 0
 1
 -1000
@@ -1472,8 +1472,8 @@ SWITCH
 214
 1513
 247
-cropplan6
-cropplan6
+cropplan-g
+cropplan-g
 0
 1
 -1000
@@ -1483,8 +1483,8 @@ SWITCH
 247
 1513
 280
-cropplan7
-cropplan7
+cropplan-h
+cropplan-h
 0
 1
 -1000
@@ -1494,8 +1494,8 @@ SWITCH
 280
 1513
 313
-cropplan8
-cropplan8
+cropplan-i
+cropplan-i
 0
 1
 -1000
@@ -1505,8 +1505,8 @@ SWITCH
 313
 1513
 346
-cropplan9
-cropplan9
+cropplan-j
+cropplan-j
 0
 1
 -1000
@@ -1516,8 +1516,8 @@ SWITCH
 346
 1513
 379
-cropplan10
-cropplan10
+cropplan-k
+cropplan-k
 0
 1
 -1000
@@ -1527,8 +1527,8 @@ SWITCH
 379
 1513
 412
-cropplan11
-cropplan11
+cropplan-l
+cropplan-l
 0
 1
 -1000
@@ -1538,8 +1538,8 @@ SWITCH
 412
 1513
 445
-cropplan12
-cropplan12
+cropplan-m
+cropplan-m
 0
 1
 -1000
@@ -1549,8 +1549,8 @@ SWITCH
 445
 1513
 478
-cropplan13
-cropplan13
+cropplan-n
+cropplan-n
 0
 1
 -1000
@@ -1560,8 +1560,8 @@ SWITCH
 478
 1513
 511
-cropplan14
-cropplan14
+cropplan-o
+cropplan-o
 0
 1
 -1000
@@ -1571,8 +1571,8 @@ SWITCH
 511
 1513
 544
-cropplan15
-cropplan15
+cropplan-p
+cropplan-p
 0
 1
 -1000
@@ -1582,8 +1582,8 @@ SWITCH
 544
 1513
 577
-cropplan16
-cropplan16
+cropplan-q
+cropplan-q
 0
 1
 -1000
@@ -1593,8 +1593,8 @@ SWITCH
 577
 1513
 610
-cropplan17
-cropplan17
+cropplan-r
+cropplan-r
 0
 1
 -1000
@@ -1604,8 +1604,8 @@ SWITCH
 610
 1513
 643
-cropplan18
-cropplan18
+cropplan-s
+cropplan-s
 0
 1
 -1000
@@ -1615,8 +1615,8 @@ SWITCH
 643
 1513
 676
-cropplan19
-cropplan19
+cropplan-t
+cropplan-t
 0
 1
 -1000
@@ -1626,8 +1626,8 @@ SWITCH
 676
 1513
 709
-cropplan20
-cropplan20
+cropplan-u
+cropplan-u
 0
 1
 -1000
@@ -2168,34 +2168,34 @@ NetLogo 5.1.0
       <value value="[false false false false false false false false false false false false false false false false false false false true false]"/>
       <value value="[false false false false false false false false false false false false false false false false false false false false true]"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
       <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
@@ -2204,28 +2204,28 @@ NetLogo 5.1.0
     <enumeratedValueSet variable="Color_subaks">
       <value value="&quot;cropping plans&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="shuffle-cropplans?">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="id_colors">
@@ -2234,26 +2234,26 @@ NetLogo 5.1.0
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="0.95"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="viewdamsubaks">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="true"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan0only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-aonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -2264,67 +2264,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -2349,7 +2349,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan1only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-bonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -2360,67 +2360,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -2445,7 +2445,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan2only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-conly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -2456,67 +2456,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -2541,7 +2541,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan3only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-donly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -2552,67 +2552,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -2637,7 +2637,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan5only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-fonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -2648,67 +2648,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -2733,7 +2733,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan6only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-gonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -2744,67 +2744,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -2829,7 +2829,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan7only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-honly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -2840,67 +2840,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -2925,7 +2925,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan8only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-ionly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -2936,67 +2936,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3021,7 +3021,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan9only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-jonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3032,67 +3032,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3117,7 +3117,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan10only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-konly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3128,67 +3128,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3213,7 +3213,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan11only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-lonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3224,67 +3224,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3309,7 +3309,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan12only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-monly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3320,67 +3320,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3405,7 +3405,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan13only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-nonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3416,67 +3416,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3501,7 +3501,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan14only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-oonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3512,67 +3512,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3597,7 +3597,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan15only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-ponly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3608,67 +3608,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3693,7 +3693,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan16only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-qonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3704,67 +3704,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3789,7 +3789,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan17only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-ronly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3800,67 +3800,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3885,7 +3885,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan18only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-sonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3896,67 +3896,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -3981,7 +3981,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan19only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-tonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -3992,67 +3992,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -4077,7 +4077,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="cropplan20only" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="cropplan-uonly" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="120"/>
@@ -4088,67 +4088,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -4184,67 +4184,67 @@ NetLogo 5.1.0
     <metric>num-with-modal-cropplan</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
@@ -4281,67 +4281,67 @@ NetLogo 5.1.0
     <metric>modal-cropplan-seq</metric>
     <metric>modal-start-month</metric>
     <metric>num-with-modal-month</metric>
-    <enumeratedValueSet variable="cropplan0">
+    <enumeratedValueSet variable="cropplan-a">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan1">
+    <enumeratedValueSet variable="cropplan-b">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan2">
+    <enumeratedValueSet variable="cropplan-c">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan3">
+    <enumeratedValueSet variable="cropplan-d">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan4">
+    <enumeratedValueSet variable="cropplan-e">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan5">
+    <enumeratedValueSet variable="cropplan-f">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan6">
+    <enumeratedValueSet variable="cropplan-g">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan7">
+    <enumeratedValueSet variable="cropplan-h">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan8">
+    <enumeratedValueSet variable="cropplan-i">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan9">
+    <enumeratedValueSet variable="cropplan-j">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan10">
+    <enumeratedValueSet variable="cropplan-k">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan11">
+    <enumeratedValueSet variable="cropplan-l">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan12">
+    <enumeratedValueSet variable="cropplan-m">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan13">
+    <enumeratedValueSet variable="cropplan-n">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan14">
+    <enumeratedValueSet variable="cropplan-o">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan15">
+    <enumeratedValueSet variable="cropplan-p">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan16">
+    <enumeratedValueSet variable="cropplan-q">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan17">
+    <enumeratedValueSet variable="cropplan-r">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan18">
+    <enumeratedValueSet variable="cropplan-s">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan19">
+    <enumeratedValueSet variable="cropplan-t">
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="cropplan20">
+    <enumeratedValueSet variable="cropplan-u">
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Color_subaks">
