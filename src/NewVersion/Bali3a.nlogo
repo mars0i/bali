@@ -23,6 +23,7 @@ breed [damdam]  ; Links specifying how water travels directly from dam to dam (?
 breed [damsubaks damsubak]     ; Links from subaks to the dams to which they can send water (?)
 breed [subakdams subakdam]     ; Links from dams to the subaks to which they can send water (?)
 breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine which subaks' cropping patterns can be copied, and how pests spread.
+                               ; Note that these are one-way links, so in order for communication to go in both directions, two subaksubaks are needed.
 
 
 
@@ -668,10 +669,10 @@ to imitatebestneighbors
          set maxharvest minharvest  ; set maxharvest to my total harvest for the year
          foreach pestneighbors
             [ask ?
-               [if pyharvestha > maxharvest  ; if your total harvest for the year is more than anyone else's so far
-                  [set maxharvest pyharvestha  ; then my new max so far will be that value
-                   set bestneighbor self]]     ; and you will be my best neighbor so far
-              ifelse maxharvest > minharvest    ; if I found a neighbor who did better than I did
+               [if pyharvestha > maxharvest    ; if your total harvest for the year is more than anyone else's so far. (note pyharvestha here is the *neighbor*'s var)
+                  [set maxharvest pyharvestha  ; then my new max so far will be that value (maxharvest is a local outside of all subaks that we're using temporarily here)
+                   set bestneighbor self]]     ; and you will be my best neighbor so far (bestneighbor is local defined within the outer ask)
+               ifelse maxharvest > minharvest    ; if I found a neighbor who did better than I did
                  [;show (word "found better - mine: " ([SCC] of asker) ":" ([sd] of asker) ", neighbor's: " ([SCC] of ?) ":" ([sd] of ?))
                   set SCCc [SCC] of bestneighbor ; copy its cropping plan
                   set sdc [sd] of bestneighbor]  ; and its start month
@@ -690,6 +691,51 @@ to imitatebestneighbors
      ]
   ]
 end
+
+;; VERSION PRIOR TO MERGING THE TWO OUTER ASKS TO CORRECT TREATMENT OF PEST-ISOLATED SUBAKS:
+;;; A top-level procedure, not an in-subak procedure.
+;to imitatebestneighbors
+;  let minharvest 0
+;  let maxharvest 0
+;  ask subaks [
+;     let asker self
+;     ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
+;     
+;     ;; THIS SEEMS WRONG. WHY CAN'T I IMITATE DURING A FALLOW PERIOD?:
+;     ;; This means that 
+;     ;; (a) subaks with cropplans with more fallow periods examine neighbors to see if they're better less often.
+;     ;; (b) subaks with sd = 0 never imitate, since this procedure is only called when month = 11, so mip = 0 + 11 = 11.  Every cropplan has crop = 0 in month 11.
+;     if (crop = 1 or crop = 2 or crop = 3 or (imitate-when-fallow and crop = 0)) ; only those growing rice at the moment will imitiate.  
+;        [
+;         ;show "imitating ..."
+;         ;ifmip = 11 [show "imititating while in month 11!"] ; this should never fire, because the final month, 11, is always fallow, i.e. crop = 0.  Yet it does fire, sometimes.
+;         let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
+;         set minharvest pyharvestha ; set minharvest to my total harvest for the year
+;         set maxharvest minharvest  ; set maxharvest to my total harvest for the year
+;         foreach pestneighbors
+;            [ask ?
+;               [if pyharvestha > maxharvest    ; if your total harvest for the year is more than anyone else's so far. (note pyharvestha here is the *neighbor*'s var)
+;                  [set maxharvest pyharvestha  ; then my new max so far will be that value (maxharvest is a local outside of all subaks that we're using temporarily here)
+;                   set bestneighbor self]]     ; and you will be my best neighbor so far (bestneighbor is local defined within the outer ask)
+;               ifelse maxharvest > minharvest    ; if I found a neighbor who did better than I did
+;                 [;show (word "found better - mine: " ([SCC] of asker) ":" ([sd] of asker) ", neighbor's: " ([SCC] of ?) ":" ([sd] of ?))
+;                  set SCCc [SCC] of bestneighbor ; copy its cropping plan
+;                  set sdc [sd] of bestneighbor]  ; and its start month
+;                 [set SCCc SCC                   ; otherwise "copy" my own old values
+;                  set sdc sd]]
+;            ]
+;  ]
+;
+;  ; now, in each subak move its temporary copied values to its own operational variables, and update the UI if necessary
+;  ask subaks [
+;     set SCC SCCc
+;     set sd sdc
+;     if Color_subaks = "cropping plans" [
+;       display-cropping-plans ; new version
+;       ;set color SCC * 6 + sd  ; original Janssen version
+;     ]
+;  ]
+;end
 
 ;; subak routine
 to display-cropping-plans
@@ -1030,7 +1076,7 @@ to make-subaksubak [s1 s2]
     set b s2
     reposition-edges
   ]
-  ask s1 [set pestneighbors lput s2 pestneighbors] 
+  ask s1 [set pestneighbors lput s2 pestneighbors] ; Note this makes it a one-way link
 end
 
 ;; I think:
@@ -1776,7 +1822,7 @@ SWITCH
 605
 global-startmonth
 global-startmonth
-0
+1
 1
 -1000
 
@@ -1788,6 +1834,23 @@ TEXTBOX
 If true, all subaks use same random start month.
 11
 0.0
+1
+
+BUTTON
+67
+47
+126
+80
+go once
+go
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
 1
 
 @#$#@#$#@
