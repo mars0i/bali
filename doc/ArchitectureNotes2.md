@@ -74,3 +74,8 @@ the "good" propositions, and (b) tend to suppress the bad propositions.
 Note that those with the right analogy will have more influence.  They
 will be like pundits.  (Pundits embedded in a corner of the network
 structure.)
+
+----------------------------------------
+
+How about this: The "noisy" choice is always to choose the 3-planting
+choice.  (Q: With no particular month?)
