@@ -1441,7 +1441,7 @@ SWITCH
 703
 shuffle-cropplans?
 shuffle-cropplans?
-0
+1
 1
 -1000
 
@@ -1450,7 +1450,7 @@ OUTPUT
 15
 1366
 360
-9
+10
 
 SWITCH
 1393
