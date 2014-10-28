@@ -1318,9 +1318,9 @@ PENS
 
 CHOOSER
 0
-299
+233
 175
-344
+278
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
@@ -1363,10 +1363,10 @@ PENS
 "totWS" 1.0 0 -13345367 true "" ""
 
 SWITCH
-1
-349
-145
-382
+2
+283
+146
+316
 viewdamsubaks
 viewdamsubaks
 1
@@ -1374,20 +1374,20 @@ viewdamsubaks
 -1000
 
 CHOOSER
--1
-389
-147
-434
+0
+323
+148
+368
 Color_subaks
 Color_subaks
 "Temple groups" "cropping plans" "crops" "pests"
 1
 
 SWITCH
-0
-485
-179
-518
+2
+418
+178
+452
 show-subak-values
 show-subak-values
 1
@@ -1395,20 +1395,20 @@ show-subak-values
 -1000
 
 TEXTBOX
-4
-442
-154
-484
+5
+375
+155
+417
 If on, display identifiying info on whatever subak colors represent:
 11
 0.0
 1
 
 TEXTBOX
-4
-521
-175
-569
+2
+455
+173
+503
 Display #s corresp to subak coloring (not yet implemented for all choices)
 11
 0.0
@@ -1425,20 +1425,20 @@ TEXTBOX
 1
 
 TEXTBOX
-244
-652
-721
-670
+257
+653
+734
+671
 Cropping plan colors: circle represents crop plan, square represents start month.
 11
 0.0
 1
 
 SWITCH
-0
-245
-174
-278
+4
+670
+178
+703
 shuffle-cropplans?
 shuffle-cropplans?
 0
@@ -1791,10 +1791,10 @@ modal-cropplan-seq
 11
 
 SWITCH
-1
-639
-161
-672
+3
+744
+180
+778
 imitate-when-fallow
 imitate-when-fallow
 0
@@ -1802,20 +1802,20 @@ imitate-when-fallow
 -1000
 
 TEXTBOX
-3
-677
-309
-743
+5
+782
+311
+848
 Temporary (for comparison of versions of code): Run imidatebestneighbors with (new) and without (old) imitation when the imitating subak is in a fallow period.
 11
 0.0
 1
 
 SWITCH
-2
-572
-173
-605
+-1
+506
+170
+539
 global-startmonth
 global-startmonth
 1
@@ -1824,9 +1824,9 @@ global-startmonth
 
 TEXTBOX
 3
-605
+543
 153
-633
+571
 If true, all subaks use same random start month.
 11
 0.0
@@ -2055,6 +2055,26 @@ TEXTBOX
 1706
 703
 [3 3 3 0 0 0 0 2 2 2 2 0]
+11
+0.0
+1
+
+TEXTBOX
+5
+706
+310
+736
+It shouldn't matter whether the cropplan sequence is reordered, but in the past, bugs made it matter.
+11
+0.0
+1
+
+TEXTBOX
+4
+653
+171
+673
+Testing/experiments:
 11
 0.0
 1
