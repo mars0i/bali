@@ -10,7 +10,7 @@ behavior, which I believe is not intended, on and off.  Eventually I may
 remove the switch and simply use only the new behavior that imitates
 whether fallow or not.
 
-* Bug fix: In `imitatebestneighbors`, old version, subaks with no
+* Bug fix (?): In `imitatebestneighbors`, old version, subaks with no
 neighbors always reverted to crop plan 0, month 0.  This happened
 because the loop through neighbors never found these subaks, and as a
 result their `SCCc` and `sdc` variables were never set, but instead just
@@ -18,14 +18,14 @@ had the NetLogo default values of 0.  I think the intended behavior is
 that these subaks just retain their original crop plan and month, which
 is what happens now.
 
-* Bug fix: In `setup`, in final outer `ask subaks` block, in last line of code
-which adds to list in `damneighbors`, replaced `self` with `myself`,
-which appears to be what was intended.  Original version just collected
-repeated instances of the same subak in its own `damneighbors`.
-(This does not appear to be a change that affects function.  I don't
-see `damneighbors` used anywhere.)
+* Bug fix: In `setup`, in final outer `ask subaks` block, in last line
+of code which adds to list in `damneighbors`, replaced `self` with
+`myself`, which appears to be what was intended.  Original version just
+collected repeated instances of the same subak in its own
+`damneighbors`.  (This does not appear to be a change that affects
+function.  I don't see `damneighbors` used anywhere.)
 
-* Changes some of the limits in the plots in the UI.
+* Changed some of the limits in the plots in the UI.
 
 * Added other reporting objects in UI:
 
@@ -48,6 +48,11 @@ plans--i.e. then you can just enable a isolated plans.)
 * Added code to `go` routine so that the `viewdamsubaks` switch would
 also turn the `damsubak` and `subakdam` links on and off while the
 model is running.
+
+* Renamed variables in `growpest` to match ODD and/or Janssen 2006,
+and simplified the code slightly without changing the mathematical
+result (apart from *very* small floating point differences--at least
+14 digits after the decimal).  Also reformatted the code a bit.
 
 * Added comments, reformatted some lines, renamed some variables
 globally.  I've tried to be conservative, and in most (all?) cases,
