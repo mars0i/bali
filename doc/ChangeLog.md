@@ -10,6 +10,14 @@ behavior, which I believe is not intended, on and off.  Eventually I may
 remove the switch and simply use only the new behavior that imitates
 whether fallow or not.
 
+* Bug fix: In `imitatebestneighbors`, old version, subaks with no
+neighbors always reverted to crop plan 0, month 0.  This happened
+because the loop through neighbors never found these subaks, and as a
+result their `SCCc` and `sdc` variables were never set, but instead just
+had the NetLogo default values of 0.  I think the intended behavior is
+that these subaks just retain their original crop plan and month, which
+is what happens now.
+
 * Bug fix: In `setup`, in final outer `ask subaks` block, in last line of code
 which adds to list in `damneighbors`, replaced `self` with `myself`,
 which appears to be what was intended.  Original version just collected
