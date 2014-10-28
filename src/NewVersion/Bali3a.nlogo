@@ -271,7 +271,7 @@ to setup
     cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?). Note we use sd here since initially, mip = sd. In go we use mip.
     ricestageplan SCC sd
     if Color_subaks = "cropping plans"  ; added by Marshall. changes apparently irrelevant coloring above.
-       [display-cropping-plans] 
+       [display-cropping-plan] 
     let subak1 self
     ask subaks [
       if [source] of self = [source] of subak1                   ; if subak1 and I get water from the same dam (source)
@@ -653,41 +653,40 @@ to imitatebestneighbors
   let minharvest 0
   let maxharvest 0
   ask subaks [
-     let asker self
-     ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
-     
-     ;; THIS SEEMS WRONG. WHY CAN'T I IMITATE DURING A FALLOW PERIOD?:
-     ;; This means that 
-     ;; (a) subaks with cropplans with more fallow periods examine neighbors to see if they're better less often.
-     ;; (b) subaks with sd = 0 never imitate, since this procedure is only called when month = 11, so mip = 0 + 11 = 11.  Every cropplan has crop = 0 in month 11.
-     if (crop = 1 or crop = 2 or crop = 3 or (imitate-when-fallow and crop = 0)) ; only those growing rice at the moment will imitiate.  
-        [
-         ;show "imitating ..."
-         ;ifmip = 11 [show "imititating while in month 11!"] ; this should never fire, because the final month, 11, is always fallow, i.e. crop = 0.  Yet it does fire, sometimes.
-         let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
-         set minharvest pyharvestha ; set minharvest to my total harvest for the year
-         set maxharvest minharvest  ; set maxharvest to my total harvest for the year
-         foreach pestneighbors
-            [ask ?
-               [if pyharvestha > maxharvest    ; if your total harvest for the year is more than anyone else's so far. (note pyharvestha here is the *neighbor*'s var)
-                  [set maxharvest pyharvestha  ; then my new max so far will be that value (maxharvest is a local outside of all subaks that we're using temporarily here)
-                   set bestneighbor self]]     ; and you will be my best neighbor so far (bestneighbor is local defined within the outer ask)
-               ifelse maxharvest > minharvest    ; if I found a neighbor who did better than I did
-                 [;show (word "found better - mine: " ([SCC] of asker) ":" ([sd] of asker) ", neighbor's: " ([SCC] of ?) ":" ([sd] of ?))
-                  set SCCc [SCC] of bestneighbor ; copy its cropping plan
-                  set sdc [sd] of bestneighbor]  ; and its start month
-                 [set SCCc SCC                   ; otherwise "copy" my own old values
-                  set sdc sd]]
-            ]
-  ]
+    ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
+
+    if (crop = 1 or crop = 2 or crop = 3 or (imitate-when-fallow and crop = 0)) [ ; only those growing rice at the moment will imitiate.  
+      let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
+      set minharvest pyharvestha ; set minharvest to my total harvest for the year
+      set maxharvest minharvest  ; set maxharvest to my total harvest for the year
+
+      ;; Do this here rather than in the foreach, as in earlier version, so that it also happens to subaks who are nobody's neighbors:
+      set SCCc SCC ; store my current cropplan in temporary copy
+      set sdc sd   ; store my current start month in temporary copy
+	
+      foreach pestneighbors [
+	      ask ? [
+	        if pyharvestha > maxharvest [ ; if your total harvest for the year is more than anyone else's so far. (note pyharvestha here is the *neighbor*'s var)
+               set maxharvest pyharvestha  ; then my new max so far will be that value (maxharvest is a local outside of all subaks that we're using temporarily here)
+               set bestneighbor self       ; and you will be my best neighbor so far (bestneighbor is local defined within the outer ask)
+	        ]
+        ]
+
+        if maxharvest > minharvest [  ; if I found a neighbor who did better than I did
+          ;show (word "found better - mine: " ([SCC] of asker) ":" ([sd] of asker) ", neighbor's: " ([SCC] of ?) ":" ([sd] of ?))
+          set SCCc [SCC] of bestneighbor ; copy its cropping plan
+          set sdc [sd] of bestneighbor   ; and its start month
+	      ] ; removed 'else' that was here; it's now done by default before the foreach
+      ] ; foreach
+    ] ; if
+  ] ; ask
 
   ; now, in each subak move its temporary copied values to its own operational variables, and update the UI if necessary
   ask subaks [
      set SCC SCCc
      set sd sdc
      if Color_subaks = "cropping plans" [
-       display-cropping-plans ; new version
-       ;set color SCC * 6 + sd  ; original Janssen version
+       display-cropping-plan ; new version ; original version: set color SCC * 6 + sd
      ]
   ]
 end
@@ -738,7 +737,7 @@ end
 ;end
 
 ;; subak routine
-to display-cropping-plans
+to display-cropping-plan
   let low-scc-base-color 4
   let high-scc-base-color 6
   let sd-base-color 2
@@ -1328,7 +1327,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-0
+1
 
 PLOT
 802
@@ -1445,7 +1444,7 @@ SWITCH
 278
 shuffle-cropplans?
 shuffle-cropplans?
-0
+1
 1
 -1000
 
