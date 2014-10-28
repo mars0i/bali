@@ -485,9 +485,6 @@ to growrice
  ]]
 end
 
-
-;; UH OH: This is supposed to be mathematically equivalent to the earlier versions (see below), but the behavior of the model is radically different!
-;;
 ;; cf. ODD in the Info tab, ODD_LansingKremer.pdf p. 3, Janssen 2006 p. 173,
 ;; and the note below on differences between versions of this function.
 ;; non-local vars used:
@@ -521,27 +518,24 @@ to growpest
     let sumpestdif 0      ; holds a sum of diffs with other subaks' pests (formerly cs)
     let dc 0              ; intermediate var in calc of newpests
 
-		ask subaks [  ; for each neighbor, sum diff tween its pests and my pests into sumpestdif:
+    ask subaks [  ; for each neighbor, sum diff tween its pests and my pests into sumpestdif:
       let pestdif 0         ; temp var for diff with another subak's pests (formerly cN)
       ifelse member? subak1 pestneighbors   ; CONSIDER SIMPLIFYING by making pestneighbors into an agentset.
         [set pestdif pests - [pests] of subak1]
         [set pestdif 0]
       set sumpestdif sumpestdif + pestdif]
-    set dc (pestdispersal-rate / dxx) * sumpestdif * dt ; this is the net change in pest dispersed to or from the subak.
-		set newpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)	; Janssen 2006 doesn't explain why 0.5.
 
-		if newpests < minimumpests
+    set dc (pestdispersal-rate / dxx) * sumpestdif * dt ; this is the net change in pest dispersed to or from the subak.
+    set newpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)	; Janssen 2006 doesn't explain why 0.5.
+
+    if newpests < minimumpests
       [set newpests minimumpests]
     
-    ;let janssen-dpest growpest-janssen-fn self
-    ;show newpests - janssen-dpest ; DEBUG: how far is this value from the original Janssen calculation?
-    
     set pests newpests
-    ;show pests - janssen-dpest ; DEBUG (note: to do this, you must run growpest-janssen-fn before setting pests, so that it can use the old version of pest)
 
     if Color_subaks = "pests" 
-      [set color 62 + pests ]
-  ]
+      [set color 62 + pests]
+  ] ; outer ask
 end
 
 
