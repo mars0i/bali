@@ -1426,7 +1426,7 @@ TEXTBOX
 652
 721
 670
-Notes: Cropping plan colors: circle represents crop plan, square represents start month.
+Cropping plan colors: circle represents crop plan, square represents start month.
 11
 0.0
 1
