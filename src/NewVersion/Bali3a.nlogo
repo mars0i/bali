@@ -94,6 +94,13 @@ to setup
   set-default-shape damsubaks "line"
   set-default-shape subakdams "line"
   set-default-shape subaksubaks "line"
+
+
+  ; choose a color that will make all subaks and dams visible under all settings [MA]
+  ask patches [set pcolor 6] ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black.
+  ;ask patches [set pcolor black]
+  ;ask patches [set pcolor white] ; requires pest and crop coloring to be updated, but it's easier to see cropping plans
+  ;ask patches [set pcolor (rgb 80 0 80)] ; a purple
   
   ;; These will be filled by load-data (?)
   set subaks_array []
@@ -210,11 +217,6 @@ to setup
   set RRT ET + 50 / 30000 ;between 0 and 100 Rain-Runoff threshold for 1:1, mm/mon => m/d
   set LRS 1 - ET / RRT  ;LowRainSlope, below threshold for RR relation
   set Xf 1.0 ;between 0.8 and 1.2 X factor for changing minimum groundwater flow
-
-  ; choose a color that will make all subaks and dams visible under all settings [MA]
-  ask patches [set pcolor black]
-  ;ask patches [set pcolor white] ; requires pest and crop coloring to be updated, but it's easier to see cropping plans
-  ;ask patches [set pcolor (rgb 80 0 80)] ; a purple
   
   load-data
 
@@ -1080,7 +1082,7 @@ end
 to make-subakdams [s1 s2 s3]
   create-subakdams 1
   [
-    set color gray
+    set color pink
     set a s1
     set b s2
     reposition-edges
@@ -1088,7 +1090,7 @@ to make-subakdams [s1 s2 s3]
   ]
     create-damsubaks 1
   [
-    set color gray
+    set color pink
     set a s3
     set b s1
     reposition-edges
@@ -1439,7 +1441,7 @@ SWITCH
 278
 shuffle-cropplans?
 shuffle-cropplans?
-1
+0
 1
 -1000
 
