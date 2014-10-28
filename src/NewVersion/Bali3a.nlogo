@@ -179,7 +179,8 @@ to setup
   
   if shuffle-cropplans? [shuffle-cropplans] ; see whether reordering cropplans affects outcomes
   
-  set-histogram-num-bars (length cropplans) ; will apply to whatever is the first histogram
+  ;set-current-plot "crop plan distribution"
+  ;set-histogram-num-bars (length cropplans) ; will apply to whatever is the first histogram
   
   display-cropplans
 
@@ -759,14 +760,14 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
-to setup-plot
-  set-current-plot "Harvest"
-  set-plot-y-range 0 30
-  set-current-plot "Pestloss"
-  set-plot-y-range 0 1
-  set-current-plot "Waterstress"
-  set-plot-y-range 0 1
-end
+;to setup-plot
+;  set-current-plot "Harvest"
+;  set-plot-y-range 0 30
+;  set-current-plot "Pestloss"
+;  set-plot-y-range 0 1
+;  set-current-plot "Waterstress"
+;  set-plot-y-range 0 1
+;end
 
 to plot-figs
   ;; REPLACE WITH comput-avg-harvest
@@ -1447,7 +1448,7 @@ OUTPUT
 15
 1366
 360
-10
+9
 
 SWITCH
 1393
@@ -1467,7 +1468,7 @@ SWITCH
 82
 cropplan-b
 cropplan-b
-0
+1
 1
 -1000
 
@@ -1478,7 +1479,7 @@ SWITCH
 115
 cropplan-c
 cropplan-c
-0
+1
 1
 -1000
 
@@ -1489,7 +1490,7 @@ SWITCH
 148
 cropplan-d
 cropplan-d
-0
+1
 1
 -1000
 
@@ -1511,7 +1512,7 @@ SWITCH
 214
 cropplan-f
 cropplan-f
-0
+1
 1
 -1000
 
@@ -1533,7 +1534,7 @@ SWITCH
 280
 cropplan-h
 cropplan-h
-0
+1
 1
 -1000
 
@@ -1555,7 +1556,7 @@ SWITCH
 346
 cropplan-j
 cropplan-j
-0
+1
 1
 -1000
 
@@ -1577,7 +1578,7 @@ SWITCH
 412
 cropplan-l
 cropplan-l
-0
+1
 1
 -1000
 
@@ -1588,7 +1589,7 @@ SWITCH
 445
 cropplan-m
 cropplan-m
-0
+1
 1
 -1000
 
@@ -1599,7 +1600,7 @@ SWITCH
 478
 cropplan-n
 cropplan-n
-0
+1
 1
 -1000
 
@@ -1610,7 +1611,7 @@ SWITCH
 511
 cropplan-o
 cropplan-o
-0
+1
 1
 -1000
 
@@ -1621,7 +1622,7 @@ SWITCH
 544
 cropplan-p
 cropplan-p
-0
+1
 1
 -1000
 
@@ -1632,7 +1633,7 @@ SWITCH
 577
 cropplan-q
 cropplan-q
-0
+1
 1
 -1000
 
@@ -1643,7 +1644,7 @@ SWITCH
 610
 cropplan-r
 cropplan-r
-0
+1
 1
 -1000
 
@@ -1654,7 +1655,7 @@ SWITCH
 643
 cropplan-s
 cropplan-s
-0
+1
 1
 -1000
 
@@ -1665,7 +1666,7 @@ SWITCH
 676
 cropplan-t
 cropplan-t
-0
+1
 1
 -1000
 
@@ -1676,7 +1677,7 @@ SWITCH
 709
 cropplan-u
 cropplan-u
-0
+1
 1
 -1000
 
@@ -1815,7 +1816,7 @@ SWITCH
 605
 global-startmonth
 global-startmonth
-1
+0
 1
 -1000
 
