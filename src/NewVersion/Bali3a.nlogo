@@ -245,7 +245,7 @@ to setup
     ;set SCC random nrcropplans  ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
     ;set sd random 12            ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
     ;cropplan SCC sd             ; set subak's current crop. Note: OVERWRITTEN A FEW LINES DOWN (why?)
-                                ; and why don't we call ricestageplan here as well?
+                                 ; and why don't we call ricestageplan here as well?
     set totharvestarea 0
     ;if Color_subaks = "cropping plans"         ; NOTE that since the crop plan is changed in a moment, this coloring will be inaccurate
     ;   [display-cropping-plans] ; new version  ; so I'm going to add in this coloring code below -MA
@@ -453,10 +453,9 @@ to determineflow
         set flow flow0 + Runoff - d1 + XS - d3
         foreach dams_array [
           let flowadd flow
-          if (count damdam with [a = self and b = dam1] + count damdam with [a = dam1 and b = self]) > 0
-          [
-				    ask dam1 [set flow flow + flowadd]
-			    ]
+          if (count damdam with [a = self and b = dam1] + count damdam with [a = dam1 and b = self]) > 0 [
+             ask dam1 [set flow flow + flowadd]
+          ]
         ]
 				ifelse flow < 0 [
 					ifelse ((d1 + d3) = 0) [][
@@ -469,7 +468,7 @@ to determineflow
 	]]]
   ask subaks [
     let subak1 self
-    set WSS [WSD] of [a] of one-of damsubaks with [b = subak1] ; Uh, this worries me.  Why a vs. b?  It's unidirectional.  -MA
+    set WSS [WSD] of [a] of one-of damsubaks with [b = subak1] ; Uh, this worries me.  Why a vs. b?  It's unidirectional. Oh, because water goes downhill? -MA
     set dmd dmd * WSS]
 end
 
@@ -626,23 +625,23 @@ to determineharvest
         cropplan SCC (mip + 1)
         set cropf crop
         set crop croph
-        if (cropf = 0) or (cropf = 4)
-        [
-          set Ymax ricestage * (item crop yldmax)
-					set pest-damage 1 - pests * (item crop pestsens)
-					if pest-damage < 0 [set pest-damage 0]
-          set harvest Ymax * pest-damage
-					set pestloss pestloss + Ymax * (1 - pest-damage) * area
-					set totLoss totLoss + pestloss
-					set hy hy + harvest * area
-					set pyharvest pyharvest + harvest * area
-					set pyharvestha pyharvestha + harvest
-					set totpestloss totpestloss + area * (1 - pest-damage) * Ymax
+        if (cropf = 0) or (cropf = 4) [
+          set Ymax ricestage * (item crop yldmax)            ; scale max growth per hectare by fraction of needed water already received (?)
+          set pest-damage 1 - pests * (item crop pestsens)
+          if pest-damage < 0 [set pest-damage 0]
+          set harvest Ymax * pest-damage                     ; compute harvest per hectare from max growth scaled by pest damage (?)
+	  set pestloss pestloss + Ymax * (1 - pest-damage) * area
+	  set totLoss totLoss + pestloss
+	  set hy hy + harvest * area                         ; harvest for entire area (area is a subak variable) (?)
+	  set pyharvest pyharvest + harvest * area           ; add this month's total harvest onto total for year to date (?)
+	  set pyharvestha pyharvestha + harvest              ; add harvest per hectare onto per hectare for ytd
+	  set totpestloss totpestloss + area * (1 - pest-damage) * Ymax
           set totpestlossarea totpestlossarea + area
-          set totWS totWS + (1 - ricestage) * area
-          set totWSarea totWSarea + area
-          set totharvestarea totharvestarea + area
-				]]
+          set totWS totWS + (1 - ricestage) * area           ; waterstress is percentage of needed water not yet received, times area (?) [Q: How does water flow affect this?]
+          set totWSarea totWSarea + area                     ; won't this just be 12 * area at the end of 12 months??
+          set totharvestarea totharvestarea + area           ; won't this be the same?
+        ] ; if
+    ] ; ask
 end
 
 ;; A top-level procedure, not an in-subak procedure.
