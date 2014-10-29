@@ -1,4 +1,5 @@
-globals [ subak-data dam-data subaksubak-data subakdam-data new-subaks subaks_array dams_array subakdams_array 
+globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-data from data in text files
+          new-subaks subaks_array dams_array subakdams_array 
           damsubaks_array Rel Rem Reh 
           month ; actual month in the current year
           ET RRT LRS Xf devtime yldmax 
@@ -1386,7 +1387,7 @@ SWITCH
 2
 418
 178
-452
+451
 show-subak-values
 show-subak-values
 1
@@ -1793,7 +1794,7 @@ SWITCH
 3
 744
 180
-778
+777
 imitate-when-fallow
 imitate-when-fallow
 0
