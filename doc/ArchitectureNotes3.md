@@ -55,7 +55,7 @@ Maybe this could just be a domain mean, like what I plot in the bias
 scatterplots.
 
 
-##### Summary:
+##### Summary (copied into Plan1.md):
 
 After running the popco-free two-channel NetLogo simulation:
 
