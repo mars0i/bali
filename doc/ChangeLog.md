@@ -3,6 +3,19 @@ Change log
 
 #### From Janssen's original v.2 to my initial version Bali3a.nlogo:
 
+* Bug fix, I think (need to check with Lansing and Janssen): In
+*subaksubakdata.txt*, added subaksubak links from subaks 163 and 166 into
+subak 164.  Subak (turtle) 164, which appears at the right end of a
+cross in a group of subaks just lower right from the center of the
+NetLogo world, had only one-way links. i.e. it had a subaksubak leading
+from it to the subak to its left (subak/turtle 163), and a subaksubak
+leading from it to the subak down and to the left (subak/turtle 166).
+This subak was unique in having only one-way links.  All other subaks
+either have no subaksubak links, or had subaksubaks running in both
+directions to/from each subak to which they were lined.  I suspect that
+this unique status of this subak, 164, was just an inadvertent result of
+a typo.
+
 * Bug fix: In `imitatebestneighbors`, old version, subaks would not
 imitate during months when their crop was lying fallow.  Initially I
 changed this by putting a switch in the UI that would allow turning this
