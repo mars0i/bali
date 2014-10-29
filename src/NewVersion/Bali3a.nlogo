@@ -391,16 +391,17 @@ end
 to demandwater
   ; determine the water demand for different subaks
     ask dams [
-    if rainfall-scenario = "low" [rainfall damht 0]
-    if rainfall-scenario = "middle" [rainfall damht 1]
-    if rainfall-scenario = "high" [rainfall damht 2]
-    set rain rain / 30000
-    ifelse rain < RRT [
-  	  set Runoff rain * LRS * EWS * 10000 	; 'm/d * ha* m2/ha => m3/d for basin
-     ][
-      set Runoff (rain - ET) * EWS * 10000
-      if (Runoff < 0) [set Runoff 0]
-   ]]
+      if rainfall-scenario = "low" [rainfall damht 0]
+      if rainfall-scenario = "middle" [rainfall damht 1]
+      if rainfall-scenario = "high" [rainfall damht 2]
+      set rain rain / 30000
+      ifelse rain < RRT [
+  	    set Runoff rain * LRS * EWS * 10000 	; 'm/d * ha* m2/ha => m3/d for basin
+      ][
+        set Runoff (rain - ET) * EWS * 10000
+        if (Runoff < 0) [set Runoff 0]
+      ]
+    ]
 ;       		Demand for each Subak based on cropping pattern, less any rainfall.
 ;        		dmd may be + or - because local rain can exceed demand ==> an excess.
 
@@ -1324,7 +1325,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-2
+1
 
 PLOT
 802
@@ -1470,7 +1471,7 @@ SWITCH
 82
 cropplan-b
 cropplan-b
-0
+1
 1
 -1000
 
@@ -1481,7 +1482,7 @@ SWITCH
 115
 cropplan-c
 cropplan-c
-0
+1
 1
 -1000
 
@@ -1492,7 +1493,7 @@ SWITCH
 148
 cropplan-d
 cropplan-d
-0
+1
 1
 -1000
 
@@ -1503,7 +1504,7 @@ SWITCH
 181
 cropplan-e
 cropplan-e
-0
+1
 1
 -1000
 
@@ -1514,7 +1515,7 @@ SWITCH
 214
 cropplan-f
 cropplan-f
-0
+1
 1
 -1000
 
@@ -1525,7 +1526,7 @@ SWITCH
 247
 cropplan-g
 cropplan-g
-0
+1
 1
 -1000
 
@@ -1536,7 +1537,7 @@ SWITCH
 280
 cropplan-h
 cropplan-h
-0
+1
 1
 -1000
 
@@ -1547,7 +1548,7 @@ SWITCH
 313
 cropplan-i
 cropplan-i
-0
+1
 1
 -1000
 
@@ -1558,7 +1559,7 @@ SWITCH
 346
 cropplan-j
 cropplan-j
-0
+1
 1
 -1000
 
@@ -1569,7 +1570,7 @@ SWITCH
 379
 cropplan-k
 cropplan-k
-0
+1
 1
 -1000
 
@@ -1580,7 +1581,7 @@ SWITCH
 412
 cropplan-l
 cropplan-l
-0
+1
 1
 -1000
 
@@ -1591,7 +1592,7 @@ SWITCH
 445
 cropplan-m
 cropplan-m
-0
+1
 1
 -1000
 
@@ -1602,7 +1603,7 @@ SWITCH
 478
 cropplan-n
 cropplan-n
-0
+1
 1
 -1000
 
@@ -1613,7 +1614,7 @@ SWITCH
 511
 cropplan-o
 cropplan-o
-0
+1
 1
 -1000
 
@@ -1624,7 +1625,7 @@ SWITCH
 544
 cropplan-p
 cropplan-p
-0
+1
 1
 -1000
 
@@ -1635,7 +1636,7 @@ SWITCH
 577
 cropplan-q
 cropplan-q
-0
+1
 1
 -1000
 
@@ -1646,7 +1647,7 @@ SWITCH
 610
 cropplan-r
 cropplan-r
-0
+1
 1
 -1000
 
@@ -1657,7 +1658,7 @@ SWITCH
 643
 cropplan-s
 cropplan-s
-0
+1
 1
 -1000
 
@@ -1668,7 +1669,7 @@ SWITCH
 676
 cropplan-t
 cropplan-t
-0
+1
 1
 -1000
 
@@ -1679,7 +1680,7 @@ SWITCH
 709
 cropplan-u
 cropplan-u
-0
+1
 1
 -1000
 
@@ -1818,7 +1819,7 @@ SWITCH
 539
 global-startmonth
 global-startmonth
-1
+0
 1
 -1000
 
