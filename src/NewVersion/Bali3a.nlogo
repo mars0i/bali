@@ -1471,7 +1471,7 @@ SWITCH
 82
 cropplan-b
 cropplan-b
-1
+0
 1
 -1000
 
@@ -1482,7 +1482,7 @@ SWITCH
 115
 cropplan-c
 cropplan-c
-1
+0
 1
 -1000
 
@@ -1493,7 +1493,7 @@ SWITCH
 148
 cropplan-d
 cropplan-d
-1
+0
 1
 -1000
 
@@ -1504,7 +1504,7 @@ SWITCH
 181
 cropplan-e
 cropplan-e
-1
+0
 1
 -1000
 
@@ -1515,7 +1515,7 @@ SWITCH
 214
 cropplan-f
 cropplan-f
-1
+0
 1
 -1000
 
@@ -1526,7 +1526,7 @@ SWITCH
 247
 cropplan-g
 cropplan-g
-1
+0
 1
 -1000
 
@@ -1537,7 +1537,7 @@ SWITCH
 280
 cropplan-h
 cropplan-h
-1
+0
 1
 -1000
 
@@ -1548,7 +1548,7 @@ SWITCH
 313
 cropplan-i
 cropplan-i
-1
+0
 1
 -1000
 
@@ -1559,7 +1559,7 @@ SWITCH
 346
 cropplan-j
 cropplan-j
-1
+0
 1
 -1000
 
@@ -1570,7 +1570,7 @@ SWITCH
 379
 cropplan-k
 cropplan-k
-1
+0
 1
 -1000
 
@@ -1581,7 +1581,7 @@ SWITCH
 412
 cropplan-l
 cropplan-l
-1
+0
 1
 -1000
 
@@ -1592,7 +1592,7 @@ SWITCH
 445
 cropplan-m
 cropplan-m
-1
+0
 1
 -1000
 
@@ -1603,7 +1603,7 @@ SWITCH
 478
 cropplan-n
 cropplan-n
-1
+0
 1
 -1000
 
@@ -1614,7 +1614,7 @@ SWITCH
 511
 cropplan-o
 cropplan-o
-1
+0
 1
 -1000
 
@@ -1625,7 +1625,7 @@ SWITCH
 544
 cropplan-p
 cropplan-p
-1
+0
 1
 -1000
 
@@ -1636,7 +1636,7 @@ SWITCH
 577
 cropplan-q
 cropplan-q
-1
+0
 1
 -1000
 
@@ -1647,7 +1647,7 @@ SWITCH
 610
 cropplan-r
 cropplan-r
-1
+0
 1
 -1000
 
@@ -1658,7 +1658,7 @@ SWITCH
 643
 cropplan-s
 cropplan-s
-1
+0
 1
 -1000
 
@@ -1669,7 +1669,7 @@ SWITCH
 676
 cropplan-t
 cropplan-t
-1
+0
 1
 -1000
 
@@ -1680,7 +1680,7 @@ SWITCH
 709
 cropplan-u
 cropplan-u
-1
+0
 1
 -1000
 
