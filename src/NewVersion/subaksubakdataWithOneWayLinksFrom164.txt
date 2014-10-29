@@ -1,4 +1,21 @@
-;; subaksubakdata.txt
+;; subaksubakdataWithOneWayLinksFrom164.txt
+;; This contains the original subaksubakdata.txt from the Janssen
+;; version 2 Bali simulation, reformatted into one subaksubak per line.
+;; 
+;; In this data, subak (turtle) 164, which appears at the right end of
+;; a cross in a group of subaks just lower right from the center of
+;; the NetLogo world, had only one-way links. i.e. it had a subaksubak
+;; leading from it to the subak to its left (subak/turtle 163), and
+;; a subaksubak leading from it to the subak down and to the left
+;; (subak/turtle 166).  This subak was unique in having only one-way
+;; links.  All other subaks either have no subaksubak links, or had
+;; subaksubaks running in both directions to/from each subak to which
+;; they were lined.
+;;
+;; I suspect that this unique status of this subak, 164, was an error
+;; due to a typo, and I will correct the error in subaksubakdata.txt.
+;; 
+;; -MA
 
 ;; Each line specifies the endpoints, a and b, of a subaksubak,
 ;; which is a one-way link between two subaks.  Typically there are
@@ -310,8 +327,6 @@
 163 164
 163 165
 163 166
-164 163  ; added by MA
-164 166  ; added by MA
 165 163
 165 166
 166 164
