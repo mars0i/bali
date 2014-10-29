@@ -80,13 +80,13 @@ the effect by reducing the probability of transmission.)
 	*both* of their activations *and* of success of the speaker
 	subak.
 
-	One natural way to do this would be to insert the success bias
+	(One natural way to do this would be to insert the success bias
 	where "trust" operates in popco. This is currently a constant
 	multiplier in `update-propn-net-from-utterances` in listen.clj,
 	but that's designated as a spot that can be fancied up with
 	a function instead.  Let the function be a function of
 	success.  Or the modification could be on the probability 
-	of transmission, which is not realistic, but simple.
+	of transmission, which is not realistic, but simple.)
 
 	c. So in this scheme, NetLogo is sending the successfulness of
 	each subak over to popco, and then popco sends back a
@@ -97,3 +97,19 @@ the effect by reducing the probability of transmission.)
 	mapping of ticks between them.  (Maybe also send back to NetLogo
 	other info to be displayed.  Or maybe I can display the popco
 	stuff through Clojure, in another window.)
+
+
+3. Note that at present the determination of success takes place in code
+embedded in `imitatebestneighbor`.  
+
+	a. This should be abstracted out into a separate function.  Then
+	I can code the second transmission channel outside of
+	`imitatebestneighbor` in a separate function, and use the same
+	success-returning function.
+
+	Then in the combined version, the success-returning function can
+	be called to get data to send to popco.
+
+	b. And in the combined version, the second-channel transmission
+	function will get the suppression value from popco, rather than
+	from subaks in NetLogo.
