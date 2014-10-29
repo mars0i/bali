@@ -1324,7 +1324,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-0
+2
 
 PLOT
 802
