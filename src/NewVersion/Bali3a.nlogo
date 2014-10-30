@@ -332,6 +332,9 @@ to go
   ;; CULTURAL TRANSMISSION
   if month = 11 [imitatebestneighbors]
 
+  ;; simple method for introducing noise (temporary)
+  ;ask subaks [if random-float 1 > 0.5 [set SCC random 21 set sd random 12]]
+
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
   ; (worry: do any of these variables affect operation? does zeroing them bias the process? -MA)
   ifelse month = 11 
