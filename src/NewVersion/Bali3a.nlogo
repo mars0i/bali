@@ -413,7 +413,7 @@ to demandwater
       if crop = 2 [ set color yellow] ; rice variety 2
       if crop = 3 [ set color white]  ; rice variety 3
       if crop = 4 [ set color red]    ; alternate, non-rice crop (?)
-      ]
+    ]
     set dmd item crop cropuse - [rain] of return
     set dmd dmd * area * 10000
   ]
@@ -1097,7 +1097,10 @@ to make-subakdams [s1 s2 s3]
     reposition-edges
     if not viewdamsubaks [set size 0]
   ]
-  ask s1 [set source s3 set return s2]
+  ask s1 [
+    set source s3 
+    set return s2
+  ]
 end
 
 to reposition-edges  ;; edges procedure
@@ -1451,7 +1454,7 @@ OUTPUT
 15
 1366
 360
-10
+9
 
 SWITCH
 1393
@@ -1819,7 +1822,7 @@ SWITCH
 539
 global-startmonth
 global-startmonth
-0
+1
 1
 -1000
 
