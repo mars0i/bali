@@ -103,7 +103,7 @@ to setup
   ;ask patches [set pcolor white] ; requires pest and crop coloring to be updated, but it's easier to see cropping plans
   ;ask patches [set pcolor (rgb 80 0 80)] ; a purple
   
-  ;; These will be filled by load-data (?)
+  ;; These will be filled by load-data.  subaks_array and dams_array will then be refilled soon after load-data is called.
   set subaks_array []
   set dams_array []
   set subakdams_array []
@@ -223,8 +223,8 @@ to setup
 
   ask subaks [set size 0.75]
   ask subaks [set old? false]
-  set dams_array sort-by [[who] of ?1 < [who] of ?2] dams
-  set subaks_array sort-by [[who] of ?1 < [who] of ?2] subaks
+  set dams_array sort-by [[who] of ?1 < [who] of ?2] dams      ; overwrites filling of dams_array in load-data
+  set subaks_array sort-by [[who] of ?1 < [who] of ?2] subaks  ; overwrites filling of subaks_array in load-data
 
   ask dams [set areadam 0]
   ask subaks [
@@ -853,7 +853,7 @@ to load-data
       set ulunswi item 5 ? ; what is this? (?)
       set pestneighbors [] 
       set damneighbors [] 
-      set subaks_array lput self subaks_array
+      set subaks_array lput self subaks_array ; will be overwritten in go soon after this is called, but not before being used in its present form below.
       if Color_subaks = "Temple groups" [
         if masceti = 1 [set color white]
         if masceti = 2 [set color yellow]
@@ -880,13 +880,13 @@ to load-data
       set elevation item 4 ? 
       set WSarea item 5 ? 
       set damht item 6 ?
-      set dams_array lput self dams_array
+      set dams_array lput self dams_array ; will be overwritten in go soon after this is called, but not before being used in its present form below.
   ]]
 
   linkdams
 
+  ;; here we use the versions of subaks_array and dams_array created in the present procedure load-data.  After it's run, these vars will be filled again.
   foreach subaksubak-data [make-subaksubak (item first ? subaks_array) (item last ? subaks_array)]
-
   foreach subakdam-data [make-subakdams (item first ? subaks_array) (item (item 1 ?) dams_array) (item last ? dams_array)]
 
 end
