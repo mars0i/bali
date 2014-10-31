@@ -190,7 +190,7 @@ to setup
   ;set-current-plot "crop plan distribution"
   ;set-histogram-num-bars (length cropplans) ; will apply to whatever is the first histogram
   
-  display-cropplans
+  list-cropplans
 
   set devtime [0 6 4 3] ; development time for crops. first one is no-crop, i.e. fallow.  the rest are for the three varieties of rice.
   set yldmax [0 5 5 10] ; maximum yld of rice crops
@@ -381,7 +381,8 @@ to shuffle-cropplans
   set ricestageplans reorder-by shuffled-ints ricestageplans
 end
 
-to display-cropplans
+;; list allowable cropplans in the output window
+to list-cropplans
   let i 0
   foreach cropplans
     [if (i < 10)
