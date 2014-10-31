@@ -15,6 +15,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           all-ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan in all-cropplans
           ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan in cropplans
           cropplan-bools
+          default-pcolor ; color of all patches except when patch color used to indicate start month
         ]
 
 ;patches-own [r1]
@@ -95,13 +96,9 @@ to setup
   set-default-shape damsubaks "line"
   set-default-shape subakdams "line"
   set-default-shape subaksubaks "line"
+  set default-pcolor 6 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
 
-
-  ; choose a color that will make all subaks and dams visible under all settings [MA]
-  ask patches [set pcolor 6] ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black.
-  ;ask patches [set pcolor black]
-  ;ask patches [set pcolor white] ; requires pest and crop coloring to be updated, but it's easier to see cropping plans
-  ;ask patches [set pcolor (rgb 80 0 80)] ; a purple
+  ask patches [set pcolor default-pcolor]
   
   ;; These will be filled by load-data.  subaks_array and dams_array will then be refilled soon after load-data is called.
   set subaks_array []
@@ -412,6 +409,7 @@ to demandwater
   ask subaks [
 ;    		cropuse is m/d demand for the 4 crops:
     if Color_subaks = "crops" [
+      ask patch-here [set pcolor default-pcolor]
       if crop = 0 [ set color green]  ; fallow
       if crop = 1 [ set color cyan]   ; rice variety 1
       if crop = 2 [ set color yellow] ; rice variety 2
@@ -541,8 +539,10 @@ to growpest
     
     set pests newpests
 
-    if Color_subaks = "pests" 
-      [set color 62 + pests]
+    if Color_subaks = "pests" [
+      ask patch-here [set pcolor default-pcolor]
+      set color 62 + pests
+    ]
   ] ; outer ask
 end
 
@@ -859,6 +859,7 @@ to load-data
       set damneighbors [] 
       set subaks_array lput self subaks_array ; will be overwritten in go soon after this is called, but not before being used in its present form below.
       if Color_subaks = "Temple groups" [
+        ask patch-here [set pcolor default-pcolor]
         if masceti = 1 [set color white]
         if masceti = 2 [set color yellow]
         if masceti = 3 [set color red]
@@ -1285,7 +1286,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.2
+2.21
 0.01
 1
 NIL
@@ -1300,7 +1301,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1
+1.01
 0.01
 1
 NIL
@@ -2083,6 +2084,16 @@ TEXTBOX
 171
 673
 Testing/experiments:
+11
+0.0
+1
+
+TEXTBOX
+257
+669
+638
+687
+Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.
 11
 0.0
 1
