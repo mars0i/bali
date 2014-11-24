@@ -1456,9 +1456,9 @@ shuffle-cropplans?
 
 OUTPUT
 1130
-15
+24
 1366
-360
+369
 9
 
 SWITCH
@@ -1705,9 +1705,9 @@ modal-cropplan
 
 MONITOR
 1130
-407
+416
 1301
-452
+461
 # subaks with modal cropplan
 num-with-modal-cropplan
 17
@@ -1716,9 +1716,9 @@ num-with-modal-cropplan
 
 PLOT
 1130
-543
-1348
-698
+552
+1349
+699
 crop plan distribution
 NIL
 NIL
@@ -1734,9 +1734,9 @@ PENS
 
 MONITOR
 1130
-452
+460
 1257
-497
+505
 modal start month
 modal-start-month
 17
@@ -1745,9 +1745,9 @@ modal-start-month
 
 MONITOR
 1130
-497
+506
 1300
-542
+551
 # subaks with modal month
 num-with-modal-month
 17
@@ -1755,10 +1755,10 @@ num-with-modal-month
 11
 
 BUTTON
-1304
-409
-1384
-442
+1305
+418
+1385
+451
 cropplans on
 set-cropplans-on
 NIL
@@ -1772,10 +1772,10 @@ NIL
 1
 
 BUTTON
-1304
-442
-1384
-476
+1305
+450
+1385
+484
 cropplans off
 set-cropplans-off
 NIL
@@ -1789,10 +1789,10 @@ NIL
 1
 
 MONITOR
-1228
-363
-1377
-408
+1229
+372
+1378
+417
 NIL
 modal-cropplan-seq
 17
@@ -2094,6 +2094,16 @@ TEXTBOX
 638
 687
 Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.
+11
+0.0
+1
+
+TEXTBOX
+1133
+10
+1299
+29
+crop plans in this run:
 11
 0.0
 1
