@@ -3,7 +3,11 @@ Janssen's Lansing-Kremer Bali simulation
 
 This directory contains a version [Marco Janssen's NetLogo
 model](http://www.openabm.org/model/2221/version/2) of the
-Lansing-Kremer Balinese irrigation simulation.  
+Lansing-Kremer Balinese irrigation simulation, with modifications by
+Marshall Abrams.
+
+See ../../doc/VersionDiffs.md for a list of differences between this
+version and Janssen's version 2 model from 2012.
 
 This version should be maintained in such a way that it's able to
 reproduce the original behavior with appropriate settings, but will be
