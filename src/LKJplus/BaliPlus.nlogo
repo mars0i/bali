@@ -287,32 +287,11 @@ end
 
 
 ;;;;;;;;;;;;;;;
-to go
-  ;let gr2 0  ; UNUSED?
-  ;let gr3 0  ; UNUSED?
-  ;set gr2 pestgrowth-rate ; UNUSED?
-  ;set gr3 pestgrowth-rate ; UNUSED?
-  
-  if-else viewdamsubaks [
-    ask damsubaks [set size distanceab]
-    ask subakdams [set size distanceab]
-  ][
-    ask damsubaks [set size 0]
-    ask subakdams [set size 0]
-  ]
-  
-  ;; UPDATE INTERNAL SUBAK GROWING/PLANTING MONTH (actual month offset by start month sd)
-  ask subaks [
-    set mip sd + month
-    if mip > 11 [set mip mip - 12] ; sd is start month. this line increments subak's internal growing month month. (month is inc'ed below.
-  ]
-  
-  ask subaks [
-    cropplan SCC mip ; note we use mip, not sd.  sd is start month.  mip is subak's internal month in the cycle.
-    if stillgrowing [if ((crop = 0) or (crop = 4)) [set stillgrowing false]]
-  ]
-  
-  ;; CORE AGRICULTURAL PROCESSES: water use, grow rice, pests, harvest amount:
+to go  
+  poss-show-damsubaks ; display dam-subak-relations if requested from UI
+  update-subak-months ; update month, crop states, etc. in subaks
+
+  ;; core agricultural processes: water use, grow rice, pests, harvest amount:
   demandwater
   determineflow
   growrice
@@ -323,35 +302,66 @@ to go
   if month = 11 [
     set totpestloss totpestloss / totpestlossarea ; average loss due to pests
     set totWS totWS / totWSarea                   ; average water stress
-    plot-figs
+    plot-figs                                     ; UI plots
+    imitatebestneighbors                          ; cultural transmission of cropping plans and start months
   ]
 
-  ;; CULTURAL TRANSMISSION
-  if month = 11 [imitatebestneighbors]
+  bhutakala-alterations
 
-  ;; simple method for introducing noise (temporary)
-  ;ask subaks [if random-float 1 > 0.5 [set SCC random 21 set sd random 12]]
 
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
   ; (worry: do any of these variables affect operation? does zeroing them bias the process? -MA)
-  ifelse month = 11 
-    [set month 0
-     set totWSarea 0 
-     set totWS 0 
-     ask subaks [
-       set pyharvest 0 
-       set pyharvestha 0 
-       set totpestloss 0 
-       set totpestlossarea 0 
-       set totharvestarea 0 
-       set pests 0.01]]
-    [set month month + 1]
+  ifelse month = 11 [
+    set month 0
+    set totWSarea 0 
+    set totWS 0 
+    ask subaks [
+      set pyharvest 0 
+      set pyharvestha 0 
+      set totpestloss 0 
+      set totpestlossarea 0 
+      set totharvestarea 0 
+      set pests 0.01
+    ]
+  ][
+    set month month + 1
+  ]
 
   tick
 end
 ;;;;;;;;;;;;;;; end of go
 
+to poss-show-damsubaks
+    if-else viewdamsubaks [
+    ask damsubaks [set size distanceab]
+    ask subakdams [set size distanceab]
+  ][
+    ask damsubaks [set size 0]
+    ask subakdams [set size 0]
+  ]
+end
 
+to update-subak-months
+  ;; UPDATE INTERNAL SUBAK GROWING/PLANTING MONTH (actual month offset by start month sd)
+  ask subaks [
+    set mip sd + month
+    if mip > 11 [set mip mip - 12] ; sd is start month. this line increments subak's internal growing month month. (month is inc'ed below.
+  ]
+  
+  ask subaks [
+    cropplan SCC mip ; note we use mip, not sd.  sd is start month.  mip is subak's internal month in the cycle.
+    if stillgrowing [if ((crop = 0) or (crop = 4)) [set stillgrowing false]]
+  ]
+end
+
+to bhutakala-alterations
+  ask subaks [
+    if random-float 1 < bhutakala-influence [
+      set SCC random (length cropplans)
+      set sd random 12
+    ]
+  ]
+end
 
 to-report filter-plans [plans]
   if not is-list? cropplan-bools [error (word "croppplan-bools has value: " cropplan-bools)]
@@ -546,80 +556,6 @@ to growpest
   ] ; outer ask
 end
 
-
-;; NOTE on difference between new Abrams version growpest and older versions:
-;; note that in the old versions,
-;; cs = 4*pests + sum(cN) over pestneighbors
-;; so cs - 4*pests = sum(cN) over pestneighbors
-;; so we can just take the 4*pests out of cs, and then don't subtract 4*pests from it in calculating dc.
-;; (I think the 4*pests may have been mistakenly derived from Janssen 2006 p. 173,
-;; but the mistake was neutralized, and didn't affect outcomes.)
-;; Also, in the version above I renamed cs to sumpestdif, which is clearer and fits what's written in Janssen's ODDs.
-
-
-;; ORIGINAL JANSSEN VERSION of growpest (except that I renamed growthrate to growthrates -M)
-;; Janssen 2006 p. 173 eq. (1) correspondences:
-;;  NetLogo                        2006
-;; (item crop growthrates)        g(x_j)
-;; pests                          p_j,t
-;; pestdisperal-rate * dt / dxx   d       [p. 173 says eq. (1) is for monthly timesteps]
-;; cs                             p_n1,j,t + p_n2,j,t + p_n3,j,t + p_n4,j,t - 4p_j,t
-;;
-;;   [note: The "- 4p_j,t" in eq. (1) is needed because in that equation, the comparison is
-;;    with 4 neighbors.  In the NetLogo version, the number of neighbors varies from 0 to 4,
-;;    and subtracting the current subak's pest count (p_j,t or pests) is done in the inner
-;;    ask subaks used to calculate cs.  Here the "- (4 * pests)" merely undoes the addition
-;;    this value in the initial value given to cs in the outer ask subaks.  (However, it might
-;;    affect numerical rounding.)]
-;to growpest-janssen
-;  let dxx 100
-;  let dt 30 ;days [<-- Janssen's comment]
-;  let dc 0
-;  let cs 0
-;  let cN 0
-;  let minimumpests 0.01
-;  ask subaks [
-;    let subak1 self
-;    set cs 4 * pests
-;    ask subaks [
-;        let subak2 self
-;        ifelse member? subak1 pestneighbors [set cN pests - [pests] of subak1][set cN 0]
-;        set cs cs + cN]
-;    set dc (pestdispersal-rate / dxx) * ( cs - (4 * pests)) * dt ; this is the net change in pest dispersed to or from the subak
-;    set dpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)  
-;    if dpests < minimumpests [set dpests minimumpests]]
-;    
-;    ask subaks [set pests dpests if Color_subaks = "pests" [set color 62 + pests ]]
-;end
-
-;; version of guts of growpest based on Janssen's version, but slightly modified to make it into a function/reporter.
-;; designed to be run within an ask subak block.  To test this function, add
-;;     show dpests - (growpest-janssen-fn self)]
-;; at the end of the outer ask subaks block.
-;to-report growpest-janssen-fn [subk]
-;  let dxx 100
-;  let dt 30 ;days
-;  let dc 0
-;  let cs 0
-;  let cN 0
-;  let minimumpests 0.01
-;  let local-dpests 0
-;;  ask subaks [
-;    let subak1 self
-;    set cs 4 * pests
-;    ask subaks [
-;        let subak2 self
-;        ifelse member? subak1 pestneighbors [set cN pests - [pests] of subak1][set cN 0]
-;        set cs cs + cN]
-;    set dc (pestdispersal-rate / dxx) * ( cs - (4 * pests)) * dt ; this is the net change in pest dispersed to or from the subak
-;    set local-dpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)  
-;    if local-dpests < minimumpests [set local-dpests minimumpests]
-;;  ]
-;  
-;  report local-dpests
-;;  ask subaks [set pests dpests if Color_subaks = "pests" [set color 62 + pests ]]
-;end
-
 to determineharvest
     let hy 0
     let croph 0
@@ -657,7 +593,7 @@ to imitatebestneighbors
   ask subaks [
     ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
 
-    if (crop = 1 or crop = 2 or crop = 3 or (imitate-when-fallow and crop = 0)) [ ; only those growing rice at the moment will imitiate.  
+    if (crop <= 3) [; only those growing rice or fallow will imitiate.  
       let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
       set minharvest pyharvestha ; set minharvest to my total harvest for the year
       set maxharvest minharvest  ; set maxharvest to my total harvest for the year
@@ -693,50 +629,6 @@ to imitatebestneighbors
   ]
 end
 
-;; VERSION PRIOR TO MERGING THE TWO OUTER ASKS TO CORRECT TREATMENT OF PEST-ISOLATED SUBAKS:
-;;; A top-level procedure, not an in-subak procedure.
-;to imitatebestneighbors
-;  let minharvest 0
-;  let maxharvest 0
-;  ask subaks [
-;     let asker self
-;     ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
-;     
-;     ;; THIS SEEMS WRONG. WHY CAN'T I IMITATE DURING A FALLOW PERIOD?:
-;     ;; This means that 
-;     ;; (a) subaks with cropplans with more fallow periods examine neighbors to see if they're better less often.
-;     ;; (b) subaks with sd = 0 never imitate, since this procedure is only called when month = 11, so mip = 0 + 11 = 11.  Every cropplan has crop = 0 in month 11.
-;     if (crop = 1 or crop = 2 or crop = 3 or (imitate-when-fallow and crop = 0)) ; only those growing rice at the moment will imitiate.  
-;        [
-;         ;show "imitating ..."
-;         ;ifmip = 11 [show "imititating while in month 11!"] ; this should never fire, because the final month, 11, is always fallow, i.e. crop = 0.  Yet it does fire, sometimes.
-;         let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
-;         set minharvest pyharvestha ; set minharvest to my total harvest for the year
-;         set maxharvest minharvest  ; set maxharvest to my total harvest for the year
-;         foreach pestneighbors
-;            [ask ?
-;               [if pyharvestha > maxharvest    ; if your total harvest for the year is more than anyone else's so far. (note pyharvestha here is the *neighbor*'s var)
-;                  [set maxharvest pyharvestha  ; then my new max so far will be that value (maxharvest is a local outside of all subaks that we're using temporarily here)
-;                   set bestneighbor self]]     ; and you will be my best neighbor so far (bestneighbor is local defined within the outer ask)
-;               ifelse maxharvest > minharvest    ; if I found a neighbor who did better than I did
-;                 [;show (word "found better - mine: " ([SCC] of asker) ":" ([sd] of asker) ", neighbor's: " ([SCC] of ?) ":" ([sd] of ?))
-;                  set SCCc [SCC] of bestneighbor ; copy its cropping plan
-;                  set sdc [sd] of bestneighbor]  ; and its start month
-;                 [set SCCc SCC                   ; otherwise "copy" my own old values
-;                  set sdc sd]]
-;            ]
-;  ]
-;
-;  ; now, in each subak move its temporary copied values to its own operational variables, and update the UI if necessary
-;  ask subaks [
-;     set SCC SCCc
-;     set sd sdc
-;     if Color_subaks = "cropping plans" [
-;       display-cropping-plans ; new version
-;       ;set color SCC * 6 + sd  ; original Janssen version
-;     ]
-;  ]
-;end
 
 ;; subak routine
 to display-cropping-plan
@@ -1444,13 +1336,13 @@ Cropping plan colors: circle represents crop plan, square represents start month
 1
 
 SWITCH
-4
-670
-178
-703
+3
+706
+177
+739
 shuffle-cropplans?
 shuffle-cropplans?
-1
+0
 1
 -1000
 
@@ -1800,27 +1692,6 @@ modal-cropplan-seq
 11
 
 SWITCH
-3
-744
-180
-777
-imitate-when-fallow
-imitate-when-fallow
-0
-1
--1000
-
-TEXTBOX
-5
-782
-311
-848
-Temporary (for comparison of versions of code): Run imidatebestneighbors with (new) and without (old) imitation when the imitating subak is in a fallow period.
-11
-0.0
-1
-
-SWITCH
 -1
 506
 170
@@ -2069,21 +1940,11 @@ TEXTBOX
 1
 
 TEXTBOX
-5
-706
-310
-736
-It shouldn't matter whether the cropplan sequence is reordered, but in the past, bugs made it matter.
-11
-0.0
-1
-
-TEXTBOX
 4
-653
-171
-673
-Testing/experiments:
+742
+309
+772
+It shouldn't matter whether the cropplan sequence is reordered, but in the past, bugs made it matter.
 11
 0.0
 1
@@ -2104,6 +1965,31 @@ TEXTBOX
 1299
 29
 crop plans in this run:
+11
+0.0
+1
+
+SLIDER
+1
+587
+177
+620
+bhutakala-influence
+bhutakala-influence
+0
+0.1
+0
+0.0005
+1
+NIL
+HORIZONTAL
+
+TEXTBOX
+6
+620
+173
+676
+Probability of choosing a new crop plan, and/or of choosing a new start month, ignoring neighbors.
 11
 0.0
 1
