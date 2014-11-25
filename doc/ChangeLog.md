@@ -1,7 +1,7 @@
 Change log
 ====
 
-#### From Janssen's original v.2 to my initial version Bali3a.nlogo:
+#### From Janssen's original Bali.nlogo v.2 to my Bali3a.nlogo:
 
 * Bug fix, I think (need to check with Lansing and Janssen): In
 *subaksubakdata.txt*, added subaksubak links from subaks 163 and 166 into
