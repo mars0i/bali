@@ -38,3 +38,25 @@ communication of spiritual propns.
 
 So, maybe the success bias can *overcome* this effect.  That would be
 cool.
+
+------------
+
+Re noise in the form of randomly choosing a new cropplan and/or month:
+
+Note that a *little* bit of noise might actually be *good*.  It's like
+mutation.  It allows you to explore the parameter space.  As long as the
+inheritance is still pretty high, you can still get successful results,
+and possibly better results.  So the fact that greed or bhutakala or
+whatever messes up the system might even be *good design*.
+
+And in fact I am seeing this result, maybe (on some runs, at least),
+e.g. for bhutakala-influence = 0.01.
+
+Note that a small noise probability can have a big effect, since you run
+it on all 172 subaks, and what's beneficial is coordination within
+pest-regions.  Also, you get two choices per subak: crop plan, and
+month.
+
+Not sure that random choice is really completely realistic, since real
+greed/bhutakala/etc. would be more systematic.  It's not *really* like
+random mutation.
