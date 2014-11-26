@@ -303,10 +303,11 @@ to go
     set totpestloss totpestloss / totpestlossarea ; average loss due to pests
     set totWS totWS / totWSarea                   ; average water stress
     plot-figs                                     ; UI plots
-    imitatebestneighbors                          ; cultural transmission of cropping plans and start months
+    imitate-best-neighboring-cropplan                          ; cultural transmission of cropping plans and start months
+    maybe-ignore-neighboring-cropplans            ; possibly forget what you learned from neighbors
   ]
 
-  bhutakala-alterations
+
 
 
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
@@ -354,9 +355,9 @@ to update-subak-months
   ]
 end
 
-to bhutakala-alterations
+to maybe-ignore-neighboring-cropplans
   ask subaks [
-    if random-float 1 < bhutakala-influence [
+    if random-float 1 < prob-ignore-neighboring-plans [
       set SCC random (length cropplans)
       set sd random 12
     ]
@@ -587,7 +588,7 @@ to determineharvest
 end
 
 ;; A top-level procedure, not an in-subak procedure.
-to imitatebestneighbors
+to imitate-best-neighboring-cropplan
   let minharvest 0
   let maxharvest 0
   ask subaks [
@@ -1326,10 +1327,10 @@ TEXTBOX
 1
 
 TEXTBOX
-257
-653
-734
-671
+354
+652
+831
+670
 Cropping plan colors: circle represents crop plan, square represents start month.
 11
 0.0
@@ -1360,7 +1361,7 @@ SWITCH
 49
 cropplan-a
 cropplan-a
-0
+1
 1
 -1000
 
@@ -1950,10 +1951,10 @@ It shouldn't matter whether the cropplan sequence is reordered, but in the past,
 1
 
 TEXTBOX
-257
-669
-638
-687
+354
+668
+735
+686
 Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.
 11
 0.0
@@ -1970,26 +1971,26 @@ crop plans in this run:
 1
 
 SLIDER
+-3
+653
+334
+686
+prob-ignore-neighboring-plans
+prob-ignore-neighboring-plans
+0
 1
-587
-177
-620
-bhutakala-influence
-bhutakala-influence
-0
-0.1
-0
-0.0005
+0.69
+0.01
 1
 NIL
 HORIZONTAL
 
 TEXTBOX
-6
-620
-173
-676
-Probability of choosing a new crop plan, and/or of choosing a new start month, ignoring neighbors.
+3
+594
+170
+650
+Probability of choosing a new crop plan, and/or of choosing a new start month, ignoring neighbors:
 11
 0.0
 1
