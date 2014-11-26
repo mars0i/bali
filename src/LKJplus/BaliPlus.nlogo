@@ -16,6 +16,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan in cropplans
           cropplan-bools
           default-pcolor ; color of all patches except when patch color used to indicate start month
+          shuffle-cropplans?  ; can be put back into UI if desired
         ]
 
 ;patches-own [r1]
@@ -89,6 +90,8 @@ to setup
   ;; of the procedure.)
   ;; __clear-all-and-reset-ticks
   clear-all
+  
+  set shuffle-cropplans? false ; currently turned off permanently.  Can be put back in UI if desired.
 
   set-default-shape subaks "circle"
   set-default-shape dams "square"
@@ -303,12 +306,9 @@ to go
     set totpestloss totpestloss / totpestlossarea ; average loss due to pests
     set totWS totWS / totWSarea                   ; average water stress
     plot-figs                                     ; UI plots
-    imitate-best-neighboring-cropplan                          ; cultural transmission of cropping plans and start months
-    maybe-ignore-neighboring-cropplans            ; possibly forget what you learned from neighbors
+    imitate-best-neighboring-plan                          ; cultural transmission of cropping plans and start months
+    maybe-ignore-neighboring-plans            ; possibly forget what you learned from neighbors
   ]
-
-
-
 
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
   ; (worry: do any of these variables affect operation? does zeroing them bias the process? -MA)
@@ -355,7 +355,7 @@ to update-subak-months
   ]
 end
 
-to maybe-ignore-neighboring-cropplans
+to maybe-ignore-neighboring-plans
   ask subaks [
     if random-float 1 < prob-ignore-neighboring-plans [
       set SCC random (length cropplans)
@@ -588,7 +588,7 @@ to determineharvest
 end
 
 ;; A top-level procedure, not an in-subak procedure.
-to imitate-best-neighboring-cropplan
+to imitate-best-neighboring-plan
   let minharvest 0
   let maxharvest 0
   ask subaks [
@@ -1336,17 +1336,6 @@ Cropping plan colors: circle represents crop plan, square represents start month
 0.0
 1
 
-SWITCH
-3
-706
-177
-739
-shuffle-cropplans?
-shuffle-cropplans?
-0
-1
--1000
-
 OUTPUT
 1130
 24
@@ -1693,10 +1682,10 @@ modal-cropplan-seq
 11
 
 SWITCH
--1
-506
-170
-539
+0
+502
+171
+535
 global-startmonth
 global-startmonth
 1
@@ -1704,10 +1693,10 @@ global-startmonth
 -1000
 
 TEXTBOX
-3
-543
-153
-571
+4
+538
+154
+566
 If true, all subaks use same random start month.
 11
 0.0
@@ -1936,16 +1925,6 @@ TEXTBOX
 1706
 703
 [3 3 3 0 0 0 0 2 2 2 2 0]
-11
-0.0
-1
-
-TEXTBOX
-4
-742
-309
-772
-It shouldn't matter whether the cropplan sequence is reordered, but in the past, bugs made it matter.
 11
 0.0
 1
