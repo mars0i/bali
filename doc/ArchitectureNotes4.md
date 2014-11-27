@@ -60,3 +60,34 @@ month.
 Not sure that random choice is really completely realistic, since real
 greed/bhutakala/etc. would be more systematic.  It's not *really* like
 random mutation.
+
+------------
+
+I had started to view the analogies as biasing transmission.  i.e.
+they are pushing in the same direction as the success bias.
+
+But it's not just that.  The analogies are what make the religious
+stuff suppress the noise.  Because if you identify the processes
+involved in rice-growing with the religious stuff, then there is a lot
+more weight and force to the way in which the system will push back
+when you defect.  And it just is wrong to defect--morally as well as
+prudentially.  And it *feels* right to not defect.  All of that
+together.
+
+So the *reason* that the analogy bias pushes in the same direction as
+the success bias is *because of the analogy*.
+
+So the logic (if not the temporal sequence) is this:
+
+> There's an initial, weak analogy bias.  Then there is
+> believing both sides of the analogy.  Then there is
+> *identification* of both sides of the analogy.  Then as a result
+> there is noise-suppression.  Then that creates success, which
+> generates success-bias, so the analogy spreads.
+
+(It's not the temporal sequence, probably, because the people were
+already doing this sort of identification.  What the analogy does is
+to create a new identification.)
+
+(This may be more complex than what I had previously planned to model.
+Think about it.)
