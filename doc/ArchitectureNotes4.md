@@ -91,3 +91,9 @@ to create a new identification.)
 
 (This may be more complex than what I had previously planned to model.
 Think about it.)
+
+In the NetLogo-popco model, this suppression as a result of
+identification is why I might want to make suppression simply a
+function of the religious beliefs.  (Or maybe their analogical worldly
+beliefs.)  Because it's the identification that gives the religious
+beliefs their immediate effect.
