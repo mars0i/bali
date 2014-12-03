@@ -1211,10 +1211,10 @@ NIL
 HORIZONTAL
 
 PLOT
-803
-15
-1128
-247
+802
+16
+1127
+248
 Harvest
 NIL
 NIL
@@ -1586,9 +1586,9 @@ cropplan-u
 
 MONITOR
 1130
-362
-1224
-407
+370
+1225
+416
 modal cropplan
 modal-cropplan
 17
@@ -1681,9 +1681,9 @@ NIL
 1
 
 MONITOR
-1229
+1226
 372
-1378
+1375
 417
 NIL
 modal-cropplan-seq
@@ -1968,8 +1968,8 @@ prob-ignore-neighboring-plans
 prob-ignore-neighboring-plans
 0
 1
-0.69
-0.01
+0
+0.001
 1
 NIL
 HORIZONTAL
