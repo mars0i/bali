@@ -1088,6 +1088,16 @@ to set-cropplans-on
   set cropplan-u true
 end
 
+;; Turn off crop plans that use the high-yield rice variety (#3); leave on the others.
+to traditional-cropplans
+  set-cropplans-off
+  set cropplan-g true
+  set cropplan-j true
+  set cropplan-k true
+  set cropplan-l true
+  set cropplan-m true
+end
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; General-purpose utilities
 
@@ -1179,7 +1189,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.21
+2.2
 0.01
 1
 NIL
@@ -1194,7 +1204,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1.01
+1
 0.01
 1
 NIL
@@ -1361,7 +1371,7 @@ SWITCH
 82
 cropplan-b
 cropplan-b
-0
+1
 1
 -1000
 
@@ -1372,7 +1382,7 @@ SWITCH
 115
 cropplan-c
 cropplan-c
-0
+1
 1
 -1000
 
@@ -1383,7 +1393,7 @@ SWITCH
 148
 cropplan-d
 cropplan-d
-0
+1
 1
 -1000
 
@@ -1394,7 +1404,7 @@ SWITCH
 181
 cropplan-e
 cropplan-e
-0
+1
 1
 -1000
 
@@ -1405,7 +1415,7 @@ SWITCH
 214
 cropplan-f
 cropplan-f
-0
+1
 1
 -1000
 
@@ -1427,7 +1437,7 @@ SWITCH
 280
 cropplan-h
 cropplan-h
-0
+1
 1
 -1000
 
@@ -1438,7 +1448,7 @@ SWITCH
 313
 cropplan-i
 cropplan-i
-0
+1
 1
 -1000
 
@@ -1493,7 +1503,7 @@ SWITCH
 478
 cropplan-n
 cropplan-n
-0
+1
 1
 -1000
 
@@ -1504,7 +1514,7 @@ SWITCH
 511
 cropplan-o
 cropplan-o
-0
+1
 1
 -1000
 
@@ -1515,7 +1525,7 @@ SWITCH
 544
 cropplan-p
 cropplan-p
-0
+1
 1
 -1000
 
@@ -1526,7 +1536,7 @@ SWITCH
 577
 cropplan-q
 cropplan-q
-0
+1
 1
 -1000
 
@@ -1537,7 +1547,7 @@ SWITCH
 610
 cropplan-r
 cropplan-r
-0
+1
 1
 -1000
 
@@ -1548,7 +1558,7 @@ SWITCH
 643
 cropplan-s
 cropplan-s
-0
+1
 1
 -1000
 
@@ -1559,7 +1569,7 @@ SWITCH
 676
 cropplan-t
 cropplan-t
-0
+1
 1
 -1000
 
@@ -1570,7 +1580,7 @@ SWITCH
 709
 cropplan-u
 cropplan-u
-0
+1
 1
 -1000
 
@@ -1654,10 +1664,10 @@ NIL
 1
 
 BUTTON
-1305
-450
-1385
-484
+1306
+454
+1386
+488
 cropplans off
 set-cropplans-off
 NIL
@@ -1972,6 +1982,23 @@ TEXTBOX
 Probability of choosing a new crop plan, and/or of choosing a new start month, ignoring neighbors:
 11
 0.0
+1
+
+BUTTON
+1306
+489
+1386
+523
+trad plans
+traditional-cropplans
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
 1
 
 @#$#@#$#@
