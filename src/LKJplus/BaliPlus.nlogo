@@ -41,8 +41,8 @@ subaks-own [
   SCC ;Subak's crop plan
   sd ; start date (month).  This is an offset added to the actual month (in global month).
   mip ; "month in progress" or "month in plan"? mip is always = sd + the global var month  (Note never init'ed just takes default val of 0.)
-  SCCc; help variable during imitation process ("c" means "copy"?)
-  sdc ;help variable during imitation process  ("c" means "copy"?)
+  new-SCC; help variable during imitation process
+  new-sd ;help variable during imitation process
   pests 
   nMS ; counter for number of subaks in masceti  ; <- Janssen's comment.  Variable appears to be UNUSED.
   MS ; masceti (i.e. temple group: a group of subaks)  ; <- Janssen's comment.  Variable appears to be UNUSED.
@@ -594,12 +594,15 @@ to imitate-best-neighboring-plans
   ask subaks [
     ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
     if (crop <= 3) [; only those growing rice or fallow will imitiate.
-      let bestneighbor find-best-neighbor
-      if bestneighbor != self [
-        set SCC [SCC] of bestneighbor ; copy cropping plan
-        set sd [sd] of bestneighbor   ; copy start month
-      ]
+      let bestneighbor find-best-neighbor  ; note bestneighbor might be self
+      set new-SCC [SCC] of bestneighbor ; copy cropping plan
+      set new-sd [sd] of bestneighbor   ; copy start month
     ]
+  ]
+  
+  ask subaks [
+    set SCC new-SCC
+    set sd new-sd
   ]
 end
 
@@ -634,8 +637,8 @@ end
 ;      set maxharvest minharvest  ; set maxharvest to my total harvest for the year
 ;
 ;      ;; Do this here rather than in the foreach, as in earlier version, so that it also happens to subaks who are nobody's neighbors:
-;      set SCCc SCC ; store my current cropplan in temporary copy
-;      set sdc sd   ; store my current start month in temporary copy
+;      set new-SCC SCC ; store my current cropplan in temporary copy
+;      set new-sd sd   ; store my current start month in temporary copy
 ;  
 ;      foreach pestneighbors [
 ;        ask ? [
@@ -647,17 +650,20 @@ end
 ;
 ;        if maxharvest > minharvest [  ; if I found a neighbor who did better than I did
 ;          ;show (word "found better - mine: " ([SCC] of asker) ":" ([sd] of asker) ", neighbor's: " ([SCC] of ?) ":" ([sd] of ?))
-;          set SCCc [SCC] of bestneighbor ; copy its cropping plan
-;          set sdc [sd] of bestneighbor   ; and its start month
+;          set new-SCC [SCC] of bestneighbor ; copy its cropping plan
+;          set new-sd [sd] of bestneighbor   ; and its start month
 ;        ] ; removed 'else' that was here; it's now done by default before the foreach
 ;      ] ; foreach
 ;    ] ; if
 ;  ] ; ask
 ;
+;  ;; I think that Janssen split the preceding and the following in order to make update happen in parallel.
+;  ;; Otherwise, y might copy x, and then z might copy y's *new* value that it just got from x.
+;
 ;  ; now, in each subak move its temporary copied values to its own operational variables, and update the UI if necessary
 ;  ask subaks [
-;     set SCC SCCc
-;     set sd sdc
+;     set SCC new-SCC
+;     set sd new-sd
 ;     if Color_subaks = "cropping plans" [
 ;       display-cropping-plan ; new version ; original version: set color SCC * 6 + sd
 ;     ]
