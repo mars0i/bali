@@ -306,8 +306,9 @@ to go
     set totpestloss totpestloss / totpestlossarea ; average loss due to pests
     set totWS totWS / totWSarea                   ; average water stress
     plot-figs                                     ; UI plots
-    imitate-best-neighboring-plan                          ; cultural transmission of cropping plans and start months
-    maybe-ignore-neighboring-plans            ; possibly forget what you learned from neighbors
+    imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
+    maybe-ignore-neighboring-plans                ; possibly forget what you learned from neighbors and do something else
+    if Color_subaks = "cropping plans" [ask subaks [display-cropping-plan]]
   ]
 
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
@@ -587,49 +588,81 @@ to determineharvest
     ] ; ask
 end
 
+
 ;; A top-level procedure, not an in-subak procedure.
-to imitate-best-neighboring-plan
-  let minharvest 0
-  let maxharvest 0
+to imitate-best-neighboring-plans
   ask subaks [
     ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
-
-    if (crop <= 3) [; only those growing rice or fallow will imitiate.  
-      let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
-      set minharvest pyharvestha ; set minharvest to my total harvest for the year
-      set maxharvest minharvest  ; set maxharvest to my total harvest for the year
-
-      ;; Do this here rather than in the foreach, as in earlier version, so that it also happens to subaks who are nobody's neighbors:
-      set SCCc SCC ; store my current cropplan in temporary copy
-      set sdc sd   ; store my current start month in temporary copy
-	
-      foreach pestneighbors [
-	      ask ? [
-	        if pyharvestha > maxharvest [ ; if your total harvest for the year is more than anyone else's so far. (note pyharvestha here is the *neighbor*'s var)
-               set maxharvest pyharvestha  ; then my new max so far will be that value (maxharvest is a local outside of all subaks that we're using temporarily here)
-               set bestneighbor self       ; and you will be my best neighbor so far (bestneighbor is local defined within the outer ask)
-	        ]
-        ]
-
-        if maxharvest > minharvest [  ; if I found a neighbor who did better than I did
-          ;show (word "found better - mine: " ([SCC] of asker) ":" ([sd] of asker) ", neighbor's: " ([SCC] of ?) ":" ([sd] of ?))
-          set SCCc [SCC] of bestneighbor ; copy its cropping plan
-          set sdc [sd] of bestneighbor   ; and its start month
-	      ] ; removed 'else' that was here; it's now done by default before the foreach
-      ] ; foreach
-    ] ; if
-  ] ; ask
-
-  ; now, in each subak move its temporary copied values to its own operational variables, and update the UI if necessary
-  ask subaks [
-     set SCC SCCc
-     set sd sdc
-     if Color_subaks = "cropping plans" [
-       display-cropping-plan ; new version ; original version: set color SCC * 6 + sd
-     ]
+    if (crop <= 3) [; only those growing rice or fallow will imitiate.
+      let bestneighbor find-best-neighbor
+      if bestneighbor != self [
+        set SCC [SCC] of bestneighbor ; copy cropping plan
+        set sd [sd] of bestneighbor   ; copy start month
+      ]
+    ]
   ]
 end
 
+;; A subak-local procedure
+to-report find-best-neighbor
+  let bestneighbor self       ; until I learn of someone better, I'll consider myself to be my best "neighbor".
+  let bestharvest pyharvestha ; set bestharvest to my total harvest for the year
+
+  foreach pestneighbors [
+    ask ? [
+      if pyharvestha > bestharvest [   ; if your total harvest for the year is more than anyone else's so far ... (note pyharvestha here is the *neighbor*'s var)
+           set bestharvest pyharvestha ; then my new best so far will be that value
+           set bestneighbor self       ; and you will be my best neighbor so far
+      ]
+    ] 
+  ]
+  
+  report bestneighbor
+end
+
+
+;; OLD VERSION taken from the bugfix/enhancements single-channel no-noise version of LKJ
+;to imitate-best-neighboring-plan
+;  let minharvest 0
+;  let maxharvest 0
+;  ask subaks [
+;    ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
+;
+;    if (crop <= 3) [; only those growing rice or fallow will imitiate.  
+;      let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
+;      set minharvest pyharvestha ; set minharvest to my total harvest for the year
+;      set maxharvest minharvest  ; set maxharvest to my total harvest for the year
+;
+;      ;; Do this here rather than in the foreach, as in earlier version, so that it also happens to subaks who are nobody's neighbors:
+;      set SCCc SCC ; store my current cropplan in temporary copy
+;      set sdc sd   ; store my current start month in temporary copy
+;  
+;      foreach pestneighbors [
+;        ask ? [
+;          if pyharvestha > maxharvest [ ; if your total harvest for the year is more than anyone else's so far. (note pyharvestha here is the *neighbor*'s var)
+;               set maxharvest pyharvestha  ; then my new max so far will be that value (maxharvest is a local outside of all subaks that we're using temporarily here)
+;               set bestneighbor self       ; and you will be my best neighbor so far (bestneighbor is local defined within the outer ask)
+;          ]
+;        ]
+;
+;        if maxharvest > minharvest [  ; if I found a neighbor who did better than I did
+;          ;show (word "found better - mine: " ([SCC] of asker) ":" ([sd] of asker) ", neighbor's: " ([SCC] of ?) ":" ([sd] of ?))
+;          set SCCc [SCC] of bestneighbor ; copy its cropping plan
+;          set sdc [sd] of bestneighbor   ; and its start month
+;        ] ; removed 'else' that was here; it's now done by default before the foreach
+;      ] ; foreach
+;    ] ; if
+;  ] ; ask
+;
+;  ; now, in each subak move its temporary copied values to its own operational variables, and update the UI if necessary
+;  ask subaks [
+;     set SCC SCCc
+;     set sd sdc
+;     if Color_subaks = "cropping plans" [
+;       display-cropping-plan ; new version ; original version: set color SCC * 6 + sd
+;     ]
+;  ]
+;end
 
 ;; subak routine
 to display-cropping-plan
@@ -1337,10 +1370,10 @@ TEXTBOX
 1
 
 TEXTBOX
-354
-652
-831
-670
+279
+694
+756
+712
 Cropping plan colors: circle represents crop plan, square represents start month.
 11
 0.0
@@ -1360,7 +1393,7 @@ SWITCH
 49
 cropplan-a
 cropplan-a
-1
+0
 1
 -1000
 
@@ -1371,7 +1404,7 @@ SWITCH
 82
 cropplan-b
 cropplan-b
-1
+0
 1
 -1000
 
@@ -1382,7 +1415,7 @@ SWITCH
 115
 cropplan-c
 cropplan-c
-1
+0
 1
 -1000
 
@@ -1393,7 +1426,7 @@ SWITCH
 148
 cropplan-d
 cropplan-d
-1
+0
 1
 -1000
 
@@ -1404,7 +1437,7 @@ SWITCH
 181
 cropplan-e
 cropplan-e
-1
+0
 1
 -1000
 
@@ -1415,7 +1448,7 @@ SWITCH
 214
 cropplan-f
 cropplan-f
-1
+0
 1
 -1000
 
@@ -1437,7 +1470,7 @@ SWITCH
 280
 cropplan-h
 cropplan-h
-1
+0
 1
 -1000
 
@@ -1448,7 +1481,7 @@ SWITCH
 313
 cropplan-i
 cropplan-i
-1
+0
 1
 -1000
 
@@ -1503,7 +1536,7 @@ SWITCH
 478
 cropplan-n
 cropplan-n
-1
+0
 1
 -1000
 
@@ -1514,7 +1547,7 @@ SWITCH
 511
 cropplan-o
 cropplan-o
-1
+0
 1
 -1000
 
@@ -1525,7 +1558,7 @@ SWITCH
 544
 cropplan-p
 cropplan-p
-1
+0
 1
 -1000
 
@@ -1536,7 +1569,7 @@ SWITCH
 577
 cropplan-q
 cropplan-q
-1
+0
 1
 -1000
 
@@ -1547,7 +1580,7 @@ SWITCH
 610
 cropplan-r
 cropplan-r
-1
+0
 1
 -1000
 
@@ -1558,7 +1591,7 @@ SWITCH
 643
 cropplan-s
 cropplan-s
-1
+0
 1
 -1000
 
@@ -1569,7 +1602,7 @@ SWITCH
 676
 cropplan-t
 cropplan-t
-1
+0
 1
 -1000
 
@@ -1580,7 +1613,7 @@ SWITCH
 709
 cropplan-u
 cropplan-u
-1
+0
 1
 -1000
 
@@ -1588,7 +1621,7 @@ MONITOR
 1130
 370
 1225
-416
+415
 modal cropplan
 modal-cropplan
 17
@@ -1940,10 +1973,10 @@ TEXTBOX
 1
 
 TEXTBOX
-354
-668
-735
-686
+279
+710
+660
+728
 Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.
 11
 0.0
@@ -1960,9 +1993,9 @@ crop plans in this run:
 1
 
 SLIDER
--3
+0
 653
-334
+801
 686
 prob-ignore-neighboring-plans
 prob-ignore-neighboring-plans
