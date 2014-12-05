@@ -28,8 +28,6 @@ breed [subakdams subakdam]     ; Links from dams to the subaks to which they can
 breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine which subaks' cropping patterns can be copied, and how pests spread.
                                ; Note that these are one-way links, so in order for communication to go in both directions, two subaksubaks are needed.
 
-
-
 subaks-own [
   old? 
   stillgrowing 
@@ -64,6 +62,8 @@ subaks-own [
   totLoss 
   source ; dam from which I get water (?)
   return ; dam to which I send leftover water (?)
+  spiritual-type ; a number in [0,1]: peasant-style religious values 1 vs. Brahmanic religious values 0
+  new-spiritual-type ; newly copied type--so that update is parallel
 ]
 
 dams-own [flow0 flow elevation 
@@ -275,7 +275,8 @@ to setup
     cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?). Note we use sd here since initially, mip = sd. In go we use mip.
     ricestageplan SCC sd
     if Color_subaks = "cropping plans"  ; added by Marshall. changes apparently irrelevant coloring above.
-       [display-cropping-plan] 
+       [display-cropping-plan]
+    set spiritual-type random-float 1 
     let subak1 self
     ask subaks [
       if [source] of self = [source] of subak1                   ; if subak1 and I get water from the same dam (source)
@@ -306,6 +307,7 @@ to go
     set totpestloss totpestloss / totpestlossarea ; average loss due to pests
     set totWS totWS / totWSarea                   ; average water stress
     plot-figs                                     ; UI plots
+    imitate-spiritual-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
     maybe-ignore-neighboring-plans                ; possibly forget what you learned from neighbors and do something else
     if Color_subaks = "cropping plans" [ask subaks [display-cropping-plan]]
@@ -356,14 +358,6 @@ to update-subak-months
   ]
 end
 
-to maybe-ignore-neighboring-plans
-  ask subaks [
-    if random-float 1 < prob-ignore-neighboring-plans [
-      set SCC random (length cropplans)
-      set sd random 12
-    ]
-  ]
-end
 
 to-report filter-plans [plans]
   if not is-list? cropplan-bools [error (word "croppplan-bools has value: " cropplan-bools)]
@@ -589,6 +583,19 @@ to determineharvest
 end
 
 
+to maybe-ignore-neighboring-plans
+  ask subaks [
+    if (spiritual-influence (random-float 1) spiritual-type) < prob-ignore-neighboring-plans [
+      set SCC random (length cropplans)
+      set sd random 12
+    ]
+  ]
+end
+
+to-report spiritual-influence [erraticness sp-type]
+  report min (list 1 (erraticness + sp-type))
+end
+
 ;; A top-level procedure, not an in-subak procedure.
 to imitate-best-neighboring-plans
   ask subaks [
@@ -669,6 +676,22 @@ end
 ;     ]
 ;  ]
 ;end
+
+;; wrapper for alternative cultural transmission schemes
+to imitate-spiritual-types
+  imitate-spiritual-types-pestneighbors
+end
+
+to imitate-spiritual-types-pestneighbors
+  ask subaks [
+    let bestneighbor find-best-neighbor  ; note bestneighbor might be self
+    set new-spiritual-type [spiritual-type] of bestneighbor
+  ]
+  
+  ask subaks [
+    set spiritual-type new-spiritual-type
+  ]
+end
 
 ;; subak routine
 to display-cropping-plan
@@ -1388,9 +1411,9 @@ Cropping plan colors: circle represents crop plan, square represents start month
 OUTPUT
 1130
 24
-1366
-369
-9
+1383
+370
+8
 
 SWITCH
 1393
@@ -1623,33 +1646,11 @@ cropplan-u
 1
 -1000
 
-MONITOR
-1130
-370
-1225
-415
-modal cropplan
-modal-cropplan
-17
-1
-11
-
-MONITOR
-1130
-416
-1301
-461
-# subaks with modal cropplan
-num-with-modal-cropplan
-17
-1
-11
-
 PLOT
-1130
-552
+1129
+655
 1349
-699
+775
 crop plan distribution
 NIL
 NIL
@@ -1663,33 +1664,11 @@ false
 PENS
 "default" 1.0 1 -16777216 true "" "histogram [SCC] of subaks"
 
-MONITOR
-1130
-460
-1257
-505
-modal start month
-modal-start-month
-17
-1
-11
-
-MONITOR
-1130
-506
-1300
-551
-# subaks with modal month
-num-with-modal-month
-17
-1
-11
-
 BUTTON
-1305
-418
-1385
-451
+1352
+710
+1439
+744
 cropplans on
 set-cropplans-on
 NIL
@@ -1703,10 +1682,10 @@ NIL
 1
 
 BUTTON
-1306
-454
-1386
-488
+1438
+710
+1530
+744
 cropplans off
 set-cropplans-off
 NIL
@@ -1719,22 +1698,11 @@ NIL
 NIL
 1
 
-MONITOR
-1226
-372
-1375
-417
-NIL
-modal-cropplan-seq
-17
-1
-11
-
 SWITCH
 0
-502
+499
 171
-535
+532
 global-startmonth
 global-startmonth
 1
@@ -1742,10 +1710,10 @@ global-startmonth
 -1000
 
 TEXTBOX
-4
-538
-154
-566
+5
+536
+155
+564
 If true, all subaks use same random start month.
 11
 0.0
@@ -2015,19 +1983,19 @@ HORIZONTAL
 
 TEXTBOX
 3
-594
-170
-650
-Probability of choosing a new crop plan, and/or of choosing a new start month, ignoring neighbors:
+610
+171
+654
+Probability of choosing a random crop plan and/or start month, ignoring neighbors:
 11
 0.0
 1
 
 BUTTON
-1306
-489
-1386
-523
+1530
+710
+1610
+744
 trad plans
 traditional-cropplans
 NIL
@@ -2039,6 +2007,64 @@ NIL
 NIL
 NIL
 1
+
+SWITCH
+0
+570
+175
+604
+spiritual-influence?
+spiritual-influence?
+0
+1
+-1000
+
+PLOT
+1129
+534
+1351
+654
+start month distribution
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot count turtles"
+
+PLOT
+1129
+415
+1351
+535
+spiritual type distribution
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 1 -16777216 true "" "plot count turtles"
+
+MONITOR
+1129
+370
+1353
+415
+mean spiritual type
+mean [spiritual-type] of subaks
+17
+1
+11
 
 @#$#@#$#@
 ## LICENSE
