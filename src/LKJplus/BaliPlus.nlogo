@@ -27,6 +27,7 @@ breed [damsubaks damsubak]     ; Links from subaks to the dams to which they can
 breed [subakdams subakdam]     ; Links from dams to the subaks to which they can send water (?)
 breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine which subaks' cropping patterns can be copied, and how pests spread.
                                ; Note that these are one-way links, so in order for communication to go in both directions, two subaksubaks are needed.
+breed [subak-helpers subak-helper] ; no data.  just used for extra flexibility in graphical display of subak state.
 
 subaks-own [
   old? 
@@ -64,6 +65,7 @@ subaks-own [
   return ; dam to which I send leftover water (?)
   spiritual-type ; a number in [0,1]: peasant-style religious values 1 vs. Brahmanic religious values 0
   new-spiritual-type ; newly copied type--so that update is parallel
+  my-subak-helper
 ]
 
 dams-own [flow0 flow elevation 
@@ -80,6 +82,7 @@ damsubaks-own [a b distanceab]
 subakdams-own [a b distanceab]
 subaksubaks-own [a b distanceab]
 
+subak-helpers-own [my-subak]
 
 
 ;;;;;;;;;;;;;;;
@@ -99,6 +102,7 @@ to setup
   set-default-shape damsubaks "line"
   set-default-shape subakdams "line"
   set-default-shape subaksubaks "line"
+  set-default-shape subak-helpers "circle"
   set default-pcolor 6 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
 
   ask patches [set pcolor default-pcolor]
@@ -249,9 +253,17 @@ to setup
                                  ; and why don't we call ricestageplan here as well?
     set totharvestarea 0
     ;if Color_subaks = "cropping plans"         ; NOTE that since the crop plan is changed in a moment, this coloring will be inaccurate
-    ;   [display-cropping-plans] ; new version  ; so I'm going to add in this coloring code below -MA
+    ;   [display-cropping-plan-etc] ; new version  ; so I'm going to add in this coloring code below -MA
     ;   ;[set color SCC * 6 + sd] ; original Janssen version
-
+    
+    let this-subak self
+    ask patch-here [
+      sprout-subak-helpers 1 [
+        set size 0.3
+        set my-subak this-subak
+        ask this-subak [set my-subak-helper myself]
+      ]
+    ]
   ]
 
   ask dams [set flow0 flow0 * Xf * 86400]
@@ -275,7 +287,7 @@ to setup
     cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?). Note we use sd here since initially, mip = sd. In go we use mip.
     ricestageplan SCC sd
     if Color_subaks = "cropping plans"  ; added by Marshall. changes apparently irrelevant coloring above.
-       [display-cropping-plan]
+       [display-cropping-plan-etc]
     set spiritual-type random-float 1 
     let subak1 self
     ask subaks [
@@ -310,7 +322,7 @@ to go
     imitate-spiritual-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
     maybe-ignore-neighboring-plans                ; possibly forget what you learned from neighbors and do something else
-    if Color_subaks = "cropping plans" [ask subaks [display-cropping-plan]]
+    if Color_subaks = "cropping plans" [ask subaks [display-cropping-plan-etc]]
   ]
 
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
@@ -672,7 +684,7 @@ end
 ;     set SCC new-SCC
 ;     set sd new-sd
 ;     if Color_subaks = "cropping plans" [
-;       display-cropping-plan ; new version ; original version: set color SCC * 6 + sd
+;       display-cropping-plan-etc ; new version ; original version: set color SCC * 6 + sd
 ;     ]
 ;  ]
 ;end
@@ -694,16 +706,18 @@ to imitate-spiritual-types-pestneighbors
 end
 
 ;; subak routine
-to display-cropping-plan
+to display-cropping-plan-etc
   let low-scc-base-color 4
   let high-scc-base-color 6
   let sd-base-color 2
   
+  ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
+  
   if-else SCC < 14
     [set color low-scc-base-color + (10 * SCC)]         ; colors from column low-scc-base-color of swatches
     [set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
-  
-  ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
+    
+  ask my-subak-helper [set color (10 * [spiritual-type] of myself)]
   
   if-else show-subak-values
     [set label (word "[" SCC ":" sd "]")]
@@ -1251,7 +1265,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.2
+2.4
 0.01
 1
 NIL
@@ -1266,7 +1280,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1
+1.5
 0.01
 1
 NIL
@@ -1283,7 +1297,7 @@ NIL
 0.0
 10.0
 0.0
-10.0
+5.0
 true
 false
 "" ""
@@ -1311,7 +1325,7 @@ NIL
 0.0
 10.0
 0.0
-10.0
+5.0
 true
 false
 "" ""
@@ -1355,7 +1369,7 @@ CHOOSER
 Color_subaks
 Color_subaks
 "Temple groups" "cropping plans" "crops" "pests"
-1
+0
 
 SWITCH
 2
@@ -1413,7 +1427,7 @@ OUTPUT
 24
 1383
 370
-8
+11
 
 SWITCH
 1393
@@ -1422,7 +1436,7 @@ SWITCH
 49
 cropplan-a
 cropplan-a
-0
+1
 1
 -1000
 
@@ -1433,7 +1447,7 @@ SWITCH
 82
 cropplan-b
 cropplan-b
-0
+1
 1
 -1000
 
@@ -1444,7 +1458,7 @@ SWITCH
 115
 cropplan-c
 cropplan-c
-0
+1
 1
 -1000
 
@@ -1455,7 +1469,7 @@ SWITCH
 148
 cropplan-d
 cropplan-d
-0
+1
 1
 -1000
 
@@ -1466,7 +1480,7 @@ SWITCH
 181
 cropplan-e
 cropplan-e
-0
+1
 1
 -1000
 
@@ -1477,7 +1491,7 @@ SWITCH
 214
 cropplan-f
 cropplan-f
-0
+1
 1
 -1000
 
@@ -1499,7 +1513,7 @@ SWITCH
 280
 cropplan-h
 cropplan-h
-0
+1
 1
 -1000
 
@@ -1510,7 +1524,7 @@ SWITCH
 313
 cropplan-i
 cropplan-i
-0
+1
 1
 -1000
 
@@ -1565,7 +1579,7 @@ SWITCH
 478
 cropplan-n
 cropplan-n
-0
+1
 1
 -1000
 
@@ -1576,7 +1590,7 @@ SWITCH
 511
 cropplan-o
 cropplan-o
-0
+1
 1
 -1000
 
@@ -1587,7 +1601,7 @@ SWITCH
 544
 cropplan-p
 cropplan-p
-0
+1
 1
 -1000
 
@@ -1598,7 +1612,7 @@ SWITCH
 577
 cropplan-q
 cropplan-q
-0
+1
 1
 -1000
 
@@ -1609,7 +1623,7 @@ SWITCH
 610
 cropplan-r
 cropplan-r
-0
+1
 1
 -1000
 
@@ -1620,7 +1634,7 @@ SWITCH
 643
 cropplan-s
 cropplan-s
-0
+1
 1
 -1000
 
@@ -1631,7 +1645,7 @@ SWITCH
 676
 cropplan-t
 cropplan-t
-0
+1
 1
 -1000
 
@@ -1642,7 +1656,7 @@ SWITCH
 709
 cropplan-u
 cropplan-u
-0
+1
 1
 -1000
 
@@ -1657,7 +1671,7 @@ NIL
 0.0
 21.0
 0.0
-175.0
+172.0
 false
 false
 "" ""
@@ -1975,7 +1989,7 @@ prob-ignore-neighboring-plans
 prob-ignore-neighboring-plans
 0
 1
-0
+0.5
 0.001
 1
 NIL
@@ -2012,7 +2026,7 @@ SWITCH
 0
 570
 175
-604
+603
 spiritual-influence?
 spiritual-influence?
 0
@@ -2028,14 +2042,14 @@ start month distribution
 NIL
 NIL
 0.0
-10.0
+11.0
 0.0
-10.0
-true
+172.0
+false
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot count turtles"
+"default" 1.0 1 -16777216 true "" "histogram [sd] of subaks"
 
 PLOT
 1129
@@ -2046,14 +2060,14 @@ spiritual type distribution
 NIL
 NIL
 0.0
-10.0
+1.0
 0.0
-10.0
+172.0
 true
 false
-"" ""
+"set-histogram-num-bars 20" ""
 PENS
-"default" 1.0 1 -16777216 true "" "plot count turtles"
+"default" 1.0 1 -16777216 true "" "histogram [spiritual-type] of subaks"
 
 MONITOR
 1129
