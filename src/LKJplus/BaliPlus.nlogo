@@ -613,7 +613,7 @@ to imitate-best-neighboring-plans
   ask subaks [
     ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
     if (crop <= 3) [; only those growing rice or fallow will imitiate.
-      let bestneighbor find-best-neighbor  ; note bestneighbor might be self
+      let bestneighbor find-best pestneighbors  ; note bestneighbor might be self
       set new-SCC [SCC] of bestneighbor ; copy cropping plan
       set new-sd [sd] of bestneighbor   ; copy start month
     ]
@@ -626,20 +626,20 @@ to imitate-best-neighboring-plans
 end
 
 ;; A subak-local procedure
-to-report find-best-neighbor
-  let bestneighbor self       ; until I learn of someone better, I'll consider myself to be my best "neighbor".
+to-report find-best [subak-list]
+  let best self       ; until I learn of someone better, I'll consider myself to be my best "neighbor".
   let bestharvest pyharvestha ; set bestharvest to my total harvest for the year
 
-  foreach pestneighbors [
+  foreach subak-list [
     ask ? [
       if pyharvestha > bestharvest [   ; if your total harvest for the year is more than anyone else's so far ... (note pyharvestha here is the *neighbor*'s var)
            set bestharvest pyharvestha ; then my new best so far will be that value
-           set bestneighbor self       ; and you will be my best neighbor so far
+           set best self       ; and you will be my best neighbor so far
       ]
     ] 
   ]
   
-  report bestneighbor
+  report best
 end
 
 
@@ -691,13 +691,10 @@ end
 
 ;; wrapper for alternative cultural transmission schemes
 to imitate-spiritual-types
-  imitate-spiritual-types-pestneighbors
-end
-
-to imitate-spiritual-types-pestneighbors
   ask subaks [
-    let bestneighbor find-best-neighbor  ; note bestneighbor might be self
-    set new-spiritual-type [spiritual-type] of bestneighbor
+    ;let best find-best pestneighbors  ; note bestneighbor might be self
+    let best find-best [self] of (n-of 10 subaks) ; EXPERIMENTAL
+    set new-spiritual-type [spiritual-type] of best
   ]
   
   ask subaks [
@@ -1265,7 +1262,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.4
+2.2
 0.01
 1
 NIL
@@ -1280,7 +1277,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1.5
+1
 0.01
 1
 NIL
@@ -1369,7 +1366,7 @@ CHOOSER
 Color_subaks
 Color_subaks
 "Temple groups" "cropping plans" "crops" "pests"
-0
+1
 
 SWITCH
 2
@@ -1989,7 +1986,7 @@ prob-ignore-neighboring-plans
 prob-ignore-neighboring-plans
 0
 1
-0.5
+0
 0.001
 1
 NIL
@@ -2029,7 +2026,7 @@ SWITCH
 603
 spiritual-influence?
 spiritual-influence?
-0
+1
 1
 -1000
 
