@@ -33,7 +33,7 @@ subaks-own [
   old? 
   stillgrowing 
   dpests ; deprecated: used in old vesion of one procedure, so I changed it to a local var, now called newpests -MA
-  pestneighbors 
+  pestneighbors ; agentset (formerly list) of neighbors to/from which pests can travel. Also default cropplan/startmonth transmission network.
   damneighbors 
   totharvestarea 
   area 
@@ -544,7 +544,7 @@ to growpest
 
     ask subaks [  ; for each neighbor, sum diff tween its pests and my pests into sumpestdif:
       let pestdif 0         ; temp var for diff with another subak's pests (formerly cN)
-      ifelse member? subak1 pestneighbors   ; CONSIDER SIMPLIFYING by making pestneighbors into an agentset.
+      ifelse member? subak1 pestneighbors
         [set pestdif pests - [pests] of subak1]
         [set pestdif 0]
       set sumpestdif sumpestdif + pestdif]
@@ -626,22 +626,37 @@ to imitate-best-neighboring-plans
 end
 
 ;; A subak-local procedure
-to-report find-best [subak-list]
+to-report find-best [subak-set]
   let best self       ; until I learn of someone better, I'll consider myself to be my best "neighbor".
   let bestharvest pyharvestha ; set bestharvest to my total harvest for the year
 
-  foreach subak-list [
-    ask ? [
-      if pyharvestha > bestharvest [   ; if your total harvest for the year is more than anyone else's so far ... (note pyharvestha here is the *neighbor*'s var)
-           set bestharvest pyharvestha ; then my new best so far will be that value
-           set best self       ; and you will be my best neighbor so far
-      ]
-    ] 
+  ask subak-set [
+    if pyharvestha > bestharvest [   ; if your total harvest for the year is more than anyone else's so far ... (note pyharvestha here is the *neighbor*'s var)
+         set bestharvest pyharvestha ; then my new best so far will be that value
+         set best self       ; and you will be my best neighbor so far
+    ]
   ]
   
   report best
 end
 
+;; Old list-based version
+;;; A subak-local procedure
+;to-report find-best [subak-list]
+;  let best self       ; until I learn of someone better, I'll consider myself to be my best "neighbor".
+;  let bestharvest pyharvestha ; set bestharvest to my total harvest for the year
+;
+;  foreach subak-list [
+;    ask ? [
+;      if pyharvestha > bestharvest [   ; if your total harvest for the year is more than anyone else's so far ... (note pyharvestha here is the *neighbor*'s var)
+;           set bestharvest pyharvestha ; then my new best so far will be that value
+;           set best self       ; and you will be my best neighbor so far
+;      ]
+;    ] 
+;  ]
+;  
+;  report best
+;end
 
 ;; OLD VERSION taken from the bugfix/enhancements single-channel no-noise version of LKJ
 ;to imitate-best-neighboring-plan
@@ -693,7 +708,7 @@ end
 to imitate-spiritual-types
   ask subaks [
     ;let best find-best pestneighbors  ; note bestneighbor might be self
-    let best find-best [self] of (n-of 10 subaks) ; EXPERIMENTAL
+    let best find-best n-of 10 subaks ; EXPERIMENTAL
     set new-spiritual-type [spiritual-type] of best
   ]
   
@@ -821,7 +836,8 @@ to load-data
       set area item 3 ? 
       set masceti item 4 ? 
       set ulunswi item 5 ? ; what is this? (?)
-      set pestneighbors [] 
+      ;set pestneighbors []
+      set pestneighbors no-turtles
       set damneighbors [] 
       set subaks_array lput self subaks_array ; will be overwritten in go soon after this is called, but not before being used in its present form below.
       if Color_subaks = "Temple groups" [
@@ -1044,7 +1060,8 @@ to make-subaksubak [s1 s2]
     set b s2
     reposition-edges
   ]
-  ask s1 [set pestneighbors lput s2 pestneighbors] ; Note this makes it a one-way link
+  ;ask s1 [set pestneighbors lput s2 pestneighbors] ; Note this makes it a one-way link
+  ask s1 [set pestneighbors (turtle-set s2 pestneighbors)] ; Note this makes it a one-way link  
 end
 
 ;; I think:
@@ -1424,7 +1441,7 @@ OUTPUT
 24
 1383
 370
-11
+10
 
 SWITCH
 1393
