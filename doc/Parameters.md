@@ -44,3 +44,22 @@ that means that `pestdispersal-rate` should range from 0.18/0.3 to
 the text equivalent to `pestdispersal-rate`=1.0.  This is in fact
 exactly the way that Janssen set up the `pestdispersal-rate` slider in
 the NetLogo model.
+
+-------
+
+A good set of parameters for demonstrating the effect of religious
+values in the NetLogo-only model as of 12/8/2014 (in which religious
+damping of noise is done by multiplication):
+
+	pestgrowth-rate: 2.4 (the max)
+	pestdispersal-rate: 1.5 (the max)
+	rainfall-scenario: middle
+	prob-ignore-neighboring-plans: 0 initially, then 0.5
+	spiritual-tran-stddev 0.02
+	all cropplans available
+
+This works--you can see the effect of changing
+`prob-ignore-neighboring-plans` from 0 to 0.5, and you can see the
+effect in the latter case of turning on
+`spiritual-influence?`--despite the prescence of the 3-planting
+high-yield cropplan.
