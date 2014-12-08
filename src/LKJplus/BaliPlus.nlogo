@@ -594,9 +594,10 @@ to determineharvest
     ] ; ask
 end
 
-to maybe-ignore-neighboring-plans
-  ask subaks [
-    if random-float 1 < (prob-ignore-neighboring-plans * spiritual-type) [  ; The closer spiritual-influence is to 0, the less probable ignoring best neighbor is
+to maybe-ignore-neighboring-plans  ask subaks [
+    ; The closer spiritual-influence is to 0, the less probable ignoring best neighbor is:
+    let prob-ignore prob-ignore-neighboring-plans * (ifelse-value spiritual-influence? [spiritual-type] [1])
+    if random-float 1 < prob-ignore [  
       set SCC random (length cropplans)
       set sd random 12
     ]
@@ -712,15 +713,15 @@ end
 ;  ]
 ;end
 
-;; wrapper for alternative cultural transmission schemes
+
 to imitate-spiritual-types
   ask subaks [
     ;let best find-best pestneighbors  ; note bestneighbor might be self
     ;let best find-best n-of 10 subaks ; EXPERIMENTAL
     let best find-best (turtle-set pestneighbors (n-of 5 subaks)) ; EXPERIMENTAL
     set new-spiritual-type ([spiritual-type] of best) + (random-normal 0 spiritual-tran-stddev)
-    if new-spiritual-type > 1  [set new-spiritual-type 1]
-    if new-spiritual-type < -1 [set new-spiritual-type -1]
+    if new-spiritual-type > 1 [ set new-spiritual-type 1]
+    if new-spiritual-type < 0 [set new-spiritual-type 0]
   ]
   
   ask subaks [
@@ -1290,7 +1291,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.2
+2.4
 0.01
 1
 NIL
@@ -1305,7 +1306,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1
+1.5
 0.01
 1
 NIL
@@ -2004,7 +2005,7 @@ prob-ignore-neighboring-plans
 prob-ignore-neighboring-plans
 0
 1
-0.93
+0.5
 0.01
 1
 NIL
@@ -2103,8 +2104,8 @@ SLIDER
 spiritual-tran-stddev
 spiritual-tran-stddev
 0
-0.5
-0
+1.0
+0.02
 0.0025
 1
 NIL
