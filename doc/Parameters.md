@@ -47,9 +47,11 @@ the NetLogo model.
 
 -------
 
-A good set of parameters for demonstrating the effect of religious
-values in the NetLogo-only model as of 12/8/2014 (in which religious
-damping of noise is done by multiplication):
+A good set of parameters for demonstrating the effect of  spiritual
+values in the NetLogo-only model as of 12/8/2014 (in which spiritual
+damping of noise is done by multiplication, and spiritual transmission
+is from `pestneighbors` plus 5 subaks randomly chosen from the entire
+population (note that's usually more than the number of pestneighbors)):
 
 	pestgrowth-rate: 2.4 (the max)
 	pestdispersal-rate: 1.5 (the max)
