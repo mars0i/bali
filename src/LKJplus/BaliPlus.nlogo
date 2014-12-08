@@ -1448,10 +1448,10 @@ Cropping plan colors: circle represents crop plan, square represents start month
 1
 
 OUTPUT
-1130
+1129
 24
-1383
-370
+1382
+339
 10
 
 SWITCH
@@ -1461,7 +1461,7 @@ SWITCH
 49
 cropplan-a
 cropplan-a
-1
+0
 1
 -1000
 
@@ -1472,7 +1472,7 @@ SWITCH
 82
 cropplan-b
 cropplan-b
-1
+0
 1
 -1000
 
@@ -1483,7 +1483,7 @@ SWITCH
 115
 cropplan-c
 cropplan-c
-1
+0
 1
 -1000
 
@@ -1494,7 +1494,7 @@ SWITCH
 148
 cropplan-d
 cropplan-d
-1
+0
 1
 -1000
 
@@ -1505,7 +1505,7 @@ SWITCH
 181
 cropplan-e
 cropplan-e
-1
+0
 1
 -1000
 
@@ -1516,7 +1516,7 @@ SWITCH
 214
 cropplan-f
 cropplan-f
-1
+0
 1
 -1000
 
@@ -1538,7 +1538,7 @@ SWITCH
 280
 cropplan-h
 cropplan-h
-1
+0
 1
 -1000
 
@@ -1549,7 +1549,7 @@ SWITCH
 313
 cropplan-i
 cropplan-i
-1
+0
 1
 -1000
 
@@ -1604,7 +1604,7 @@ SWITCH
 478
 cropplan-n
 cropplan-n
-1
+0
 1
 -1000
 
@@ -1615,7 +1615,7 @@ SWITCH
 511
 cropplan-o
 cropplan-o
-1
+0
 1
 -1000
 
@@ -1626,7 +1626,7 @@ SWITCH
 544
 cropplan-p
 cropplan-p
-1
+0
 1
 -1000
 
@@ -1637,7 +1637,7 @@ SWITCH
 577
 cropplan-q
 cropplan-q
-1
+0
 1
 -1000
 
@@ -1648,7 +1648,7 @@ SWITCH
 610
 cropplan-r
 cropplan-r
-1
+0
 1
 -1000
 
@@ -1659,7 +1659,7 @@ SWITCH
 643
 cropplan-s
 cropplan-s
-1
+0
 1
 -1000
 
@@ -1670,7 +1670,7 @@ SWITCH
 676
 cropplan-t
 cropplan-t
-1
+0
 1
 -1000
 
@@ -1681,15 +1681,15 @@ SWITCH
 709
 cropplan-u
 cropplan-u
-1
+0
 1
 -1000
 
 PLOT
 1129
-655
+624
 1349
-775
+744
 crop plan distribution
 NIL
 NIL
@@ -1706,9 +1706,9 @@ PENS
 BUTTON
 1352
 710
-1439
+1428
 744
-cropplans on
+all plans on
 set-cropplans-on
 NIL
 1
@@ -1721,11 +1721,11 @@ NIL
 1
 
 BUTTON
-1438
+1428
 710
-1530
+1502
 744
-cropplans off
+all plans off
 set-cropplans-off
 NIL
 1
@@ -2021,11 +2021,11 @@ Probability of choosing a random crop plan and/or start month, ignoring neighbor
 1
 
 BUTTON
-1530
-710
-1610
-744
-trad plans
+1501
+709
+1601
+743
+trad plans only
 traditional-cropplans
 NIL
 1
@@ -2050,9 +2050,9 @@ spiritual-influence?
 
 PLOT
 1129
-534
+503
 1351
-654
+623
 start month distribution
 NIL
 NIL
@@ -2068,9 +2068,9 @@ PENS
 
 PLOT
 1129
-415
+384
 1351
-535
+504
 spiritual type distribution
 NIL
 NIL
@@ -2086,9 +2086,9 @@ PENS
 
 MONITOR
 1129
-370
+339
 1353
-415
+384
 mean spiritual type
 mean [spiritual-type] of subaks
 17
