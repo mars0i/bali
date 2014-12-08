@@ -25,7 +25,8 @@ copying, so that selection for higher values becomes difficult.
 
 2. Transmit or change to a completely random value, with the same
    distribution as during initialization.  This would represent
-   influence from outside the system.
+   influence from outside the system, or a beneficial/deleterious
+   mutation.
 
 3. Periodically introduce extremal values.  This would probably have
    to be combined with #1.  This again would represent influence from
@@ -46,13 +47,17 @@ Network options might be configurable, at least in part, via the UI.
    and by chance can fix on a suboptimal value, so it must be combined
    with one of the mutation options.
 
-3. Learn from those connected to the same dam, both upstream and
+3. Learn from members of the same masceti, i.e. multi-subak temple
+   group.  These can include completely isolated subaks, but the big
+   pestneighbor net in the lower left contains several temple groups.
+
+4. Learn from those connected to the same dam, both upstream and
    downstream.  I think this is in the subak variable damneighbors.
    Note that there is much less isolation along this network.  There
    are two distinct watersheds that are not connected, but within each
    watershed, there are no isolated nets.
 
-4. Some (configurable) mixture of the above options.  e.g. mostly with
+5. Some (configurable) mixture of the above options.  e.g. mostly with
    pestneighbors, but globally with a small probability.  Or best from
    some maximum number of the set in question.
 
