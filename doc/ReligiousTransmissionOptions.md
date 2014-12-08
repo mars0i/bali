@@ -75,8 +75,7 @@ little more flexible.
 However, if you don't allow radical change--e.g. if my new religious
 value is some combination of my old with what's transmitted--i.e. I am
 interested in copying, but I'm conservative--then per-month
-transmission could be OK.  Maybe use an update algorithm like the one
-I use in CultranDejanet??
+transmission could be OK.  
 
 (On the other hand note that when I combine Netlogo with popco, there
 will be multiple proposition activations mapping one scalar degree of
@@ -88,3 +87,21 @@ ticks per NetLogo religious transmission event.)
 1. Transmit every month.
 2. Transmit every year.
 3. Transmit every longer interval.
+
+
+## Update algorithm
+
+1. Simply copy the religious value when harvest yield is best--like
+the way that crop plans and start months are transmitted.
+
+2.  Maybe use an update algorithm like the one I use in
+    CultranDejanet?  This has two features main features in the
+    default configuration:
+
+	A. More-extreme values are more likely to be transmitted.
+
+	B. The effect of an incoming value on the existing value is
+	scaled by the distance of the existing value from the extreme
+	(i.e. this is what function `new-activn-popco-tran` does).
+
+    Note that this method was partly inspired by node updating in popco.
