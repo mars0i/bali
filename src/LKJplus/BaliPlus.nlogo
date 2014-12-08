@@ -1223,11 +1223,11 @@ end
 GRAPHICS-WINDOW
 180
 10
-800
-651
-30
+773
+690
 -1
-10.0
+-1
+11.0
 1
 8
 1
@@ -1237,10 +1237,10 @@ GRAPHICS-WINDOW
 0
 0
 1
+-24
+28
 -30
-30
--31
-29
+28
 0
 0
 1
@@ -1305,17 +1305,17 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-0.99
+1
 0.01
 1
 NIL
 HORIZONTAL
 
 PLOT
-802
-16
-1127
-248
+774
+10
+1099
+242
 Harvest
 NIL
 NIL
@@ -1340,10 +1340,10 @@ rainfall-scenario
 1
 
 PLOT
-802
-473
-1127
-696
+774
+467
+1099
+690
 Pestloss
 NIL
 NIL
@@ -1358,10 +1358,10 @@ PENS
 "totpestloss" 1.0 0 -2674135 true "" ""
 
 PLOT
-801
-248
-1127
-472
+773
+242
+1099
+466
 Waterstress
 NIL
 NIL
@@ -1438,27 +1438,27 @@ TEXTBOX
 1
 
 TEXTBOX
-473
-655
-793
-706
+463
+691
+783
+742
 Cropping plan colors: circle represents crop plan, square represents start month.  Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.
 11
 0.0
 1
 
 OUTPUT
-1129
-24
-1382
-339
+1101
+25
+1354
+340
 10
 
 SWITCH
-1393
-16
-1513
-49
+1365
+10
+1485
+43
 cropplan-a
 cropplan-a
 0
@@ -1466,10 +1466,10 @@ cropplan-a
 -1000
 
 SWITCH
-1393
-49
-1513
-82
+1365
+43
+1485
+76
 cropplan-b
 cropplan-b
 0
@@ -1477,10 +1477,10 @@ cropplan-b
 -1000
 
 SWITCH
-1393
-82
-1513
-115
+1365
+76
+1485
+109
 cropplan-c
 cropplan-c
 0
@@ -1488,10 +1488,10 @@ cropplan-c
 -1000
 
 SWITCH
-1393
-115
-1513
-148
+1365
+109
+1485
+142
 cropplan-d
 cropplan-d
 0
@@ -1499,10 +1499,10 @@ cropplan-d
 -1000
 
 SWITCH
-1393
-148
-1513
-181
+1365
+142
+1485
+175
 cropplan-e
 cropplan-e
 0
@@ -1510,10 +1510,10 @@ cropplan-e
 -1000
 
 SWITCH
-1393
-181
-1513
-214
+1365
+175
+1485
+208
 cropplan-f
 cropplan-f
 0
@@ -1521,10 +1521,10 @@ cropplan-f
 -1000
 
 SWITCH
-1393
-214
-1513
-247
+1365
+208
+1485
+241
 cropplan-g
 cropplan-g
 0
@@ -1532,10 +1532,10 @@ cropplan-g
 -1000
 
 SWITCH
-1393
-247
-1513
-280
+1365
+241
+1485
+274
 cropplan-h
 cropplan-h
 0
@@ -1543,10 +1543,10 @@ cropplan-h
 -1000
 
 SWITCH
-1393
-280
-1513
-313
+1365
+274
+1485
+307
 cropplan-i
 cropplan-i
 0
@@ -1554,10 +1554,10 @@ cropplan-i
 -1000
 
 SWITCH
-1393
-313
-1513
-346
+1365
+307
+1485
+340
 cropplan-j
 cropplan-j
 0
@@ -1565,10 +1565,10 @@ cropplan-j
 -1000
 
 SWITCH
-1393
-346
-1513
-379
+1365
+340
+1485
+373
 cropplan-k
 cropplan-k
 0
@@ -1576,10 +1576,10 @@ cropplan-k
 -1000
 
 SWITCH
-1393
-379
-1513
-412
+1365
+373
+1485
+406
 cropplan-l
 cropplan-l
 0
@@ -1587,10 +1587,10 @@ cropplan-l
 -1000
 
 SWITCH
-1393
-412
-1513
-445
+1365
+406
+1485
+439
 cropplan-m
 cropplan-m
 0
@@ -1598,10 +1598,10 @@ cropplan-m
 -1000
 
 SWITCH
-1393
-445
-1513
-478
+1365
+439
+1485
+472
 cropplan-n
 cropplan-n
 0
@@ -1609,10 +1609,10 @@ cropplan-n
 -1000
 
 SWITCH
-1393
-478
-1513
-511
+1365
+472
+1485
+505
 cropplan-o
 cropplan-o
 0
@@ -1620,10 +1620,10 @@ cropplan-o
 -1000
 
 SWITCH
-1393
-511
-1513
-544
+1365
+505
+1485
+538
 cropplan-p
 cropplan-p
 0
@@ -1631,10 +1631,10 @@ cropplan-p
 -1000
 
 SWITCH
-1393
-544
-1513
-577
+1365
+538
+1485
+571
 cropplan-q
 cropplan-q
 0
@@ -1642,10 +1642,10 @@ cropplan-q
 -1000
 
 SWITCH
-1393
-577
-1513
-610
+1365
+571
+1485
+604
 cropplan-r
 cropplan-r
 0
@@ -1653,10 +1653,10 @@ cropplan-r
 -1000
 
 SWITCH
-1393
-610
-1513
-643
+1365
+604
+1485
+637
 cropplan-s
 cropplan-s
 0
@@ -1664,10 +1664,10 @@ cropplan-s
 -1000
 
 SWITCH
-1393
-643
-1513
-676
+1365
+637
+1485
+670
 cropplan-t
 cropplan-t
 0
@@ -1675,10 +1675,10 @@ cropplan-t
 -1000
 
 SWITCH
-1393
-676
-1513
-709
+1365
+670
+1485
+703
 cropplan-u
 cropplan-u
 0
@@ -1686,10 +1686,10 @@ cropplan-u
 -1000
 
 PLOT
-1129
-624
-1349
-744
+1101
+625
+1321
+745
 crop plan distribution
 NIL
 NIL
@@ -1704,10 +1704,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [SCC] of subaks"
 
 BUTTON
-1352
-710
-1428
-744
+1324
+704
+1400
+738
 all plans on
 set-cropplans-on
 NIL
@@ -1721,10 +1721,10 @@ NIL
 1
 
 BUTTON
-1428
-710
-1502
-744
+1400
+704
+1474
+738
 all plans off
 set-cropplans-off
 NIL
@@ -1739,9 +1739,9 @@ NIL
 
 SWITCH
 0
-499
+527
 171
-532
+560
 global-startmonth
 global-startmonth
 1
@@ -1749,10 +1749,10 @@ global-startmonth
 -1000
 
 TEXTBOX
-5
-536
-155
-564
+3
+562
+153
+590
 If true, all subaks use same random start month.
 11
 0.0
@@ -1776,235 +1776,235 @@ NIL
 1
 
 TEXTBOX
-1519
-24
-1706
-43
+1491
+18
+1678
+37
 [3 3 3 0 3 3 3 0 3 3 3 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-57
-1706
-76
+1491
+51
+1678
+70
 [3 3 3 0 0 0 3 3 3 0 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-89
-1706
-108
+1491
+83
+1678
+102
 [3 3 3 0 3 3 3 0 0 0 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-123
-1706
-142
+1491
+117
+1678
+136
 [3 3 3 0 0 3 3 3 0 0 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-156
-1706
-175
+1491
+150
+1678
+169
 [3 3 3 0 0 0 0 3 3 3 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-188
-1706
-207
+1491
+182
+1678
+201
 [3 3 3 0 0 0 0 0 3 3 3 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-222
-1706
-241
+1491
+216
+1678
+235
 [1 1 1 1 1 1 0 2 2 2 2 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-255
-1706
-274
+1491
+249
+1678
+268
 [1 1 1 1 1 1 0 3 3 3 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-288
-1706
-307
+1491
+282
+1678
+301
 [1 1 1 1 1 1 0 0 3 3 3 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-320
-1706
-339
+1491
+314
+1678
+333
 [1 1 1 1 1 1 0 0 0 0 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-354
-1706
-373
+1491
+348
+1678
+367
 [2 2 2 2 0 0 2 2 2 2 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-387
-1706
-406
+1491
+381
+1678
+400
 [2 2 2 2 0 2 2 2 2 0 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-419
-1706
-438
+1491
+413
+1678
+432
 [2 2 2 2 0 0 0 2 2 2 2 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-453
-1706
-472
+1491
+447
+1678
+466
 [2 2 2 2 0 0 3 3 3 0 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-486
-1706
-505
+1491
+480
+1678
+499
 [2 2 2 2 0 3 3 3 0 0 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-518
-1706
-537
+1491
+512
+1678
+531
 [2 2 2 2 0 0 0 3 3 3 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-552
-1706
-571
+1491
+546
+1678
+565
 [2 2 2 2 0 0 0 0 3 3 3 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-585
-1706
-604
+1491
+579
+1678
+598
 [3 3 3 0 0 2 2 2 2 0 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-618
-1706
-637
+1491
+612
+1678
+631
 [3 3 3 0 0 0 2 2 2 2 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-650
-1706
-669
+1491
+644
+1678
+663
 [3 3 3 0 2 2 2 2 0 0 0 0]
 11
 0.0
 1
 
 TEXTBOX
-1519
-684
-1706
-703
+1491
+678
+1678
+697
 [3 3 3 0 0 0 0 2 2 2 2 0]
 11
 0.0
 1
 
 TEXTBOX
-1133
+1104
 10
-1299
-29
+1270
+28
 crop plans in this run:
 11
 0.0
 1
 
 SLIDER
-1
-654
-253
-687
+0
+691
+227
+724
 prob-ignore-neighboring-plans
 prob-ignore-neighboring-plans
 0
 1
-0
+0.93
 0.01
 1
 NIL
@@ -2012,19 +2012,19 @@ HORIZONTAL
 
 TEXTBOX
 3
-610
-171
-654
-Probability of choosing a random crop plan and/or start month, ignoring neighbors:
+659
+177
+689
+Probability of choosing random crop plan, start month:
 11
 0.0
 1
 
 BUTTON
-1501
-709
-1601
-743
+1474
+704
+1574
+738
 trad plans only
 traditional-cropplans
 NIL
@@ -2039,20 +2039,20 @@ NIL
 
 SWITCH
 0
-570
+621
 175
-603
+654
 spiritual-influence?
 spiritual-influence?
-1
+0
 1
 -1000
 
 PLOT
-1129
-503
-1351
-623
+1101
+504
+1323
+624
 start month distribution
 NIL
 NIL
@@ -2067,10 +2067,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [sd] of subaks"
 
 PLOT
-1129
-384
-1351
-504
+1101
+385
+1323
+505
 spiritual type distribution
 NIL
 NIL
@@ -2085,10 +2085,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [spiritual-type] of subaks"
 
 MONITOR
-1129
-339
-1353
-384
+1101
+340
+1325
+385
 mean spiritual type
 mean [spiritual-type] of subaks
 17
@@ -2096,10 +2096,10 @@ mean [spiritual-type] of subaks
 11
 
 SLIDER
-255
-654
-443
-687
+228
+691
+458
+724
 spiritual-tran-stddev
 spiritual-tran-stddev
 0
