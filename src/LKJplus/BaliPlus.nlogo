@@ -63,7 +63,7 @@ subaks-own [
   totLoss 
   source ; dam from which I get water (?)
   return ; dam to which I send leftover water (?)
-  spiritual-type ; a number in [0,1]: peasant-style religious values 1 vs. Brahmanic religious values 0
+  spiritual-type ; a number in [0,1]: peasant-style religious values 0 vs. Brahmanic religious values 1
   new-spiritual-type ; newly copied type--so that update is parallel
   my-subak-helper
 ]
@@ -594,19 +594,27 @@ to determineharvest
     ] ; ask
 end
 
-
 to maybe-ignore-neighboring-plans
   ask subaks [
-    if (spiritual-influence (random-float 1) spiritual-type) < prob-ignore-neighboring-plans [
+    if random-float 1 < (prob-ignore-neighboring-plans * spiritual-type) [  ; The closer spiritual-influence is to 0, the less probable ignoring best neighbor is
       set SCC random (length cropplans)
       set sd random 12
     ]
   ]
 end
 
-to-report spiritual-influence [erraticness sp-type]
-  report min (list 1 (erraticness + sp-type))
-end
+;to maybe-ignore-neighboring-plans
+;  ask subaks [
+;    if (spiritual-influence (random-float 1) spiritual-type) < prob-ignore-neighboring-plans [
+;      set SCC random (length cropplans)
+;      set sd random 12
+;    ]
+;  ]
+;end
+;
+;to-report spiritual-influence [erraticness sp-type]
+;  report min (list 1 (erraticness + sp-type))
+;end
 
 ;; A top-level procedure, not an in-subak procedure.
 to imitate-best-neighboring-plans
@@ -708,8 +716,11 @@ end
 to imitate-spiritual-types
   ask subaks [
     ;let best find-best pestneighbors  ; note bestneighbor might be self
-    let best find-best n-of 10 subaks ; EXPERIMENTAL
-    set new-spiritual-type [spiritual-type] of best
+    ;let best find-best n-of 10 subaks ; EXPERIMENTAL
+    let best find-best (turtle-set pestneighbors (n-of 5 subaks)) ; EXPERIMENTAL
+    set new-spiritual-type ([spiritual-type] of best) + (random-normal 0 spiritual-tran-stddev)
+    if new-spiritual-type > 1  [set new-spiritual-type 1]
+    if new-spiritual-type < -1 [set new-spiritual-type -1]
   ]
   
   ask subaks [
@@ -729,7 +740,7 @@ to display-cropping-plan-etc
     [set color low-scc-base-color + (10 * SCC)]         ; colors from column low-scc-base-color of swatches
     [set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
     
-  ask my-subak-helper [set color (10 * [spiritual-type] of myself)]
+  ask my-subak-helper [set color (10 * [spiritual-type] of myself)] ; extreme peasant is 0=black (the better option); extreme brahman is 9.99=white (note spiritual type is always < 1) 
   
   if-else show-subak-values
     [set label (word "[" SCC ":" sd "]")]
@@ -1294,7 +1305,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1
+0.99
 0.01
 1
 NIL
@@ -1427,11 +1438,11 @@ TEXTBOX
 1
 
 TEXTBOX
-279
-694
-756
-712
-Cropping plan colors: circle represents crop plan, square represents start month.
+473
+655
+793
+706
+Cropping plan colors: circle represents crop plan, square represents start month.  Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.
 11
 0.0
 1
@@ -1975,16 +1986,6 @@ TEXTBOX
 1
 
 TEXTBOX
-279
-710
-660
-728
-Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.
-11
-0.0
-1
-
-TEXTBOX
 1133
 10
 1299
@@ -1995,16 +1996,16 @@ crop plans in this run:
 1
 
 SLIDER
-0
-653
-801
-686
+1
+654
+253
+687
 prob-ignore-neighboring-plans
 prob-ignore-neighboring-plans
 0
 1
 0
-0.001
+0.01
 1
 NIL
 HORIZONTAL
@@ -2079,7 +2080,7 @@ NIL
 172.0
 true
 false
-"set-histogram-num-bars 20" ""
+"set-histogram-num-bars 40" ""
 PENS
 "default" 1.0 1 -16777216 true "" "histogram [spiritual-type] of subaks"
 
@@ -2093,6 +2094,21 @@ mean [spiritual-type] of subaks
 17
 1
 11
+
+SLIDER
+255
+654
+443
+687
+spiritual-tran-stddev
+spiritual-tran-stddev
+0
+0.5
+0
+0.0025
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## LICENSE
