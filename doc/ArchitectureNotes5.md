@@ -1,4 +1,4 @@
-Plan1.md
+ArchitectureNotes5.md
 ====
 
 ## a plan:
@@ -60,3 +60,16 @@ an effect as in the real world.
 	mapping of ticks between them.  (Maybe also send back to NetLogo
 	other info to be displayed.  Or maybe I can display the popco
 	stuff through Clojure, in another window.)
+
+------------------
+
+A nice result would be that when popco is influenced by NetLogo, the
+distribution resulting from worldly-peasant bias is less spread out
+than usual.
+
+But this can be simulated without NetLogo.  NetLogo will send a value
+that makes trust higher when the speaker is successful.  A way to
+simulate this in popco alone is simply to make trust higher when the
+speaker's mean activation in the spiritual-peasant direction is higher.
+(Or don't do it with trust, and instead make the prob of tran higher
+when spiritual-peasant mean activn is higher.)
