@@ -718,7 +718,7 @@ to imitate-spiritual-types
   ask subaks [
     ;let best find-best pestneighbors  ; note bestneighbor might be self
     ;let best find-best n-of 10 subaks ; EXPERIMENTAL
-    let best find-best (turtle-set pestneighbors (n-of 5 subaks)) ; EXPERIMENTAL
+    let best find-best (turtle-set pestneighbors (n-of spiritual-tran-global-# (other subaks)))
     set new-spiritual-type ([spiritual-type] of best) + (random-normal 0 spiritual-tran-stddev)
     if new-spiritual-type > 1 [ set new-spiritual-type 1]
     if new-spiritual-type < 0 [set new-spiritual-type 0]
@@ -1398,10 +1398,10 @@ Color_subaks
 1
 
 SWITCH
-3
-657
-179
-690
+2
+692
+178
+725
 show-subak-values
 show-subak-values
 1
@@ -1409,10 +1409,10 @@ show-subak-values
 -1000
 
 TEXTBOX
-3
+5
+646
+176
 694
-174
-742
 Display #s corresp to subak coloring (not yet implemented for all choices)
 11
 0.0
@@ -1441,8 +1441,8 @@ Cropping plan colors: circle represents crop plan, square represents start month
 OUTPUT
 1101
 25
-1354
-340
+1324
+329
 9
 
 SWITCH
@@ -1677,10 +1677,10 @@ cropplan-u
 -1000
 
 PLOT
-1101
-625
-1321
-745
+1102
+615
+1322
+735
 crop plan distribution
 NIL
 NIL
@@ -1987,15 +1987,15 @@ crop plans in this run:
 1
 
 SLIDER
--3
-405
-180
-439
+2
+406
+179
+440
 ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0.5
+0
 0.01
 1
 NIL
@@ -2029,10 +2029,10 @@ NIL
 1
 
 SWITCH
--2
-438
-180
-472
+0
+552
+177
+586
 spiritual-influence?
 spiritual-influence?
 1
@@ -2040,10 +2040,10 @@ spiritual-influence?
 -1000
 
 PLOT
-1101
-504
-1323
-624
+1102
+494
+1324
+614
 start month distribution
 NIL
 NIL
@@ -2058,10 +2058,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [sd] of subaks"
 
 PLOT
-1101
-385
-1323
-505
+1102
+375
+1324
+495
 spiritual type distribution
 NIL
 NIL
@@ -2076,10 +2076,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [spiritual-type] of subaks"
 
 MONITOR
-1101
-340
+1102
+329
 1325
-385
+375
 mean spiritual type
 mean [spiritual-type] of subaks
 17
@@ -2087,19 +2087,44 @@ mean [spiritual-type] of subaks
 11
 
 SLIDER
--3
-472
-180
-506
+0
+518
+177
+552
 spiritual-tran-stddev
 spiritual-tran-stddev
 0
 1.0
 0.02
-0.0025
+0.01
 1
 NIL
 HORIZONTAL
+
+SLIDER
+0
+485
+177
+519
+spiritual-tran-global-#
+spiritual-tran-global-#
+0
+171
+5
+1
+1
+NIL
+HORIZONTAL
+
+TEXTBOX
+0
+453
+183
+480
+Spiritual tran from # indivs from pop in addition to pestneighbors:
+11
+0.0
+1
 
 @#$#@#$#@
 ## LICENSE
