@@ -596,7 +596,7 @@ end
 
 to maybe-ignore-neighboring-plans  ask subaks [
     ; The closer spiritual-influence is to 0, the less probable ignoring best neighbor is:
-    let prob-ignore prob-ignore-neighboring-plans * (ifelse-value spiritual-influence? [spiritual-type] [1])
+    let prob-ignore ignore-neighbors-prob * (ifelse-value spiritual-influence? [spiritual-type] [1])
     if random-float 1 < prob-ignore [  
       set SCC random (length cropplans)
       set sd random 12
@@ -606,7 +606,7 @@ end
 
 ;to maybe-ignore-neighboring-plans
 ;  ask subaks [
-;    if (spiritual-influence (random-float 1) spiritual-type) < prob-ignore-neighboring-plans [
+;    if (spiritual-influence (random-float 1) spiritual-type) < ignore-neighbors-prob [
 ;      set SCC random (length cropplans)
 ;      set sd random 12
 ;    ]
@@ -1398,10 +1398,10 @@ Color_subaks
 1
 
 SWITCH
-2
-418
-178
-451
+3
+657
+179
+690
 show-subak-values
 show-subak-values
 1
@@ -1409,20 +1409,10 @@ show-subak-values
 -1000
 
 TEXTBOX
-5
-375
-155
-417
-If on, display identifiying info on whatever subak colors represent:
-11
-0.0
-1
-
-TEXTBOX
-2
-455
-173
-503
+3
+694
+174
+742
 Display #s corresp to subak coloring (not yet implemented for all choices)
 11
 0.0
@@ -1453,7 +1443,7 @@ OUTPUT
 25
 1354
 340
-10
+9
 
 SWITCH
 1365
@@ -1739,10 +1729,10 @@ NIL
 1
 
 SWITCH
-0
-527
-171
-560
+182
+692
+353
+725
 global-startmonth
 global-startmonth
 1
@@ -1750,10 +1740,10 @@ global-startmonth
 -1000
 
 TEXTBOX
-3
-562
-153
-590
+185
+726
+335
+754
 If true, all subaks use same random start month.
 11
 0.0
@@ -1997,12 +1987,12 @@ crop plans in this run:
 1
 
 SLIDER
-0
-691
-227
-724
-prob-ignore-neighboring-plans
-prob-ignore-neighboring-plans
+-3
+405
+180
+439
+ignore-neighbors-prob
+ignore-neighbors-prob
 0
 1
 0.5
@@ -2012,10 +2002,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-3
-659
-177
-689
+5
+374
+179
+404
 Probability of choosing random crop plan, start month:
 11
 0.0
@@ -2039,13 +2029,13 @@ NIL
 1
 
 SWITCH
-0
-621
-175
-654
+-2
+438
+180
+472
 spiritual-influence?
 spiritual-influence?
-0
+1
 1
 -1000
 
@@ -2097,10 +2087,10 @@ mean [spiritual-type] of subaks
 11
 
 SLIDER
-228
-691
-458
-724
+-3
+472
+180
+506
 spiritual-tran-stddev
 spiritual-tran-stddev
 0
