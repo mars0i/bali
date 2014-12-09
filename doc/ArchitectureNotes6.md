@@ -55,6 +55,28 @@ Possibly add stochasticity to step 2; see notes below.
 
 ------
 
+Correction to above (and below).  Don't use the "trust" concept in
+popco.  This is in listener.clj (in `update-propn-net-from-utterances`),
+i.e. it's applied *after* the utterances are received.  So to compute
+trust from the speaker's SP propositions in listener.clj, I'd have to
+pass extra information across with the utterances, which currently
+contain only a proposition id and a valence number.  Moreover, the point
+of trust is to be listener-specific--whereas  success bias is
+speaker-specific.  Finally, what trust does, currently, is not to
+influence the probability of accepting the influence from the utterance,
+but rather to calculate how much it influences the speaker (which,
+currently, is done by multiplication by constant defined in
+constants.clj (recall that the valence is always either 1 or -1)).
+
+So the best thing to do would be to represent success bias via a
+speaker-specific bias on the (previously just proposition-specific)
+probability of transmission.  (Maybe call this influence
+"trustworthiness".0
+
+
+
+------
+
 Notes:
 
 One possibility is to think of WP (vs. WB) as linked to the degree to
