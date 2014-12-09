@@ -50,7 +50,10 @@ and possibly better results.  So the fact that greed or bhutakala or
 whatever messes up the system might even be *good design*.
 
 And in fact I am seeing this result, maybe (on some runs, at least),
-e.g. for bhutakala-influence = 0.01.
+e.g. for bhutakala-influence = 0.01 at one point in the development of
+the noise function.  This benefit appears to have to do with getting an
+opportunity to switch to a crop plan that uses the high yield rice (#3),
+especially the 3/3/3 plan.
 
 Note that a small noise probability can have a big effect, since you run
 it on all 172 subaks, and what's beneficial is coordination within

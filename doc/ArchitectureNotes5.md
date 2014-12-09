@@ -73,3 +73,14 @@ simulate this in popco alone is simply to make trust higher when the
 speaker's mean activation in the spiritual-peasant direction is higher.
 (Or don't do it with trust, and instead make the prob of tran higher
 when spiritual-peasant mean activn is higher.)
+
+But that's a crude simulation, since in NetLogo, the benefit of noise
+suppression is not constant, but is instead stochastic.  Whereas if I
+make trust a function of mean SP activation, there's no stochasticity
+about it.  Unless I add stochasticity in to trust.  I could do that, I
+guess.  It could even be matched to ignore-pestneighbors probabilities
+set in NetLogo.  (But if I'm doing that, then maybe I should also have some
+stochastic dimension on the transmitter side in NetLogo.  Well I suppose
+that's one benefit of linking the popco and NetLogo: you get the combined
+interaction of the two kinds of processes.  I'm not going to build that
+kind of transmission messiness into NetLogo, I don't think.
