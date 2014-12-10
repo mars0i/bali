@@ -30,7 +30,14 @@ activn of SP<br/>(under conditions that allow the spiritual float to have an eff
 
 A system (?):
 
-1. Only WP, not WB propns are present in popco.  This biases transmission of SP over SB.
+1. Only WP, not WB propns are present in popco.  they are pushed up by
+the environment.  This biases transmission of SP over SB.  (Note that
+not all of the WP propns are really what one would *observe* "in
+nature".  Some of the propns capture ways of thinking about subaks, for
+example.  However, if we think of the subak system as pre-existing, but
+without ideal religious values, it still makes sense to have the WP
+propns emphasized by the env.  Not doubt the real evolution was more
+subtle, and maybe it would be worth modeling that later.)
 
 2. When mean SP activn is high, spiritual float in NetLogo is high.
 
@@ -47,7 +54,8 @@ function of mean SP activation.  (This does not obviate the value of
 doing a full linked simulation; see notes below.)  i.e. do a popco-only
 simulation like this:
 
-1. Only WP, not WB propns are present in popco.  This biases transmission of SP over SB.
+1. Only WP, not WB propns are present in popco.  This biases
+transmission of SP over SB.
 
 2. When a sender's mean SP activn is high, listeners' trusts are high.
 
