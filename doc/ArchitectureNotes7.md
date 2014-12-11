@@ -77,7 +77,7 @@ i.e. this just creates a loop within popco from the loop that went from SP to
 noise suppression to success to SP in the NetLogo-popco system:
 
 <div align="center">
-<img src="TransmissionBiasesPopcoOnly.pdf"/>
+<img src="TransmissionBiasesPopcoOnly.png"/>
 </div>
 
 
