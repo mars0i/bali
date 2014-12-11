@@ -28,7 +28,7 @@ activn of SP<br/>(under conditions that allow the spiritual float to have an eff
 
 Here's the pattern:
 
-![](TransmissionBiases.pdf?raw=true)
+[](TransmissionBiases.pdf?raw=true)
 
 which can be summarized like this:
 
