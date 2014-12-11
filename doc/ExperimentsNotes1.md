@@ -1,4 +1,4 @@
-Notes on experiments with Bali sim
+Notes on experiments with Bali sims #1
 ====
 
 Fixing the crop pattern `SCC` and the start month `sd` at the first
