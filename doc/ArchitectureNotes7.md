@@ -30,10 +30,6 @@ Here's the pattern:
 
 ![](TransmissionBiases.pdf?raw=true)
 
-<div align="center">
-<img src="TransmissionBiases.pdf">
-</div>
-
 which can be summarized like this:
 
 <div align="center">
