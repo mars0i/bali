@@ -90,3 +90,9 @@ to represent the class of all popco subaks):
 spiritual-peasant propositions activations and mean activation of all
 spiritual-peasant propositions.)
 
+-------
+
+On success bias in popco:  Maybe the success bias ("trustworthiness")
+should a convex or S-shaped function of per-subak mean spiritual-peasant
+activations--rather than a linear function.  Why?  Because analogies
+really work when they are mostly complete.
