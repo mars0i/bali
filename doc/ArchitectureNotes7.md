@@ -1,4 +1,4 @@
-ArchitectureNotes6.md
+ArchitectureNotes7.md
 ====
 Distillation of ArchitectureNotes6.md, q.v. for additional info.
 
@@ -28,7 +28,7 @@ activn of SP<br/>(under conditions that allow the spiritual float to have an eff
 
 Here's the pattern:
 
-![](TransmissionBiases.pdf)
+![](TransmissionBiases.pdf!raw=true)
 
 <div align="center">
 <img src="TransmissionBiases.pdf">
