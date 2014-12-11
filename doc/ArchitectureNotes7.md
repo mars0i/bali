@@ -26,8 +26,9 @@ SP activn.<br/></br>
 5. As a result, success (yield) in NetLogo will be correlated with mean
 activn of SP<br/>(under conditions that allow the spiritual float to have an effect).<br/></br>
 
-Here's the pattern, representing popco subaks ("persons") with circles,
-and NetLogo subaks with squares:
+Here's the pattern, with arrows representing causal influence, and
+representing popco subaks ("persons") with circles, and NetLogo subaks
+with squares:
 
 <div align="center">
 <img src="TransmissionBiases.png"/>
