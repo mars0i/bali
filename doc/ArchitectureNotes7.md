@@ -26,13 +26,15 @@ SP activn.<br/></br>
 5. As a result, success (yield) in NetLogo will be correlated with mean
 activn of SP<br/>(under conditions that allow the spiritual float to have an effect).<br/></br>
 
-Here's the pattern:
+Here's the pattern, representing popco subaks ("persons") with circles,
+and NetLogo subaks with squares:
 
 <div align="center">
 <img src="TransmissionBiases.png"/>
 </div>
 
-which can be summarized like this:
+which can be summarized like this, using a circle and a rectangle to
+represent the popco and NetLogo subak classes, respectively:
 
 <div align="center">
 <img src="TransmissionBiasesSummary.png"/>
@@ -76,12 +78,12 @@ transmission of SP over SB.
 2. When a sender's mean SP activn is high, its trustworthinesss is high.
 
 i.e. this just creates a loop within popco from the loop that went from SP to
-noise suppression to success to SP in the NetLogo-popco system:
+noise suppression to success to SP in the NetLogo-popco system (using a circle
+to represent the class of all popco subaks):
 
 <div align="center">
 <img src="TransmissionBiasesPopcoOnly.png"/>
 </div>
-
 
 (Again, "SP" plays two roles, representing represents both individual
 spiritual-peasant propositions activations and mean activation of all
