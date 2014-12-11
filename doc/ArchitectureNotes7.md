@@ -28,12 +28,14 @@ activn of SP<br/>(under conditions that allow the spiritual float to have an eff
 
 Here's the pattern:
 
-[](TransmissionBiases.pdf?raw=true)
+<div align="center">
+<img src="TransmissionBiases.png"/>
+</div>
 
 which can be summarized like this:
 
 <div align="center">
-<img src="TransmissionBiasesSummary.pdf"/>
+<img src="TransmissionBiasesSummary.png"/>
 </div>
 
 (Note that "SP" in these figures is playing two roles: It represents both
