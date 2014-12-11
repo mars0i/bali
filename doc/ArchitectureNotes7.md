@@ -28,8 +28,9 @@ activn of SP<br/>(under conditions that allow the spiritual float to have an eff
 
 Here's the pattern:
 
-<div align="center">
 ![alt text](TransmissionBiases.pdf "transmission biases figure")
+
+<div align="center">
 <img src="TransmissionBiases.pdf">
 </div>
 
