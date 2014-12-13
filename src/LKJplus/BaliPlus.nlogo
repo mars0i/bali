@@ -66,6 +66,7 @@ subaks-own [
   spiritual-type ; a number in [0,1]: peasant-style religious values 0 vs. Brahmanic religious values 1
   new-spiritual-type ; newly copied type--so that update is parallel
   my-subak-helper
+  speakers ;; EXPERIMENTAL TEMPORARY YO
 ]
 
 dams-own [flow0 flow elevation 
@@ -278,6 +279,8 @@ to setup
     ;let sdhelp 0
     set SCC random (length cropplans) ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
     
+    ;set speakers [] ; EXPERIMENTAL TEMPORARY YO
+    
     if-else global-startmonth
       [set sd global-sd]       ; experiment: what happens when all share same start month?
       [set sd random 12]       ; normal behavior. Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
@@ -370,7 +373,6 @@ to update-subak-months
   ]
 end
 
-
 to-report filter-plans [plans]
   if not is-list? cropplan-bools [error (word "croppplan-bools has value: " cropplan-bools)]
   if cropplan-bools = 0 [error (word "croppplan-bools has value: " cropplan-bools)]
@@ -406,6 +408,9 @@ to list-cropplans
      output-print ?
      set i i + 1]
 end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; NATURAL PROCESSES: Farming, Water, Pests
 
 to demandwater
   ; determine the water demand for different subaks
@@ -594,6 +599,10 @@ to determineharvest
     ] ; ask
 end
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CULTURAL TRANSMISSION
+
 to maybe-ignore-neighboring-plans  ask subaks [
     ; The closer spiritual-influence is to 0, the less probable ignoring best neighbor is:
     let prob-ignore ignore-neighbors-prob * (ifelse-value spiritual-influence? [spiritual-type] [1])
@@ -647,6 +656,44 @@ to-report find-best [subak-set]
   ]
   
   report best
+end
+
+;; EXPERIMENT.
+;; The easiest way to sample speakers from the entire population is to give each listener
+;; a fixed number of speakers, using n-of.  However, in popco, the speaker chooses its
+;; listeners, and then that map from each speaker to its listeners is "inverted" to create
+;; a map from listeners to those speaking to them.  This procedure chooses a set of listeners
+;; for each speaker, and then inverts it, assigning to each subak's speakers var a set of
+;; listeners (which varies in size).  (It's the per-listener collection of
+;; speakers to which a find-best procedure should be applied.)
+to set-listeners-speakers
+  ask subaks [set speakers n-of 0 subaks]
+
+  foreach ( [list self (n-of spiritual-tran-global-# other subaks)] of subaks ) [  ; iterate through list of pairs: [speaker, listeners]
+    let another-speaker item 0 ?
+    let listener-agentset item 1 ?
+    ask listener-agentset [  ; each listener collects its speakers
+      set speakers (turtle-set another-speaker speakers)
+    ]
+  ]
+end
+
+to imitate-spiritual-types
+  set-listeners-speakers
+  
+  ask subaks [
+    ;let best find-best pestneighbors  ; note bestneighbor might be self
+    ;let best find-best n-of 10 subaks ; EXPERIMENTAL
+    ;let best find-best (turtle-set pestneighbors (n-of spiritual-tran-global-# (other subaks)))
+    let best find-best speakers
+    set new-spiritual-type ([spiritual-type] of best) + (random-normal 0 spiritual-tran-stddev)
+    if new-spiritual-type > 1 [ set new-spiritual-type 1]
+    if new-spiritual-type < 0 [set new-spiritual-type 0]
+  ]
+  
+  ask subaks [
+    set spiritual-type new-spiritual-type
+  ]
 end
 
 ;; Old list-based version
@@ -712,22 +759,6 @@ end
 ;     ]
 ;  ]
 ;end
-
-
-to imitate-spiritual-types
-  ask subaks [
-    ;let best find-best pestneighbors  ; note bestneighbor might be self
-    ;let best find-best n-of 10 subaks ; EXPERIMENTAL
-    let best find-best (turtle-set pestneighbors (n-of spiritual-tran-global-# (other subaks)))
-    set new-spiritual-type ([spiritual-type] of best) + (random-normal 0 spiritual-tran-stddev)
-    if new-spiritual-type > 1 [ set new-spiritual-type 1]
-    if new-spiritual-type < 0 [set new-spiritual-type 0]
-  ]
-  
-  ask subaks [
-    set spiritual-type new-spiritual-type
-  ]
-end
 
 ;; subak routine
 to display-cropping-plan-etc
@@ -1291,7 +1322,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.4
+2.2
 0.01
 1
 NIL
@@ -1306,7 +1337,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1.5
+1
 0.01
 1
 NIL
@@ -1990,12 +2021,12 @@ SLIDER
 2
 406
 179
-440
+439
 ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0
+0.5
 0.01
 1
 NIL
@@ -2032,7 +2063,7 @@ SWITCH
 0
 552
 177
-586
+585
 spiritual-influence?
 spiritual-influence?
 1
@@ -2079,7 +2110,7 @@ MONITOR
 1102
 329
 1325
-375
+374
 mean spiritual type
 mean [spiritual-type] of subaks
 17
@@ -2090,7 +2121,7 @@ SLIDER
 0
 518
 177
-552
+551
 spiritual-tran-stddev
 spiritual-tran-stddev
 0
@@ -2105,7 +2136,7 @@ SLIDER
 0
 485
 177
-519
+518
 spiritual-tran-global-#
 spiritual-tran-global-#
 0
