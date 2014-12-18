@@ -31,9 +31,26 @@ Here are ways to experiment for this question:
    success bias.  Hypothesis: Without analogy, success bias on SP
    propositions will have a harder time getting started, and will take
    longer to get where it's going.  And the distribution of end states
-   might be broader.
+   might be broader.  
+   [This would especially be true if I weaken the
+   influence of analogy.  This might involve changing parameters in
+   the analogy net, so that it's harder to get an analogy going.  Or
+   it might be by making the influence of the analogy net on the
+   proposition net weaker.  Or maybe more directly, lowering the
+   probability of uttering or the weight added on links to SALIENT
+   when an utterance is received.]
 
 2. Can I do an analogous test using NetLogo-popco?  Yes, why not?
+   Since noise-suppression in NetLogo will be a function of average
+   spiritual-peasant activation in popco, a broader distribution of
+   spiritual-peasant activations will produce less noise suppression,
+   hence less effect of spiritual-peasant propositions to select on in
+   NetLogo, hence a noisier effect back to success-bias in popco
+   influencing who is listened to in popco.  Whereas adding analogy
+   should focus the noisy set of propositions and allow more cohesive,
+   stronger effects to suppress noise and hence generate success-bias.
+
+###### *That* would be a nice thing to show: Random variation isn't enough.
 
 Note that there's a little bit of artificiality here, since I'm assuming
 that the collection of spiritual-peasant propositions facilitates
