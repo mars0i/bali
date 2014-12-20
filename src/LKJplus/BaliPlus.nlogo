@@ -658,11 +658,11 @@ to-report find-best [subak-set]
   report best
 end
 
-;; EXPERIMENT.
 ;; The easiest way to sample speakers from the entire population is to give each listener
 ;; a fixed number of speakers, using n-of.  However, in popco, the speaker chooses its
 ;; listeners, and then that map from each speaker to its listeners is "inverted" to create
-;; a map from listeners to those speaking to them.  This procedure chooses a set of listeners
+;; a map from listeners to those speaking to them.  This procedure does something analogous.
+;; It chooses a set of listeners
 ;; for each speaker, and then inverts it, assigning to each subak's speakers var a set of
 ;; listeners (which varies in size).  (It's the per-listener collection of
 ;; speakers to which a find-best procedure should be applied.)
@@ -673,19 +673,21 @@ to set-listeners-speakers
     let another-speaker item 0 ?
     let listener-agentset item 1 ?
     ask listener-agentset [  ; each listener collects its speakers
-      set speakers (turtle-set another-speaker speakers)
+      set speakers (turtle-set another-speaker speakers) ; add this speaker to this listener's list of speakers
     ]
   ]
 end
 
+;; Current version uses a random selection of speakers from the entire population,
+;; using set-listeners-speakers.  Note this varies in size from one listener subak
+;; to another.  (As a speaker, each subak has the same number of listeners, however.)
 to imitate-spiritual-types
-  set-listeners-speakers
+  set-listeners-speakers ; give every (listener) subak a set of speaker subaks for this tick
   
   ask subaks [
-    ;let best find-best pestneighbors  ; note bestneighbor might be self
-    ;let best find-best n-of 10 subaks ; EXPERIMENTAL
-    ;let best find-best (turtle-set pestneighbors (n-of spiritual-tran-global-# (other subaks)))
-    let best find-best speakers
+
+    let best find-best speakers ; usually there will be only one
+    
     set new-spiritual-type ([spiritual-type] of best) + (random-normal 0 spiritual-tran-stddev)
     if new-spiritual-type > 1 [ set new-spiritual-type 1]
     if new-spiritual-type < 0 [set new-spiritual-type 0]
@@ -695,70 +697,10 @@ to imitate-spiritual-types
     set spiritual-type new-spiritual-type
   ]
 end
-
-;; Old list-based version
-;;; A subak-local procedure
-;to-report find-best [subak-list]
-;  let best self       ; until I learn of someone better, I'll consider myself to be my best "neighbor".
-;  let bestharvest pyharvestha ; set bestharvest to my total harvest for the year
-;
-;  foreach subak-list [
-;    ask ? [
-;      if pyharvestha > bestharvest [   ; if your total harvest for the year is more than anyone else's so far ... (note pyharvestha here is the *neighbor*'s var)
-;           set bestharvest pyharvestha ; then my new best so far will be that value
-;           set best self       ; and you will be my best neighbor so far
-;      ]
-;    ] 
-;  ]
-;  
-;  report best
-;end
-
-;; OLD VERSION taken from the bugfix/enhancements single-channel no-noise version of LKJ
-;to imitate-best-neighboring-plan
-;  let minharvest 0
-;  let maxharvest 0
-;  ask subaks [
-;    ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
-;
-;    if (crop <= 3) [; only those growing rice or fallow will imitiate.  
-;      let bestneighbor self  ; until I learn of someone better, I'll consider myself to be my best "neighbor".
-;      set minharvest pyharvestha ; set minharvest to my total harvest for the year
-;      set maxharvest minharvest  ; set maxharvest to my total harvest for the year
-;
-;      ;; Do this here rather than in the foreach, as in earlier version, so that it also happens to subaks who are nobody's neighbors:
-;      set new-SCC SCC ; store my current cropplan in temporary copy
-;      set new-sd sd   ; store my current start month in temporary copy
-;  
-;      foreach pestneighbors [
-;        ask ? [
-;          if pyharvestha > maxharvest [ ; if your total harvest for the year is more than anyone else's so far. (note pyharvestha here is the *neighbor*'s var)
-;               set maxharvest pyharvestha  ; then my new max so far will be that value (maxharvest is a local outside of all subaks that we're using temporarily here)
-;               set bestneighbor self       ; and you will be my best neighbor so far (bestneighbor is local defined within the outer ask)
-;          ]
-;        ]
-;
-;        if maxharvest > minharvest [  ; if I found a neighbor who did better than I did
-;          ;show (word "found better - mine: " ([SCC] of asker) ":" ([sd] of asker) ", neighbor's: " ([SCC] of ?) ":" ([sd] of ?))
-;          set new-SCC [SCC] of bestneighbor ; copy its cropping plan
-;          set new-sd [sd] of bestneighbor   ; and its start month
-;        ] ; removed 'else' that was here; it's now done by default before the foreach
-;      ] ; foreach
-;    ] ; if
-;  ] ; ask
-;
-;  ;; I think that Janssen split the preceding and the following in order to make update happen in parallel.
-;  ;; Otherwise, y might copy x, and then z might copy y's *new* value that it just got from x.
-;
-;  ; now, in each subak move its temporary copied values to its own operational variables, and update the UI if necessary
-;  ask subaks [
-;     set SCC new-SCC
-;     set sd new-sd
-;     if Color_subaks = "cropping plans" [
-;       display-cropping-plan-etc ; new version ; original version: set color SCC * 6 + sd
-;     ]
-;  ]
-;end
+;; alternatives to using set-listeners-speakers:
+    ;let best find-best pestneighbors  ; note bestneighbor might be self
+    ;let best find-best n-of 10 subaks ; superceded by use of set-listeners-speakers
+    ;let best find-best (turtle-set pestneighbors (n-of spiritual-tran-global-# (other subaks))) ; combine pestneighbors with random selection from population
 
 ;; subak routine
 to display-cropping-plan-etc
