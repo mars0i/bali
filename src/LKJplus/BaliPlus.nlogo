@@ -5,10 +5,12 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           ET RRT LRS Xf devtime yldmax 
           pestsens ; holds sensitivity to pests of each of the rice varieties 
           growthrates cropuse 
-          totpestloss  ; reported in the Pestloss plot
-          totpestlossarea 
-          totWS ; total water stress (?), reported in the Waterstress plot
-          totWSarea ; total water stress area (?)
+          totpestloss      ; data collected every month until end of year
+          totpestlossarea  ; data collected every month until end of year
+          avgpestloss      ; computed from previous two vars at end of year
+          totWS            ; total water stress (?).  data collected every month until end of year.
+          totWSarea        ; total water stress area (?). data collected every month until end of year.
+          avgWS            ; computed from previous two vars at end of year.
           avgharvestha ; average harvest per hectare?
           all-cropplans ; list all of possible cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
           cropplans ; list all of chosen cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
@@ -234,9 +236,9 @@ to setup
   ask dams [set areadam 0]
   ask subaks [
     let returndam self ; dummy value initialization: overwritten a few lines down
- 	  let sourcedam self ; dummy value initialization: overwritten a few lines down
- 	  let subak self
- 	  set stillgrowing false
+    let sourcedam self ; dummy value initialization: overwritten a few lines down
+    let subak self
+    set stillgrowing false
     set returndam [b] of one-of subakdams with [a = subak]
     set sourcedam [a] of one-of damsubaks with [b = subak]
     let areasubak area
@@ -247,11 +249,6 @@ to setup
     ]
     set pyharvest 0
     set pyharvestha 0
-    ; initial cropping plans are randomly allocated
-    ;set SCC random nrcropplans  ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
-    ;set sd random 12            ; Note: OVERWRITTEN A FEW LINES DOWN (why?)
-    ;cropplan SCC sd             ; set subak's current crop. Note: OVERWRITTEN A FEW LINES DOWN (why?)
-                                 ; and why don't we call ricestageplan here as well?
     set totharvestarea 0
     ;if Color_subaks = "cropping plans"         ; NOTE that since the crop plan is changed in a moment, this coloring will be inaccurate
     ;   [display-cropping-plan-etc] ; new version  ; so I'm going to add in this coloring code below -MA
@@ -319,9 +316,9 @@ to go
 
   ; at end of year, plot summary data on harvest, pests, and water stress
   if month = 11 [
-    set totpestloss totpestloss / totpestlossarea ; average loss due to pests
-    set totWS totWS / totWSarea                   ; average water stress
-    plot-figs                                     ; UI plots
+    set avgpestloss totpestloss / totpestlossarea ; average loss due to pests
+    set avgWS totWS / totWSarea                   ; average water stress
+    plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-spiritual-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
     maybe-ignore-neighboring-plans                ; possibly forget what you learned from neighbors and do something else
@@ -420,17 +417,17 @@ to demandwater
       if rainfall-scenario = "high" [rainfall damht 2]
       set rain rain / 30000
       ifelse rain < RRT [
-  	    set Runoff rain * LRS * EWS * 10000 	; 'm/d * ha* m2/ha => m3/d for basin
+        set Runoff rain * LRS * EWS * 10000  ; 'm/d * ha* m2/ha => m3/d for basin
       ][
         set Runoff (rain - ET) * EWS * 10000
         if (Runoff < 0) [set Runoff 0]
       ]
     ]
-;       		Demand for each Subak based on cropping pattern, less any rainfall.
-;        		dmd may be + or - because local rain can exceed demand ==> an excess.
+;         Demand for each Subak based on cropping pattern, less any rainfall.
+;          dmd may be + or - because local rain can exceed demand ==> an excess.
 
   ask subaks [
-;    		cropuse is m/d demand for the 4 crops:
+;   cropuse is m/d demand for the 4 crops:
     if Color_subaks = "crops" [
       ask patch-here [set pcolor default-pcolor]
       if crop = 0 [ set color green]  ; fallow
@@ -442,11 +439,11 @@ to demandwater
     set dmd item crop cropuse - [rain] of return
     set dmd dmd * area * 10000
   ]
-;			Sum the partial demands for areas 1, 2, & 3 of each dam
+;   Sum the partial demands for areas 1, 2, & 3 of each dam
   ask dams [set d1 0  set d3 0  set XS 0 ]
 
-;   			In each case, put dmd<0 into excess (XS)
-;    			Total dmd for all Subaks inside basin taking flow before the dam
+;      In each case, put dmd<0 into excess (XS)
+;       Total dmd for all Subaks inside basin taking flow before the dam
 
   ask subaks [
     let returndam self
@@ -461,12 +458,12 @@ to demandwater
         ask returndam [set d1 d1 + dmdsubak]
       ][
         ask returndam [set XS XS - dmdsubak]]]
-;  			Any excess of rain>dmd for Subaks in basin but source outside 
-;				Excess always returned to this dam, i.e. location = the downstream dam
+;     Any excess of rain>dmd for Subaks in basin but source outside 
+;    Excess always returned to this dam, i.e. location = the downstream dam
       [
         let dmdsubak dmd
         if dmd < 0 [ask returndam [set XS XS - dmdsubak]]
-;	  		Downstream irrig'n dmd drawn from this dam; >0 only, no excess allowed
+;     Downstream irrig'n dmd drawn from this dam; >0 only, no excess allowed
         if dmd > 0 [ask sourcedam [set d3 d3 + dmdsubak]]]]
 end
 
@@ -484,19 +481,25 @@ to determineflow
              ask dam1 [set flow flow + flowadd]
           ]
         ]
-				ifelse flow < 0 [
-					ifelse ((d1 + d3) = 0) [][
-						set WSD 1 + flow / (d1 + d3)
-						set d1 d1 * WSD
-						set d3 d3 * WSD
-						set flow 0 ; waterstress
-			  ]] [set WSD 1]
-				set totWSD totWSD + WSD
-	]]]
+        ifelse flow < 0 [
+          ifelse ((d1 + d3) = 0) [][
+            set WSD 1 + flow / (d1 + d3)
+            set d1 d1 * WSD
+            set d3 d3 * WSD
+            set flow 0 ; waterstress
+          ]
+        ][
+          set WSD 1
+        ]
+        set totWSD totWSD + WSD
+      ]
+    ]
+  ]
   ask subaks [
     let subak1 self
     set WSS [WSD] of [a] of one-of damsubaks with [b = subak1] ; Uh, this worries me.  Why a vs. b?  It's unidirectional. Oh, because water goes downhill? -MA
-    set dmd dmd * WSS]
+    set dmd dmd * WSS
+  ]
 end
 
 ;; This is a subak-local procedure.
@@ -555,7 +558,7 @@ to growpest
       set sumpestdif sumpestdif + pestdif]
 
     set dc (pestdispersal-rate / dxx) * sumpestdif * dt ; this is the net change in pest dispersed to or from the subak.
-    set newpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)	; Janssen 2006 doesn't explain why 0.5.
+    set newpests ((item crop growthrates) * (pests + 0.5 * dc)) + (0.5 * dc)  ; Janssen 2006 doesn't explain why 0.5.
 
     if newpests < minimumpests
       [set newpests minimumpests]
@@ -585,16 +588,16 @@ to determineharvest
           set pest-damage 1 - pests * (item crop pestsens)
           if pest-damage < 0 [set pest-damage 0]
           set harvest Ymax * pest-damage                     ; compute harvest per hectare from max growth scaled by pest damage (?)
-	  set pestloss pestloss + Ymax * (1 - pest-damage) * area
-	  set totLoss totLoss + pestloss
-	  set hy hy + harvest * area                         ; harvest for entire area (area is a subak variable) (?)
-	  set pyharvest pyharvest + harvest * area           ; add this month's total harvest onto total for year to date (?)
-	  set pyharvestha pyharvestha + harvest              ; add harvest per hectare onto per hectare for ytd
-	  set totpestloss totpestloss + area * (1 - pest-damage) * Ymax
-          set totpestlossarea totpestlossarea + area
-          set totWS totWS + (1 - ricestage) * area           ; waterstress is percentage of needed water not yet received, times area (?) [Q: How does water flow affect this?]
-          set totWSarea totWSarea + area                     ; won't this just be 12 * area at the end of 12 months??
-          set totharvestarea totharvestarea + area           ; won't this be the same?
+          set pestloss pestloss + Ymax * (1 - pest-damage) * area
+          set totLoss totLoss + pestloss
+          set hy hy + harvest * area                         ; harvest for entire area (area is a subak variable) (?)
+          set pyharvest pyharvest + harvest * area           ; add this month's total harvest onto total for year to date (?)
+          set pyharvestha pyharvestha + harvest              ; add harvest per hectare onto per hectare for ytd
+          set totpestloss totpestloss + area * (1 - pest-damage) * Ymax ; global var
+          set totpestlossarea totpestlossarea + area         ; global var
+          set totWS totWS + (1 - ricestage) * area           ; global var. waterstress is percentage of needed water not yet received, times area (?) [Q: How does water flow affect this?]
+          set totWSarea totWSarea + area                     ; global var
+          set totharvestarea totharvestarea + area           ; subak var
         ] ; if
     ] ; ask
 end
@@ -733,17 +736,8 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
-;to setup-plot
-;  set-current-plot "Harvest"
-;  set-plot-y-range 0 30
-;  set-current-plot "Pestloss"
-;  set-plot-y-range 0 1
-;  set-current-plot "Waterstress"
-;  set-plot-y-range 0 1
-;end
-
 to plot-figs
-  ;; REPLACE WITH comput-avg-harvest
+  ;; REPLACE WITH compute-avg-harvest
   let totarea 0
   let totharvest 0
   set-current-plot "Harvest"
@@ -756,10 +750,10 @@ to plot-figs
   plot avgharvestha
   
   set-current-plot "Pestloss"
-  plot totpestloss
+  plot avgpestloss
   
   set-current-plot "Waterstress"
-  plot totWS
+  plot avgWS
 end
 
 ;========================= data ========================================
@@ -874,105 +868,10 @@ to cropplan [plan-number mnth]
   set crop item (mnth mod 12) (item plan-number cropplans)
 end
 
-; old version of cropplan:
-;to cropplan [nr m]          ; cropping plan number, month number (zero-based)
-;  if m > 11 [set m m - 12]
-;	let cropplan-a [3 3 3 0 3 3 3 0 3 3 3 0]
-;	let cropplan-b [3 3 3 0 0 0 3 3 3 0 0 0]
-;	let cropplan-c [3 3 3 0 3 3 3 0 0 0 0 0]
-;	let cropplan-d [3 3 3 0 0 3 3 3 0 0 0 0]
-;	let cropplan-e [3 3 3 0 0 0 0 3 3 3 0 0]
-;	let cropplan-f [3 3 3 0 0 0 0 0 3 3 3 0]
-;	let cropplan-g [1 1 1 1 1 1 0 2 2 2 2 0]
-;	let cropplan-h [1 1 1 1 1 1 0 3 3 3 0 0]
-;	let cropplan-i [1 1 1 1 1 1 0 0 3 3 3 0]
-;	let cropplan-j [1 1 1 1 1 1 0 0 0 0 0 0]
-;	let cropplan-k [2 2 2 2 0 0 2 2 2 2 0 0]
-;	let cropplan-l [2 2 2 2 0 2 2 2 2 0 0 0]
-;	let cropplan-m [2 2 2 2 0 0 0 2 2 2 2 0]
-;	let cropplan-n [2 2 2 2 0 0 3 3 3 0 0 0]
-;	let cropplan-o [2 2 2 2 0 3 3 3 0 0 0 0]
-;	let cropplan-p [2 2 2 2 0 0 0 3 3 3 0 0]
-;	let cropplan-q [2 2 2 2 0 0 0 0 3 3 3 0]	
-;	let cropplan-r [3 3 3 0 0 2 2 2 2 0 0 0]
-;	let cropplan-s [3 3 3 0 0 0 2 2 2 2 0 0]
-;	let cropplan-t [3 3 3 0 2 2 2 2 0 0 0 0]
-;	let cropplan-u [3 3 3 0 0 0 0 2 2 2 2 0]
-;
-;  if nr = 0 [set crop item m cropplan-a]  ; i.e. set this subak's crop var to the crop number at month m in cropping plan nr
-;  if nr = 1 [set crop item m cropplan-b]
-;  if nr = 2 [set crop item m cropplan-c]
-;  if nr = 3 [set crop item m cropplan-d]
-;  if nr = 4 [set crop item m cropplan-e]
-;  if nr = 5 [set crop item m cropplan-f]
-;  if nr = 6 [set crop item m cropplan-g]
-;  if nr = 7 [set crop item m cropplan-h]
-;  if nr = 8 [set crop item m cropplan-i]
-;  if nr = 9 [set crop item m cropplan-j]
-;  if nr = 10 [set crop item m cropplan-k]
-;  if nr = 11 [set crop item m cropplan-l]
-;  if nr = 12 [set crop item m cropplan-m]
-;  if nr = 13 [set crop item m cropplan-n]
-;  if nr = 14 [set crop item m cropplan-o]
-;  if nr = 15 [set crop item m cropplan-p]
-;  if nr = 16 [set crop item m cropplan-q]
-;  if nr = 17 [set crop item m cropplan-r]
-;  if nr = 18 [set crop item m cropplan-s]
-;  if nr = 19 [set crop item m cropplan-t]
-;  if nr = 20 [set crop item m cropplan-u]
-;end
-
 ; since only called during setup, and not due to incrementing month, there's no need to modulo the month
 to ricestageplan [nr m]
   set ricestage item m (item nr ricestageplans)
 end
-
-;old version:
-;to ricestageplan [nr m]
-;	let ricestageplan0 [0 0.33 0.67 0 0 0.33 0.67 0 0 0.33 0.67 0]
-;	let ricestageplan1 [0 0.33 0.67 0 0 0 0 0.33 0.67 0 0 0]
-;	let ricestageplan2 [0 0.33 0.67 0 0 0.33 0.67 0 0 0 0 0]
-;	let ricestageplan3 [0 0.33 0.67 0 0 0 0.33 0.67 0 0 0 0]
-;	let ricestageplan4 [0 0.33 0.67 0 0 0 0 0 0.33 0.67 0 0]
-;	let ricestageplan5 [0 0.33 0.67 0 0 0 0 0 0 0.33 0.67 0]
-;	let ricestageplan6 [0 0.16 0.33 0.5 0.67 0.84 0 0 0.25 0.5 0.75 0]
-;	let ricestageplan7 [0 0.16 0.33 0.5 0.67 0.84 0 0 0.33 0.67 0 0]
-;	let ricestageplan8 [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0.33 0.67 0]
-;	let ricestageplan9 [0 0.16 0.33 0.5 0.67 0.84 0 0 0 0 0 0]
-;	let ricestageplan10 [0 0.25 0.5 0.75 0 0 0 0.25 0.5 0.75 0 0]
-;	let ricestageplan11 [0 0.25 0.5 0.75 0 0 0.25 0.5 0.75 0 0 0]
-;	let ricestageplan12 [0 0.25 0.5 0.75 0 0 0 0 0.25 0.5 0.75 0]
-;	let ricestageplan13 [0 0.25 0.5 0.75 0 0 0 0.33 0.67 0 0 0]
-;	let ricestageplan14 [0 0.25 0.5 0.75 0 0 0.33 0.67 0 0 0 0]
-;	let ricestageplan15 [0 0.25 0.5 0.75 0 0 0 0 0.33 0.67 0 0]
-;	let ricestageplan16 [0 0.25 0.5 0.75 0 0 0 0 0 0.33 0.67 0]	
-;	let ricestageplan17 [0 0.33 0.67 0 0 0 0.25 0.5 0.75 0 0 0]
-;	let ricestageplan18 [0 0.33 0.67 0 0 0 0 0.25 0.5 0.75 0 0]
-;	let ricestageplan19 [0 0.33 0.67 0 0 0.25 0.5 0.75 0 0 0 0]
-;	let ricestageplan20 [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]
-;
-;  if nr = 0 [set ricestage item m ricestageplan0]
-;  if nr = 1 [set ricestage item m ricestageplan1]
-;  if nr = 2 [set ricestage item m ricestageplan2]
-;  if nr = 3 [set ricestage item m ricestageplan3]
-;  if nr = 4 [set ricestage item m ricestageplan4]
-;  if nr = 5 [set ricestage item m ricestageplan5]
-;  if nr = 6 [set ricestage item m ricestageplan6]
-;  if nr = 7 [set ricestage item m ricestageplan7]
-;  if nr = 8 [set ricestage item m ricestageplan8]
-;  if nr = 9 [set ricestage item m ricestageplan9]
-;  if nr = 10 [set ricestage item m ricestageplan10]
-;  if nr = 11 [set ricestage item m ricestageplan11]
-;  if nr = 12 [set ricestage item m ricestageplan12]
-;  if nr = 13 [set ricestage item m ricestageplan13]
-;  if nr = 14 [set ricestage item m ricestageplan14]
-;  if nr = 15 [set ricestage item m ricestageplan15]
-;  if nr = 16 [set ricestage item m ricestageplan16]
-;  if nr = 17 [set ricestage item m ricestageplan17]
-;  if nr = 18 [set ricestage item m ricestageplan18]
-;  if nr = 19 [set ricestage item m ricestageplan19]
-;  if nr = 20 [set ricestage item m ricestageplan20]
-;end
 
 to linkdams
   make-damdam (item 0 dams_array) (item 5 dams_array)
@@ -1969,7 +1868,7 @@ ignore-neighbors-prob
 0
 1
 0
-0.01
+0.1
 1
 NIL
 HORIZONTAL
