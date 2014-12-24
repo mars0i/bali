@@ -286,9 +286,9 @@ to setup
     set old? false
     cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?). Note we use sd here since initially, mip = sd. In go we use mip.
     ricestageplan SCC sd
+    set spiritual-type random-float 1 
     if Color_subaks = "cropping plans"  ; added by Marshall. changes apparently irrelevant coloring above.
        [display-cropping-plan-etc]
-    set spiritual-type random-float 1 
     let subak1 self
     ask subaks [
       if [source] of self = [source] of subak1                   ; if subak1 and I get water from the same dam (source)
@@ -1163,7 +1163,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.2
+2.4
 0.01
 1
 NIL
@@ -1178,7 +1178,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1
+1.5
 0.01
 1
 NIL
