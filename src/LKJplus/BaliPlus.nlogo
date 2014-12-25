@@ -20,6 +20,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           default-pcolor ; color of all patches except when patch color used to indicate start month
           shuffle-cropplans?  ; can be put back into UI if desired
           data-dir ; where data files, random seed files, etc. will be written
+          min-yield
         ]
 
 ;patches-own [r1]
@@ -124,6 +125,7 @@ to setup
   set-default-shape subaksubaks "line"
   set-default-shape subak-helpers "circle"
   set default-pcolor 6 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
+  set min-yield 1000000 ; dummy value
 
   ask patches [set pcolor default-pcolor]
   
@@ -415,7 +417,7 @@ end
 ;; list allowable cropplans in the output window
 to list-cropplans
   let i 0
-  output-print "Crop plans:"
+  ;output-print "Crop plans:"
   foreach cropplans
     [if (i < 10)
        [output-type " "]
@@ -768,6 +770,15 @@ to plot-figs
   set-current-plot-pen "harvest"
   set avgharvestha totharvest / totarea
   plot avgharvestha
+
+  ;; doesn't work:
+  ;if ticks >= 120 [
+  ;   if avgharvestha < min-yield [
+  ;     set min-yield avgharvestha
+  ;   ]
+  ;   set-current-plot-pen "min-yield"
+  ;   plot min-yield
+  ;]
   
   set-current-plot "Pestloss"
   plot avgpestloss
@@ -1098,7 +1109,7 @@ end
 to set-random-seed [seed]
   let filename (word data-dir "seed" seed ".txt")
   random-seed seed
-  file-open (word data-dir seed ".seed")
+  file-open filename
   file-write seed
   file-close
   output-print (word "Seed: " seed "; file: " filename)
@@ -1229,6 +1240,7 @@ false
 "" ""
 PENS
 "harvest" 1.0 0 -10899396 true "" ""
+"min-yield" 1.0 0 -16777216 true "" ""
 
 CHOOSER
 0
@@ -1343,7 +1355,7 @@ OUTPUT
 25
 1324
 329
-9
+8
 
 SWITCH
 1329
@@ -1352,7 +1364,7 @@ SWITCH
 43
 cropplan-a
 cropplan-a
-0
+1
 1
 -1000
 
@@ -1895,7 +1907,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0
+0.5
 0.1
 1
 NIL
@@ -1935,7 +1947,7 @@ SWITCH
 501
 spiritual-influence?
 spiritual-influence?
-1
+0
 1
 -1000
 
@@ -2033,7 +2045,7 @@ SWITCH
 536
 show-spiritual-types
 show-spiritual-types
-1
+0
 1
 -1000
 
