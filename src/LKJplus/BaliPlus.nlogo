@@ -628,7 +628,7 @@ end
 
 to maybe-ignore-neighboring-plans  ask subaks [
     ; The closer spiritual-influence is to 0, the less probable ignoring best neighbor is:
-    let prob-ignore ignore-neighbors-prob * (ifelse-value spiritual-influence? [spiritual-type] [1])
+    let prob-ignore ignore-neighbors-prob * (ifelse-value spiritual-influence? [spiritual-type * (1 / spiritual-influence)] [1])
     if random-float 1 < prob-ignore [  
       set SCC random (length cropplans)
       set sd random 12
@@ -1322,16 +1322,6 @@ show-subak-values
 
 TEXTBOX
 4
-563
-175
-611
-Display #s corresp to subak coloring (not yet implemented for all choices)
-11
-0.0
-1
-
-TEXTBOX
-4
 171
 180
 237
@@ -1907,7 +1897,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0.5
+0.4
 0.1
 1
 NIL
@@ -2022,7 +2012,7 @@ spiritual-tran-global-#
 spiritual-tran-global-#
 0
 171
-5
+11
 1
 1
 NIL
@@ -2039,13 +2029,13 @@ Spiritual tran from # indivs from pop in addition to pestneighbors:
 1
 
 SWITCH
--1
-503
-178
-536
+-2
+535
+177
+568
 show-spiritual-types
 show-spiritual-types
-0
+1
 1
 -1000
 
@@ -2059,6 +2049,21 @@ read-seed
 1
 1
 -1000
+
+SLIDER
+-7
+502
+179
+536
+spiritual-influence
+spiritual-influence
+1
+2
+1.5
+0.05
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## LICENSE
