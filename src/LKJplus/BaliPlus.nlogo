@@ -19,6 +19,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           cropplan-bools
           default-pcolor ; color of all patches except when patch color used to indicate start month
           shuffle-cropplans?  ; can be put back into UI if desired
+          data-dir ; where data files, random seed files, etc. will be written
         ]
 
 ;patches-own [r1]
@@ -96,7 +97,23 @@ to setup
   ;; of the procedure.)
   ;; __clear-all-and-reset-ticks
   clear-all
+  file-close-all
+  set data-dir "../../data/"
   
+  if-else read-seed [
+    let seed 0
+    carefully [
+      file-open user-file
+      set seed file-read
+    ][
+      set seed new-seed
+    ]
+    file-close
+    set-random-seed seed
+  ][
+    set-random-seed new-seed
+  ]
+
   set shuffle-cropplans? false ; currently turned off permanently.  Can be put back in UI if desired.
 
   set-default-shape subaks "circle"
@@ -398,6 +415,7 @@ end
 ;; list allowable cropplans in the output window
 to list-cropplans
   let i 0
+  output-print "Crop plans:"
   foreach cropplans
     [if (i < 10)
        [output-type " "]
@@ -717,7 +735,9 @@ to display-cropping-plan-etc
     [set color low-scc-base-color + (10 * SCC)]         ; colors from column low-scc-base-color of swatches
     [set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
     
-  ask my-subak-helper [set color (10 * [spiritual-type] of myself)] ; extreme peasant is 0=black (the better option); extreme brahman is 9.99=white (note spiritual type is always < 1) 
+  if-else show-spiritual-types
+    [ask my-subak-helper [set color (10 * [spiritual-type] of myself)]] ; extreme peasant is 0=black (the better option); extreme brahman is 9.99=white (note spiritual type is always < 1) 
+    [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
   
   if-else show-subak-values
     [set label (word "[" SCC ":" sd "]")]
@@ -1075,6 +1095,14 @@ end
 ;;;;;;;;;;;;;;;;;;;;
 ;; General-purpose utilities
 
+to set-random-seed [seed]
+  let filename (word data-dir "seed" seed ".txt")
+  random-seed seed
+  file-open (word data-dir seed ".seed")
+  file-write seed
+  file-close
+  output-print (word "Seed: " seed "; file: " filename)
+end
 
 ;; generate integers from 0 to n-1
 to-report pos-ints [n]
@@ -1155,10 +1183,10 @@ NIL
 1
 
 SLIDER
-4
-96
-176
-129
+0
+100
+179
+133
 pestgrowth-rate
 pestgrowth-rate
 2
@@ -1250,9 +1278,9 @@ PENS
 
 SWITCH
 3
-654
+703
 155
-687
+736
 viewdamsubaks
 viewdamsubaks
 1
@@ -1261,9 +1289,9 @@ viewdamsubaks
 
 CHOOSER
 3
-608
+657
 155
-653
+702
 Color_subaks
 Color_subaks
 "Temple groups" "cropping plans" "crops" "pests"
@@ -1271,9 +1299,9 @@ Color_subaks
 
 SWITCH
 2
-561
+609
 178
-594
+642
 show-subak-values
 show-subak-values
 1
@@ -1281,10 +1309,10 @@ show-subak-values
 -1000
 
 TEXTBOX
-5
-515
-176
+4
 563
+175
+611
 Display #s corresp to subak coloring (not yet implemented for all choices)
 11
 0.0
@@ -1324,7 +1352,7 @@ SWITCH
 43
 cropplan-a
 cropplan-a
-1
+0
 1
 -1000
 
@@ -1602,9 +1630,9 @@ NIL
 
 SWITCH
 4
-694
+743
 157
-727
+776
 global-startmonth
 global-startmonth
 1
@@ -1613,9 +1641,9 @@ global-startmonth
 
 TEXTBOX
 7
-728
+777
 157
-756
+805
 If true, all subaks use same random start month.
 11
 0.0
@@ -1853,7 +1881,7 @@ TEXTBOX
 10
 1270
 28
-crop plans in this run:
+seed, crop plans in this run:
 11
 0.0
 1
@@ -1997,6 +2025,28 @@ Spiritual tran from # indivs from pop in addition to pestneighbors:
 11
 0.0
 1
+
+SWITCH
+-1
+503
+178
+536
+show-spiritual-types
+show-spiritual-types
+1
+1
+-1000
+
+SWITCH
+67
+10
+179
+43
+read-seed
+read-seed
+1
+1
+-1000
 
 @#$#@#$#@
 ## LICENSE
