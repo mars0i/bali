@@ -1949,7 +1949,7 @@ ignore-neighbors-prob
 0
 1
 0
-0.1
+0.05
 1
 NIL
 HORIZONTAL
@@ -2099,7 +2099,7 @@ spiritual-influence
 spiritual-influence
 1
 2
-1
+2
 0.05
 1
 NIL
@@ -2113,7 +2113,7 @@ CHOOSER
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
-1
+0
 
 @#$#@#$#@
 ## LICENSE
