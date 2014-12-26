@@ -1,3 +1,4 @@
+;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-data from data in text files
           new-subaks subaks_array dams_array subakdams_array 
           damsubaks_array Rel Rem Reh 
@@ -21,7 +22,9 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           shuffle-cropplans?  ; can be put back into UI if desired
           data-dir ; where data files, random seed files, etc. will be written
           min-yield
+          previous-seed ; holds seed from previous run
         ]
+;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 
 ;patches-own [r1]
 breed [subaks]  ; Water-management collectives
@@ -92,28 +95,32 @@ subak-helpers-own [my-subak]
 
 ;;;;;;;;;;;;;;;
 to setup
-  ;; (for this model to work with NetLogo's new plotting features,
-  ;; __clear-all-and-reset-ticks should be replaced with clear-all at
-  ;; the beginning of your setup procedure and reset-ticks at the end
-  ;; of the procedure.)
-  ;; __clear-all-and-reset-ticks
-  clear-all
+
+  ;clear-all    ; replacing clear-globals with custom version that can exclude some vars
+  ;clear-globals
+  my-clear-globals
+  clear-ticks
+  clear-turtles
+  clear-patches
+  clear-drawing
+  clear-all-plots
+  clear-output
   file-close-all
   set data-dir "../../data/"
   
-  if-else read-seed [
-    let seed 0
-    carefully [
-      file-open user-file
-      set seed file-read
-    ][
-      set seed new-seed
-    ]
-    file-close
-    set-random-seed seed
-  ][
-    set-random-seed new-seed
-  ]
+  print previous-seed
+  let seed 0
+  if-else random-seed-source = "new seed"
+    [set seed new-seed]
+    [if-else random-seed-source = "read from file"
+      [carefully
+        [file-open user-file
+         set seed file-read]
+        [set seed new-seed]   ; if user declines to choose a file, use a random seed
+       file-close]  ; do this no matter what
+      [set seed previous-seed]] ; inner else. random-seed-source = "use previous"
+  set-random-seed seed
+  set previous-seed seed
 
   set shuffle-cropplans? false ; currently turned off permanently.  Can be put back in UI if desired.
 
@@ -320,6 +327,50 @@ to setup
 end
 ;;;;;;;;;;;;;;; end of setup
 
+;; Does the same thing as builtin clear-globals, but allows excluding
+;; some variables to allow them to carry over values from previous run.
+;; (Use with caution!)
+to my-clear-globals
+  set subak-data 0
+  set dam-data 0
+  set subaksubak-data 0
+  set subakdam-data 0
+  set new-subaks 0
+  set subaks_array 0
+  set dams_array 0
+  set subakdams_array 0
+  set damsubaks_array 0
+  set Rel 0
+  set Rem 0
+  set Reh 0
+  set month 0
+  set ET 0
+  set RRT 0
+  set LRS 0
+  set Xf 0
+  set devtime 0
+  set yldmax 0
+  set pestsens 0
+  set growthrates 0
+  set cropuse 0
+  set totpestloss 0
+  set totpestlossarea 0
+  set avgpestloss 0
+  set totWS 0
+  set totWSarea 0
+  set avgWS 0
+  set avgharvestha 0
+  set all-cropplans 0
+  set cropplans 0
+  set all-ricestageplans 0
+  set ricestageplans 0
+  set cropplan-bools 0
+  set default-pcolor 0
+  set shuffle-cropplans? 0
+  set data-dir 0
+  set min-yield 0
+  ; set previous-seed 0
+end
 
 ;;;;;;;;;;;;;;;
 to go  
@@ -1162,7 +1213,7 @@ months
 BUTTON
 3
 10
-66
+58
 43
 NIL
 setup
@@ -1177,10 +1228,10 @@ NIL
 1
 
 BUTTON
-3
-47
-66
-80
+59
+10
+114
+43
 NIL
 go
 T
@@ -1194,10 +1245,10 @@ NIL
 1
 
 SLIDER
-0
-100
-179
-133
+1
+101
+180
+134
 pestgrowth-rate
 pestgrowth-rate
 2
@@ -1365,7 +1416,7 @@ SWITCH
 76
 cropplan-b
 cropplan-b
-0
+1
 1
 -1000
 
@@ -1376,7 +1427,7 @@ SWITCH
 109
 cropplan-c
 cropplan-c
-0
+1
 1
 -1000
 
@@ -1387,7 +1438,7 @@ SWITCH
 142
 cropplan-d
 cropplan-d
-0
+1
 1
 -1000
 
@@ -1398,7 +1449,7 @@ SWITCH
 175
 cropplan-e
 cropplan-e
-0
+1
 1
 -1000
 
@@ -1409,7 +1460,7 @@ SWITCH
 208
 cropplan-f
 cropplan-f
-0
+1
 1
 -1000
 
@@ -1431,7 +1482,7 @@ SWITCH
 274
 cropplan-h
 cropplan-h
-0
+1
 1
 -1000
 
@@ -1442,7 +1493,7 @@ SWITCH
 307
 cropplan-i
 cropplan-i
-0
+1
 1
 -1000
 
@@ -1497,7 +1548,7 @@ SWITCH
 472
 cropplan-n
 cropplan-n
-0
+1
 1
 -1000
 
@@ -1508,7 +1559,7 @@ SWITCH
 505
 cropplan-o
 cropplan-o
-0
+1
 1
 -1000
 
@@ -1519,7 +1570,7 @@ SWITCH
 538
 cropplan-p
 cropplan-p
-0
+1
 1
 -1000
 
@@ -1530,7 +1581,7 @@ SWITCH
 571
 cropplan-q
 cropplan-q
-0
+1
 1
 -1000
 
@@ -1541,7 +1592,7 @@ SWITCH
 604
 cropplan-r
 cropplan-r
-0
+1
 1
 -1000
 
@@ -1552,7 +1603,7 @@ SWITCH
 637
 cropplan-s
 cropplan-s
-0
+1
 1
 -1000
 
@@ -1563,7 +1614,7 @@ SWITCH
 670
 cropplan-t
 cropplan-t
-0
+1
 1
 -1000
 
@@ -1574,7 +1625,7 @@ SWITCH
 703
 cropplan-u
 cropplan-u
-0
+1
 1
 -1000
 
@@ -1652,11 +1703,11 @@ If true, all subaks use same random start month.
 1
 
 BUTTON
-67
-47
-126
-80
-go once
+115
+10
+170
+43
+once
 go
 NIL
 1
@@ -1897,7 +1948,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0.4
+0
 0.1
 1
 NIL
@@ -1937,7 +1988,7 @@ SWITCH
 501
 spiritual-influence?
 spiritual-influence?
-0
+1
 1
 -1000
 
@@ -2012,7 +2063,7 @@ spiritual-tran-global-#
 spiritual-tran-global-#
 0
 171
-11
+0
 1
 1
 NIL
@@ -2039,31 +2090,30 @@ show-spiritual-types
 1
 -1000
 
-SWITCH
-67
-10
-179
-43
-read-seed
-read-seed
-1
-1
--1000
-
 SLIDER
 -7
 502
 179
-536
+535
 spiritual-influence
 spiritual-influence
 1
 2
-1.5
+1
 0.05
 1
 NIL
 HORIZONTAL
+
+CHOOSER
+4
+44
+162
+89
+random-seed-source
+random-seed-source
+"new seed" "read from file" "use previous"
+1
 
 @#$#@#$#@
 ## LICENSE
