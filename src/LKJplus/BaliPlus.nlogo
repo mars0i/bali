@@ -373,7 +373,10 @@ to my-clear-globals
 end
 
 ;;;;;;;;;;;;;;;
-to go  
+to go
+  if run-until-month > 0 and ticks >= run-until-month
+    [stop] ; exit go-forever if user specified a stop tick
+   
   poss-show-damsubaks ; display dam-subak-relations if requested from UI
   update-subak-months ; update month, crop states, etc. in subaks
 
@@ -1245,10 +1248,10 @@ NIL
 1
 
 SLIDER
-1
-101
+2
+151
 180
-134
+184
 pestgrowth-rate
 pestgrowth-rate
 2
@@ -1260,10 +1263,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1
-135
-178
-168
+2
+185
+179
+218
 pestdispersal-rate
 pestdispersal-rate
 0.6
@@ -1294,10 +1297,10 @@ PENS
 "min-yield" 1.0 0 -16777216 true "" ""
 
 CHOOSER
-0
-233
-175
-278
+1
+283
+176
+328
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
@@ -1362,9 +1365,9 @@ Color_subaks
 
 SWITCH
 2
-609
+620
 178
-642
+653
 show-subak-values
 show-subak-values
 1
@@ -1372,10 +1375,10 @@ show-subak-values
 -1000
 
 TEXTBOX
-4
-171
-180
-237
+5
+221
+181
+287
           Correspondences\npestdispersal-rate    d (Janssen 2006)\n     0.6                       0.18\n     1.0                       0.3\n     1.5                       0.45
 8
 0.0
@@ -1940,10 +1943,10 @@ seed, crop plans in this run:
 1
 
 SLIDER
-2
-322
-179
-355
+3
+372
+180
+405
 ignore-neighbors-prob
 ignore-neighbors-prob
 0
@@ -1955,10 +1958,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-5
-290
-179
-320
+6
+340
+180
+370
 Probability of choosing random crop plan, start month:
 11
 0.0
@@ -1982,13 +1985,13 @@ NIL
 1
 
 SWITCH
+4
+518
+181
+551
+spiritual-influence?
+spiritual-influence?
 0
-468
-177
-501
-spiritual-influence?
-spiritual-influence?
-1
 1
 -1000
 
@@ -2040,66 +2043,66 @@ mean [spiritual-type] of subaks
 11
 
 SLIDER
-0
-434
-177
-467
+4
+484
+181
+517
 spiritual-tran-stddev
 spiritual-tran-stddev
 0
 1.0
-0.02
+0.01
 0.01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-0
-401
-177
-434
+4
+451
+181
+484
 spiritual-tran-global-#
 spiritual-tran-global-#
 0
 171
-0
+5
 1
 1
 NIL
 HORIZONTAL
 
 TEXTBOX
-0
-369
-183
-396
+4
+419
+187
+446
 Spiritual tran from # indivs from pop in addition to pestneighbors:
 11
 0.0
 1
 
 SWITCH
--2
-535
-177
-568
+2
+585
+181
+618
 show-spiritual-types
 show-spiritual-types
-1
+0
 1
 -1000
 
 SLIDER
--7
-502
-179
-535
+3
+551
+180
+584
 spiritual-influence
 spiritual-influence
 1
 2
-2
+1.5
 0.05
 1
 NIL
@@ -2113,7 +2116,28 @@ CHOOSER
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
+2
+
+INPUTBOX
+5
+89
+108
+149
+run-until-month
+2100
+1
 0
+Number
+
+TEXTBOX
+110
+91
+180
+133
+0: run forever\nN>0: run until\nmonth = N
+9
+0.0
+1
 
 @#$#@#$#@
 ## LICENSE
