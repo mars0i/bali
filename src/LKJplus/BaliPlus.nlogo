@@ -750,7 +750,14 @@ to set-listeners-speakers
     let another-speaker item 0 ?
     let listener-agentset item 1 ?
     ask listener-agentset [  ; each listener collects its speakers
-      set speakers (turtle-set another-speaker speakers) ; add this speaker to this listener's list of speakers
+      set speakers (turtle-set another-speaker speakers) ; add this speaker to this listener's list of speakers   
+    ]
+  ]
+
+  ;; if requested, also listen to pestneighbors
+  if spiritual-tran-neighbors [
+    ask subaks [
+      set speakers (turtle-set pestneighbors speakers)
     ]
   ]
 end
@@ -1343,10 +1350,10 @@ PENS
 "totWS" 1.0 0 -13345367 true "" ""
 
 SWITCH
-3
-703
-155
-736
+-2
+732
+150
+765
 viewdamsubaks
 viewdamsubaks
 1
@@ -1354,20 +1361,20 @@ viewdamsubaks
 -1000
 
 CHOOSER
-3
-657
-155
-702
+-2
+686
+150
+731
 Color_subaks
 Color_subaks
 "Temple groups" "cropping plans" "crops" "pests"
 1
 
 SWITCH
-2
-620
-178
-653
+-3
+649
+173
+682
 show-subak-values
 show-subak-values
 1
@@ -1685,10 +1692,10 @@ NIL
 1
 
 SWITCH
-4
-743
-157
-776
+-1
+772
+152
+805
 global-startmonth
 global-startmonth
 1
@@ -1985,10 +1992,10 @@ NIL
 1
 
 SWITCH
-4
-518
-181
-551
+-1
+547
+176
+580
 spiritual-influence?
 spiritual-influence?
 0
@@ -2043,10 +2050,10 @@ mean [spiritual-type] of subaks
 11
 
 SLIDER
-4
-484
-181
-517
+-1
+513
+176
+546
 spiritual-tran-stddev
 spiritual-tran-stddev
 0
@@ -2058,10 +2065,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-4
-451
-181
-484
+-1
+480
+176
+513
 spiritual-tran-global-#
 spiritual-tran-global-#
 0
@@ -2073,20 +2080,20 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-4
-419
-187
-446
+-1
+454
+182
+481
 Spiritual tran from # indivs from pop in addition to pestneighbors:
 11
 0.0
 1
 
 SWITCH
-2
-585
-181
-618
+-3
+614
+176
+647
 show-spiritual-types
 show-spiritual-types
 0
@@ -2094,10 +2101,10 @@ show-spiritual-types
 -1000
 
 SLIDER
-3
-551
-180
-584
+-2
+580
+175
+613
 spiritual-influence
 spiritual-influence
 1
@@ -2136,6 +2143,27 @@ TEXTBOX
 133
 0: run forever\nN>0: run until\nmonth = N
 9
+0.0
+1
+
+SWITCH
+0
+418
+178
+451
+spiritual-tran-neighbors
+spiritual-tran-neighbors
+1
+1
+-1000
+
+TEXTBOX
+6
+404
+156
+422
+Copy pestneighbors if true:
+11
 0.0
 1
 
