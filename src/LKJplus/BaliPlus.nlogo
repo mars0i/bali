@@ -13,6 +13,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           totWSarea        ; total water stress area (?). data collected every month until end of year.
           avgWS            ; computed from previous two vars at end of year.
           avgharvestha ; average harvest per hectare?
+          max-avgharvestha ; max so far
           all-cropplans ; list all of possible cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
           cropplans ; list all of chosen cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
           all-ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan in all-cropplans
@@ -108,7 +109,6 @@ to setup
   file-close-all
   set data-dir "../../data/"
   
-  print previous-seed
   let seed 0
   if-else random-seed-source = "new seed"
     [set seed new-seed]
@@ -391,6 +391,9 @@ to go
   if month = 11 [
     set avgpestloss totpestloss / totpestlossarea ; average loss due to pests
     set avgWS totWS / totWSarea                   ; average water stress
+    set avgharvestha compute-avg-harvest          ; average harvest yield
+    if avgharvestha > max-avgharvestha
+      [set max-avgharvestha avgharvestha]
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-spiritual-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
@@ -755,7 +758,7 @@ to set-listeners-speakers
   ]
 
   ;; if requested, also listen to pestneighbors
-  if spiritual-tran-neighbors [
+  if spiritual-pestneighbors [
     ask subaks [
       set speakers (turtle-set pestneighbors speakers)
     ]
@@ -815,21 +818,22 @@ to-report compute-avg-harvest
     set totharvest totharvest + pyharvest
   ]
   if-else totarea = 0
-    [report "totarea is 0"]
+    [report "totarea is 0"]       ; hack for running on every tick in BehaviorSpace.  Outside of BS, should be called only at end of year.
     [report totharvest / totarea]
 end
 
 to plot-figs
   ;; REPLACE WITH compute-avg-harvest
-  let totarea 0
-  let totharvest 0
+  ;let totarea 0
+  ;let totharvest 0
+  ;ask subaks [
+  ;  set totarea totarea + totharvestarea
+  ;  set totharvest totharvest + pyharvest
+  ;]
+  ;set avgharvestha totharvest / totarea
   set-current-plot "Harvest"
-  ask subaks [
-    set totarea totarea + totharvestarea
-    set totharvest totharvest + pyharvest
-  ]
   set-current-plot-pen "harvest"
-  set avgharvestha totharvest / totarea
+  ;set avgharvestha compute-avg-harvest ; replaces preceding commented-out lines.  Now moved to 'go'
   plot avgharvestha
 
   ;; doesn't work:
@@ -1286,9 +1290,9 @@ HORIZONTAL
 
 PLOT
 774
-10
+56
 1099
-242
+246
 Harvest
 NIL
 NIL
@@ -1315,9 +1319,9 @@ rainfall-scenario
 
 PLOT
 774
-467
+436
 1099
-690
+623
 Pestloss
 NIL
 NIL
@@ -1333,9 +1337,9 @@ PENS
 
 PLOT
 774
-242
+246
 1099
-466
+436
 Waterstress
 NIL
 NIL
@@ -1952,7 +1956,7 @@ seed, crop plans in this run:
 SLIDER
 3
 372
-180
+179
 405
 ignore-neighbors-prob
 ignore-neighbors-prob
@@ -1998,7 +2002,7 @@ SWITCH
 580
 spiritual-influence?
 spiritual-influence?
-0
+1
 1
 -1000
 
@@ -2058,7 +2062,7 @@ spiritual-tran-stddev
 spiritual-tran-stddev
 0
 1.0
-0.01
+0.02
 0.01
 1
 NIL
@@ -2073,7 +2077,7 @@ spiritual-tran-global-#
 spiritual-tran-global-#
 0
 171
-5
+0
 1
 1
 NIL
@@ -2096,7 +2100,7 @@ SWITCH
 647
 show-spiritual-types
 show-spiritual-types
-0
+1
 1
 -1000
 
@@ -2131,7 +2135,7 @@ INPUTBOX
 108
 149
 run-until-month
-2100
+0
 1
 0
 Number
@@ -2151,8 +2155,8 @@ SWITCH
 418
 178
 451
-spiritual-tran-neighbors
-spiritual-tran-neighbors
+spiritual-pestneighbors
+spiritual-pestneighbors
 1
 1
 -1000
@@ -2166,6 +2170,28 @@ Copy pestneighbors if true:
 11
 0.0
 1
+
+MONITOR
+775
+10
+918
+55
+Current harvest
+avgharvestha
+17
+1
+11
+
+MONITOR
+918
+10
+1064
+55
+Max harvest so far
+max-avgharvestha
+17
+1
+11
 
 @#$#@#$#@
 ## LICENSE
