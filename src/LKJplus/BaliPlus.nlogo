@@ -12,8 +12,10 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           totWS            ; total water stress (?).  data collected every month until end of year.
           totWSarea        ; total water stress area (?). data collected every month until end of year.
           avgWS            ; computed from previous two vars at end of year.
-          avgharvestha ; average harvest per hectare?
-          max-avgharvestha ; max so far
+          avgharvestha                ; average harvest per hectare?
+          max-avgharvestha            ; max so far
+          last-n-years-avgharvesthas  ; FIFO list of previous n years for rolling average, with most recent value at beginning, oldest at end
+          num-years-avgharvesthas     ; how many n is in last-n-years-avgharvesthas
           all-cropplans ; list all of possible cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
           cropplans ; list all of chosen cropplans, each of which is a list of 12 crop ids, one for each month, or 0 for fallow
           all-ricestageplans ; list of lists of estimated initial water-used-by-month percentages for each month of each crop plan in all-cropplans
@@ -133,6 +135,8 @@ to setup
   set-default-shape subak-helpers "circle"
   set default-pcolor 6 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
   set min-yield 1000000 ; dummy value
+  set last-n-years-avgharvesthas []
+  set num-years-avgharvesthas 10
 
   ask patches [set pcolor default-pcolor]
   
@@ -360,6 +364,9 @@ to my-clear-globals
   set totWSarea 0
   set avgWS 0
   set avgharvestha 0
+  set max-avgharvestha 0
+  set last-n-years-avgharvesthas 0
+  set num-years-avgharvesthas 0
   set all-cropplans 0
   set cropplans 0
   set all-ricestageplans 0
@@ -394,6 +401,9 @@ to go
     set avgharvestha compute-avg-harvest          ; average harvest yield
     if avgharvestha > max-avgharvestha
       [set max-avgharvestha avgharvestha]
+    set last-n-years-avgharvesthas fput avgharvestha last-n-years-avgharvesthas ; add current avg harvest yield
+    if length last-n-years-avgharvesthas > num-years-avgharvesthas         ; implement FIFO:
+      [set last-n-years-avgharvesthas but-last last-n-years-avgharvesthas] ; once the running list of harvest yields is long enough, remove the last one
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-spiritual-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
@@ -835,6 +845,8 @@ to plot-figs
   set-current-plot-pen "harvest"
   ;set avgharvestha compute-avg-harvest ; replaces preceding commented-out lines.  Now moved to 'go'
   plot avgharvestha
+  set-current-plot-pen "n-year-avg"
+  plot mean last-n-years-avgharvesthas
 
   ;; doesn't work:
   ;if ticks >= 120 [
@@ -1290,9 +1302,9 @@ HORIZONTAL
 
 PLOT
 774
-56
+73
 1099
-246
+263
 Harvest
 NIL
 NIL
@@ -1305,7 +1317,7 @@ false
 "" ""
 PENS
 "harvest" 1.0 0 -10899396 true "" ""
-"min-yield" 1.0 0 -16777216 true "" ""
+"n-year-avg" 1.0 0 -16777216 true "" ""
 
 CHOOSER
 1
@@ -1319,9 +1331,9 @@ rainfall-scenario
 
 PLOT
 774
-436
+453
 1099
-623
+640
 Pestloss
 NIL
 NIL
@@ -1337,9 +1349,9 @@ PENS
 
 PLOT
 774
-246
+263
 1099
-436
+453
 Waterstress
 NIL
 NIL
@@ -1696,10 +1708,10 @@ NIL
 1
 
 SWITCH
--1
-772
-152
-805
+-5
+765
+148
+798
 global-startmonth
 global-startmonth
 1
@@ -1707,10 +1719,10 @@ global-startmonth
 -1000
 
 TEXTBOX
-7
-777
-157
-805
+-3
+801
+147
+829
 If true, all subaks use same random start month.
 11
 0.0
@@ -2174,22 +2186,43 @@ Copy pestneighbors if true:
 MONITOR
 775
 10
-918
+876
 55
 Current harvest
 avgharvestha
-17
+3
 1
 11
 
 MONITOR
-918
+982
 10
-1064
+1093
 55
 Max harvest so far
 max-avgharvestha
-17
+3
+1
+11
+
+TEXTBOX
+774
+57
+1059
+75
+Current avg harvest: green, rolling avg: black:
+11
+0.0
+1
+
+MONITOR
+875
+10
+983
+55
+Rolling avg
+mean last-n-years-avgharvesthas
+3
 1
 11
 
