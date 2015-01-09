@@ -84,3 +84,45 @@ Note that if I'm going to have success-biased masceti transmission,
 then I have to have a harvest success value for the mascetic--maybe an
 average of its members'.
 
+-----------
+
+I.
+
+analogy is presumably non-linear in number of involved propositions
+(since there is mutual reinforcement).
+
+so you could potentially have an analogy that spreads piecemeal (as in
+the second moderate role model), and then pretty quickly increases its
+effect.
+
+thus you could have an analogy spread via neutral tran and then suddenly
+be selected for.
+
+
+II.
+
+in subak spiritual effects, what's analogous to analogy is an entire
+pest region having spiritual bels.  that's when you get the mutually
+reinforcing effect.
+
+possibly there could be some kind of individual-level tran that's
+neutral, and then it takes off.  and then you start copying from those
+who are in the pest region where it took off due to success bias.  i.e.
+while everything's in the neutral region, there is success bias, but the
+effect is random.  but then randomly, you get e.g. a small pest region
+where everyone has high spirituality, and then *they* do really well.
+so everyone ends up gradually copying them (e.g. with global copying).
+
+for this kind of model I would want to adopt a non-linear effect of
+spirituality, which would fit with what happens, in theory, with
+analogy.
+
+
+III.
+
+Note also that if the entire watershed is noisy, there is little
+waterstress cost to adopting a pestregion-wide crop pattern.  i.e. in a
+noisy world, the early adopters of the spiritual values get the benefit
+of suppressing pest transmission, but don't have to worry about
+waterstress due to inadvertently being in sync with other pestregions in
+the same watershed.
