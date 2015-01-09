@@ -290,6 +290,7 @@ to setup
         set size 0.35
         set my-subak this-subak
         ask this-subak [set my-subak-helper myself]
+        set color [color] of this-subak
       ]
     ]
   ]
@@ -522,6 +523,7 @@ to demandwater
       if crop = 2 [ set color yellow] ; rice variety 2
       if crop = 3 [ set color white]  ; rice variety 3
       if crop = 4 [ set color red]    ; alternate, non-rice crop (?)
+      ask my-subak-helper [set color [color] of myself]
     ]
     set dmd item crop cropuse - [rain] of return
     set dmd dmd * area * 10000
@@ -655,6 +657,7 @@ to growpest
     if Color_subaks = "pests" [
       ask patch-here [set pcolor default-pcolor]
       set color 62 + pests
+      ask my-subak-helper [set color [color] of myself]
     ]
   ] ; outer ask
 end
