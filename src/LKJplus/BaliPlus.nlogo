@@ -1301,9 +1301,9 @@ NIL
 HORIZONTAL
 
 PLOT
-774
+772
 73
-1099
+1097
 263
 Harvest
 NIL
@@ -1316,8 +1316,8 @@ true
 false
 "" ""
 PENS
-"harvest" 1.0 0 -10899396 true "" ""
-"n-year-avg" 1.0 0 -16777216 true "" ""
+"harvest" 1.0 0 -16777216 true "" ""
+"n-year-avg" 1.0 0 -14070903 true "" ""
 
 CHOOSER
 1
@@ -1327,12 +1327,12 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-1
+2
 
 PLOT
-774
+772
 453
-1099
+1097
 640
 Pestloss
 NIL
@@ -1348,9 +1348,9 @@ PENS
 "totpestloss" 1.0 0 -2674135 true "" ""
 
 PLOT
-774
+772
 263
-1099
+1097
 453
 Waterstress
 NIL
@@ -2074,7 +2074,7 @@ spiritual-tran-stddev
 spiritual-tran-stddev
 0
 1.0
-0.02
+0.01
 0.01
 1
 NIL
@@ -2184,20 +2184,20 @@ Copy pestneighbors if true:
 1
 
 MONITOR
-775
+773
 10
-876
+853
 55
-Current harvest
+Curr harvest
 avgharvestha
 3
 1
 11
 
 MONITOR
-982
+978
 10
-1093
+1089
 55
 Max harvest so far
 max-avgharvestha
@@ -2210,19 +2210,30 @@ TEXTBOX
 57
 1059
 75
-Current avg harvest: green, rolling avg: black:
+Current harvest: black, rolling average: blue:
 11
 0.0
 1
 
 MONITOR
-875
+853
 10
-983
+929
 55
 Rolling avg
 mean last-n-years-avgharvesthas
 3
+1
+11
+
+MONITOR
+929
+10
+979
+55
+years
+num-years-avgharvesthas
+17
 1
 11
 
