@@ -10,7 +10,7 @@ See also
 in the popco2 repo.
 
 
-(Marshall has a lot of other notes, mostly not directly related to
-implementation of the models, in his ~/papers/Bali,
+(Marshall has a lot of other notes, some not directly related to
+implementation of the models, in his bali.notes, ~/papers/Bali,
 ~/papers/APAdoingPhilWithComputers, and maybe ~/phil/culture.  That
 material is not part of this git repo.)
