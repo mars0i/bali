@@ -1219,16 +1219,17 @@ to-report tanh [x]
 end
 
 ; By Belov in response to my question at http://math.stackexchange.com/questions/367078/computationally-simple-sigmoid-with-specific-slopes-at-specific-points
+; note: will divide by zero if given 1 or -1
 to-report sigmoid-normalizer [x]
-  if-else (x > 1)
-    [report 1]
-    [if-else (x < -1)
-      [report -1]
-      [report (sigmoid-center-curve * x) / ((1 - x ^ 2) ^ (1 / sigmoid-endpts-curve))]]
+  report (sigmoid-center-curve * x) / ((1 - x ^ 2) ^ (1 / sigmoid-endpts-curve))
 end
 
 to-report sigmoid [x]
-  report tanh (sigmoid-normalizer x)
+  if-else (x >= 1)  ; protect the normalizer
+    [report 1]
+    [if-else (x <= -1)
+      [report -1]
+      [report tanh (sigmoid-normalizer x)]]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -2260,34 +2261,69 @@ num-years-avgharvesthas
 11
 
 SLIDER
-774
-646
-955
-679
+756
+691
+935
+724
 sigmoid-center-curve
 sigmoid-center-curve
-0.0005
+0.001
 20
-0.0010
-0.0001
+0.489
+0.001
 1
 NIL
 HORIZONTAL
 
 SLIDER
-773
-680
-955
-713
+755
+725
+935
+758
 sigmoid-endpts-curve
 sigmoid-endpts-curve
-0.0001
-10
-0.275
-0.0001
+0.001
+20
+0.486
+0.001
 1
 NIL
 HORIZONTAL
+
+PLOT
+937
+643
+1097
+794
+spiritual success curve
+NIL
+NIL
+-1.0
+1.0
+-1.0
+1.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot count turtles"
+
+BUTTON
+818
+658
+936
+691
+plot success curve
+set-current-plot \"spiritual success curve\"\nclear-plot\nlet x -1 + 0.01\nlet y -1 \nrepeat 199\n  [plotxy x (sigmoid x)\n   set x x + 0.01]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## LICENSE
