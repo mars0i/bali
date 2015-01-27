@@ -1211,6 +1211,25 @@ end
 to-report reorder-by [idxs vals]
   report map [item ? vals] idxs
 end
+
+; see e.g. http://en.wikipedia.org/wiki/Hyperbolic_function for this definition
+to-report tanh [x]
+  let exp2x exp(2 * x)
+  report (exp2x - 1)/(exp2x + 1)
+end
+
+; By Belov in response to my question at http://math.stackexchange.com/questions/367078/computationally-simple-sigmoid-with-specific-slopes-at-specific-points
+to-report sigmoid-normalizer [x]
+  if-else (x > 1)
+    [report 1]
+    [if-else (x < -1)
+      [report -1]
+      [report (sigmoid-center-curve * x) / ((1 - x ^ 2) ^ (1 / sigmoid-endpts-curve))]]
+end
+
+to-report sigmoid [x]
+  report tanh (sigmoid-normalizer x)
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 180
@@ -2239,6 +2258,36 @@ num-years-avgharvesthas
 17
 1
 11
+
+SLIDER
+774
+646
+955
+679
+sigmoid-center-curve
+sigmoid-center-curve
+0.0005
+20
+0.0010
+0.0001
+1
+NIL
+HORIZONTAL
+
+SLIDER
+773
+680
+955
+713
+sigmoid-endpts-curve
+sigmoid-endpts-curve
+0.0001
+10
+0.275
+0.0001
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## LICENSE
