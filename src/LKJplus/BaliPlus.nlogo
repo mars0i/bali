@@ -1221,6 +1221,7 @@ end
 ; By Belov in response to my question at http://math.stackexchange.com/questions/367078/computationally-simple-sigmoid-with-specific-slopes-at-specific-points
 ; note: will divide by zero if given 1 or -1
 to-report sigmoid-normalizer [x]
+  ; let yo ((1 - x ^ 2) ^ (1 / sigmoid-endpts-curve)) ; DEBUG
   report (sigmoid-center-curve * x) / ((1 - x ^ 2) ^ (1 / sigmoid-endpts-curve))
 end
 
@@ -2267,10 +2268,10 @@ SLIDER
 724
 sigmoid-center-curve
 sigmoid-center-curve
-0.001
-20
-0.489
-0.001
+0.005
+10
+0.0050
+0.005
 1
 NIL
 HORIZONTAL
@@ -2282,10 +2283,10 @@ SLIDER
 758
 sigmoid-endpts-curve
 sigmoid-endpts-curve
-0.001
-20
-0.486
-0.001
+0.01
+10
+0.2
+0.005
 1
 NIL
 HORIZONTAL
