@@ -107,7 +107,7 @@ to setup
   clear-patches
   clear-drawing
   clear-all-plots
-  plot-relig-success-curve
+  plot-relig-effect-curve
   clear-output
   file-close-all
   set data-dir "../../data/"
@@ -699,7 +699,7 @@ end
 
 to maybe-ignore-neighboring-plans  ask subaks [
     ; The closer relig-influence is to 0, the less probable ignoring best neighbor is:
-    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(1 - relig-type) * (1 / relig-influence)] [1])
+    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(sigmoid (1 - relig-type)) * (1 / relig-influence)] [1])
     if random-float 1 < prob-ignore [  
       set SCC random (length cropplans)
       set sd random 12
@@ -1219,16 +1219,16 @@ to-report sigmoid [x]
       [report tanh (sigmoid-normalizer x)]]
 end
 
-to plot-relig-success-curve
-  set-current-plot "relig success curve"
-  set-current-plot-pen "success-curve"
+to plot-relig-effect-curve
+  set-current-plot "relig effect curve"
+  set-current-plot-pen "effect-curve"
   clear-plot
   
   let x-min plot-x-min
   let x-max plot-x-max
   let y-min plot-y-min
   let y-max plot-y-max
-  let x-increment 0.01 ; just needs to be small enough to make a nice curve
+  let x-increment 0.0001 ; just needs to be small enough to make a nice curve
 
   let x (x-min + x-increment)   ; don't start at x-min, which may be a special case
   repeat ((x-max - x-min) / x-increment) - 1 [ ; count is -1 since skipping x-min
@@ -1355,7 +1355,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-1
+2
 
 PLOT
 772
@@ -1436,9 +1436,9 @@ TEXTBOX
 1
 
 TEXTBOX
-318
+184
 693
-638
+504
 791
 Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents relig value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\n(Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.)
 11
@@ -1459,7 +1459,7 @@ SWITCH
 43
 cropplan-a
 cropplan-a
-0
+1
 1
 -1000
 
@@ -1470,7 +1470,7 @@ SWITCH
 76
 cropplan-b
 cropplan-b
-0
+1
 1
 -1000
 
@@ -1481,7 +1481,7 @@ SWITCH
 109
 cropplan-c
 cropplan-c
-0
+1
 1
 -1000
 
@@ -1492,7 +1492,7 @@ SWITCH
 142
 cropplan-d
 cropplan-d
-0
+1
 1
 -1000
 
@@ -1503,7 +1503,7 @@ SWITCH
 175
 cropplan-e
 cropplan-e
-0
+1
 1
 -1000
 
@@ -1514,7 +1514,7 @@ SWITCH
 208
 cropplan-f
 cropplan-f
-0
+1
 1
 -1000
 
@@ -1536,7 +1536,7 @@ SWITCH
 274
 cropplan-h
 cropplan-h
-0
+1
 1
 -1000
 
@@ -1547,7 +1547,7 @@ SWITCH
 307
 cropplan-i
 cropplan-i
-0
+1
 1
 -1000
 
@@ -1602,7 +1602,7 @@ SWITCH
 472
 cropplan-n
 cropplan-n
-0
+1
 1
 -1000
 
@@ -1613,7 +1613,7 @@ SWITCH
 505
 cropplan-o
 cropplan-o
-0
+1
 1
 -1000
 
@@ -1624,7 +1624,7 @@ SWITCH
 538
 cropplan-p
 cropplan-p
-0
+1
 1
 -1000
 
@@ -1635,7 +1635,7 @@ SWITCH
 571
 cropplan-q
 cropplan-q
-0
+1
 1
 -1000
 
@@ -1646,7 +1646,7 @@ SWITCH
 604
 cropplan-r
 cropplan-r
-0
+1
 1
 -1000
 
@@ -1657,7 +1657,7 @@ SWITCH
 637
 cropplan-s
 cropplan-s
-0
+1
 1
 -1000
 
@@ -1668,7 +1668,7 @@ SWITCH
 670
 cropplan-t
 cropplan-t
-0
+1
 1
 -1000
 
@@ -1679,7 +1679,7 @@ SWITCH
 703
 cropplan-u
 cropplan-u
-0
+1
 1
 -1000
 
@@ -2002,7 +2002,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0.1
+0.05
 0.05
 1
 NIL
@@ -2042,7 +2042,7 @@ SWITCH
 580
 relig-influence?
 relig-influence?
-0
+1
 1
 -1000
 
@@ -2102,7 +2102,7 @@ relig-tran-stddev
 relig-tran-stddev
 0
 1.0
-0.01
+0.04
 0.01
 1
 NIL
@@ -2117,7 +2117,7 @@ relig-tran-global-#
 relig-tran-global-#
 0
 171
-4
+2
 1
 1
 NIL
@@ -2266,30 +2266,30 @@ num-years-avgharvesthas
 11
 
 SLIDER
-756
-691
-935
-724
+513
+692
+938
+726
 sigmoid-center-curve
 sigmoid-center-curve
-0.005
-10
-0.01
-0.005
+0.001
+5
+0.0030
+0.001
 1
 NIL
 HORIZONTAL
 
 SLIDER
-755
-725
-935
-758
+513
+726
+938
+760
 sigmoid-endpts-curve
 sigmoid-endpts-curve
 0.01
-10
-0.235
+5
+0.28
 0.005
 1
 NIL
@@ -2300,26 +2300,26 @@ PLOT
 643
 1097
 794
-relig success curve
+relig effect curve
 NIL
 NIL
--1.0
+0.0
 1.0
--1.0
+0.0
 1.0
 true
 false
-";; See plot-relig-success-curve procedure." ";; See plot-relig-success-curve procedure."
+";; See plot-relig-effect-curve procedure." ";; See plot-relig-effect-curve procedure."
 PENS
-"success-curve" 1.0 0 -7500403 true "" ""
+"effect-curve" 1.0 0 -7500403 true "" "; See plot-relig-effect-curve procedure."
 
 BUTTON
 817
 658
-935
-691
-plot success curve
-plot-relig-success-curve
+936
+692
+plot relig curve
+plot-relig-effect-curve
 NIL
 1
 T
