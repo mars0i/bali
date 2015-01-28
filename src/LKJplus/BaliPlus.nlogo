@@ -73,8 +73,8 @@ subaks-own [
   totLoss 
   source ; dam from which I get water (?)
   return ; dam to which I send leftover water (?)
-  spiritual-type ; a number in [0,1]: peasant-style religious values 0 vs. Brahmanic religious values 1
-  new-spiritual-type ; newly copied type--so that update is parallel
+  relig-type ; a number in [0,1]: peasant-style religious values 0 vs. Brahmanic religious values 1
+  new-relig-type ; newly copied type--so that update is parallel
   my-subak-helper
   speakers ;; EXPERIMENTAL TEMPORARY YO
 ]
@@ -107,7 +107,7 @@ to setup
   clear-patches
   clear-drawing
   clear-all-plots
-  plot-spiritual-success-curve
+  plot-relig-success-curve
   clear-output
   file-close-all
   set data-dir "../../data/"
@@ -318,7 +318,7 @@ to setup
     set old? false
     cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?). Note we use sd here since initially, mip = sd. In go we use mip.
     ricestageplan SCC sd
-    set spiritual-type random-float 1 
+    set relig-type random-float 1 
     if Color_subaks = "cropping plans"  ; added by Marshall. changes apparently irrelevant coloring above.
        [display-cropping-plan-etc]
     let subak1 self
@@ -407,7 +407,7 @@ to go
     if length last-n-years-avgharvesthas > num-years-avgharvesthas         ; implement FIFO:
       [set last-n-years-avgharvesthas but-last last-n-years-avgharvesthas] ; once the running list of harvest yields is long enough, remove the last one
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
-    imitate-spiritual-types
+    imitate-relig-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
     maybe-ignore-neighboring-plans                ; possibly forget what you learned from neighbors and do something else
     if Color_subaks = "cropping plans" [ask subaks [display-cropping-plan-etc]]
@@ -698,8 +698,8 @@ end
 ;; CULTURAL TRANSMISSION
 
 to maybe-ignore-neighboring-plans  ask subaks [
-    ; The closer spiritual-influence is to 0, the less probable ignoring best neighbor is:
-    let prob-ignore ignore-neighbors-prob * (ifelse-value spiritual-influence? [spiritual-type * (1 / spiritual-influence)] [1])
+    ; The closer relig-influence is to 0, the less probable ignoring best neighbor is:
+    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [relig-type * (1 / relig-influence)] [1])
     if random-float 1 < prob-ignore [  
       set SCC random (length cropplans)
       set sd random 12
@@ -709,14 +709,14 @@ end
 
 ;to maybe-ignore-neighboring-plans
 ;  ask subaks [
-;    if (spiritual-influence (random-float 1) spiritual-type) < ignore-neighbors-prob [
+;    if (relig-influence (random-float 1) relig-type) < ignore-neighbors-prob [
 ;      set SCC random (length cropplans)
 ;      set sd random 12
 ;    ]
 ;  ]
 ;end
 ;
-;to-report spiritual-influence [erraticness sp-type]
+;to-report relig-influence [erraticness sp-type]
 ;  report min (list 1 (erraticness + sp-type))
 ;end
 
@@ -763,7 +763,7 @@ end
 to set-listeners-speakers
   ask subaks [set speakers n-of 0 subaks]
 
-  foreach ( [list self (n-of spiritual-tran-global-# other subaks)] of subaks ) [  ; iterate through list of pairs: [speaker, listeners]
+  foreach ( [list self (n-of relig-tran-global-# other subaks)] of subaks ) [  ; iterate through list of pairs: [speaker, listeners]
     let another-speaker item 0 ?
     let listener-agentset item 1 ?
     ask listener-agentset [  ; each listener collects its speakers
@@ -772,7 +772,7 @@ to set-listeners-speakers
   ]
 
   ;; if requested, also listen to pestneighbors
-  if spiritual-pestneighbors [
+  if relig-pestneighbors [
     ask subaks [
       set speakers (turtle-set pestneighbors speakers)
     ]
@@ -782,26 +782,26 @@ end
 ;; Current version uses a random selection of speakers from the entire population,
 ;; using set-listeners-speakers.  Note this varies in size from one listener subak
 ;; to another.  (As a speaker, each subak has the same number of listeners, however.)
-to imitate-spiritual-types
+to imitate-relig-types
   set-listeners-speakers ; give every (listener) subak a set of speaker subaks for this tick
   
   ask subaks [
 
     let best find-best speakers ; usually there will be only one
     
-    set new-spiritual-type ([spiritual-type] of best) + (random-normal 0 spiritual-tran-stddev)
-    if new-spiritual-type > 1 [ set new-spiritual-type 1]
-    if new-spiritual-type < 0 [set new-spiritual-type 0]
+    set new-relig-type ([relig-type] of best) + (random-normal 0 relig-tran-stddev)
+    if new-relig-type > 1 [ set new-relig-type 1]
+    if new-relig-type < 0 [set new-relig-type 0]
   ]
   
   ask subaks [
-    set spiritual-type new-spiritual-type
+    set relig-type new-relig-type
   ]
 end
 ;; alternatives to using set-listeners-speakers:
     ;let best find-best pestneighbors  ; note bestneighbor might be self
     ;let best find-best n-of 10 subaks ; superceded by use of set-listeners-speakers
-    ;let best find-best (turtle-set pestneighbors (n-of spiritual-tran-global-# (other subaks))) ; combine pestneighbors with random selection from population
+    ;let best find-best (turtle-set pestneighbors (n-of relig-tran-global-# (other subaks))) ; combine pestneighbors with random selection from population
 
 ;; subak routine
 to display-cropping-plan-etc
@@ -815,8 +815,8 @@ to display-cropping-plan-etc
     [set color low-scc-base-color + (10 * SCC)]         ; colors from column low-scc-base-color of swatches
     [set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
     
-  if-else show-spiritual-types
-    [ask my-subak-helper [set color (10 * [spiritual-type] of myself)]] ; extreme peasant is 0=black (the better option); extreme brahman is 9.99=white (note spiritual type is always < 1) 
+  if-else show-relig-types
+    [ask my-subak-helper [set color (10 * [relig-type] of myself)]] ; extreme peasant is 0=black (the better option); extreme brahman is 9.99=white (note relig type is always < 1) 
     [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
   
   if-else show-subak-values
@@ -1234,8 +1234,8 @@ to-report sigmoid [x]
       [report tanh (sigmoid-normalizer x)]]
 end
 
-to plot-spiritual-success-curve
-  set-current-plot "spiritual success curve"
+to plot-relig-success-curve
+  set-current-plot "relig success curve"
   set-current-plot-pen "success-curve"
   clear-plot
   
@@ -1455,7 +1455,7 @@ TEXTBOX
 693
 638
 791
-Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents spiritual value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\n(Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.)
+Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents relig value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\n(Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.)
 11
 0.0
 1
@@ -2055,8 +2055,8 @@ SWITCH
 547
 176
 580
-spiritual-influence?
-spiritual-influence?
+relig-influence?
+relig-influence?
 1
 1
 -1000
@@ -2084,7 +2084,7 @@ PLOT
 375
 1324
 495
-spiritual type distribution
+relig type distribution
 NIL
 NIL
 0.0
@@ -2095,15 +2095,15 @@ true
 false
 "set-histogram-num-bars 40" ""
 PENS
-"default" 1.0 1 -16777216 true "" "histogram [spiritual-type] of subaks"
+"default" 1.0 1 -16777216 true "" "histogram [relig-type] of subaks"
 
 MONITOR
 1102
 329
 1325
 374
-mean spiritual type
-mean [spiritual-type] of subaks
+mean relig type
+mean [relig-type] of subaks
 17
 1
 11
@@ -2113,8 +2113,8 @@ SLIDER
 513
 176
 546
-spiritual-tran-stddev
-spiritual-tran-stddev
+relig-tran-stddev
+relig-tran-stddev
 0
 1.0
 0.01
@@ -2128,8 +2128,8 @@ SLIDER
 480
 176
 513
-spiritual-tran-global-#
-spiritual-tran-global-#
+relig-tran-global-#
+relig-tran-global-#
 0
 171
 0
@@ -2153,8 +2153,8 @@ SWITCH
 614
 176
 647
-show-spiritual-types
-show-spiritual-types
+show-relig-types
+show-relig-types
 1
 1
 -1000
@@ -2164,8 +2164,8 @@ SLIDER
 580
 175
 613
-spiritual-influence
-spiritual-influence
+relig-influence
+relig-influence
 1
 2
 1.5
@@ -2210,8 +2210,8 @@ SWITCH
 418
 178
 451
-spiritual-pestneighbors
-spiritual-pestneighbors
+relig-pestneighbors
+relig-pestneighbors
 1
 1
 -1000
@@ -2315,7 +2315,7 @@ PLOT
 643
 1097
 794
-spiritual success curve
+relig success curve
 NIL
 NIL
 -1.0
@@ -2324,7 +2324,7 @@ NIL
 1.0
 true
 false
-";; See plot-spiritual-success-curve procedure." ";; See plot-spiritual-success-curve procedure."
+";; See plot-relig-success-curve procedure." ";; See plot-relig-success-curve procedure."
 PENS
 "success-curve" 1.0 0 -7500403 true "" ""
 
@@ -2334,7 +2334,7 @@ BUTTON
 935
 691
 plot success curve
-plot-spiritual-success-curve
+plot-relig-success-curve
 NIL
 1
 T
