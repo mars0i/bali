@@ -73,7 +73,7 @@ subaks-own [
   totLoss 
   source ; dam from which I get water (?)
   return ; dam to which I send leftover water (?)
-  relig-type ; a number in [0,1]: peasant-style religious values 0 vs. Brahmanic religious values 1
+  relig-type ; a number in [0,1]: peasant-style religious values 1 vs. Brahmanic religious values 0
   new-relig-type ; newly copied type--so that update is parallel
   my-subak-helper
   speakers ;; EXPERIMENTAL TEMPORARY YO
@@ -699,26 +699,13 @@ end
 
 to maybe-ignore-neighboring-plans  ask subaks [
     ; The closer relig-influence is to 0, the less probable ignoring best neighbor is:
-    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [relig-type * (1 / relig-influence)] [1])
+    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(1 - relig-type) * (1 / relig-influence)] [1])
     if random-float 1 < prob-ignore [  
       set SCC random (length cropplans)
       set sd random 12
     ]
   ]
 end
-
-;to maybe-ignore-neighboring-plans
-;  ask subaks [
-;    if (relig-influence (random-float 1) relig-type) < ignore-neighbors-prob [
-;      set SCC random (length cropplans)
-;      set sd random 12
-;    ]
-;  ]
-;end
-;
-;to-report relig-influence [erraticness sp-type]
-;  report min (list 1 (erraticness + sp-type))
-;end
 
 ;; A top-level procedure, not an in-subak procedure.
 to imitate-best-neighboring-plans
@@ -786,9 +773,7 @@ to imitate-relig-types
   set-listeners-speakers ; give every (listener) subak a set of speaker subaks for this tick
   
   ask subaks [
-
     let best find-best speakers ; usually there will be only one
-    
     set new-relig-type ([relig-type] of best) + (random-normal 0 relig-tran-stddev)
     if new-relig-type > 1 [ set new-relig-type 1]
     if new-relig-type < 0 [set new-relig-type 0]
@@ -816,7 +801,7 @@ to display-cropping-plan-etc
     [set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
     
   if-else show-relig-types
-    [ask my-subak-helper [set color (10 * [relig-type] of myself)]] ; extreme peasant is 0=black (the better option); extreme brahman is 9.99=white (note relig type is always < 1) 
+    [ask my-subak-helper [set color (10 - 10 * [relig-type] of myself)]] ; extreme peasant is 1=black (the better option); extreme brahman is 0=white (note relig type is always < 1) 
     [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
   
   if-else show-subak-values
@@ -2017,7 +2002,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0
+0.1
 0.05
 1
 NIL
@@ -2057,7 +2042,7 @@ SWITCH
 580
 relig-influence?
 relig-influence?
-1
+0
 1
 -1000
 
@@ -2132,7 +2117,7 @@ relig-tran-global-#
 relig-tran-global-#
 0
 171
-0
+4
 1
 1
 NIL
@@ -2155,7 +2140,7 @@ SWITCH
 647
 show-relig-types
 show-relig-types
-1
+0
 1
 -1000
 
@@ -2212,7 +2197,7 @@ SWITCH
 451
 relig-pestneighbors
 relig-pestneighbors
-1
+0
 1
 -1000
 
