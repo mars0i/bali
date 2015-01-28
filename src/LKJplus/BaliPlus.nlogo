@@ -107,6 +107,7 @@ to setup
   clear-patches
   clear-drawing
   clear-all-plots
+  plot-spiritual-success-curve
   clear-output
   file-close-all
   set data-dir "../../data/"
@@ -1231,6 +1232,24 @@ to-report sigmoid [x]
       [report -1]
       [report tanh (sigmoid-normalizer x)]]
 end
+
+to plot-spiritual-success-curve
+  set-current-plot "spiritual success curve"
+  set-current-plot-pen "success-curve"
+  clear-plot
+  
+  let x-min plot-x-min
+  let x-max plot-x-max
+  let y-min plot-y-min
+  let y-max plot-y-max
+  let x-increment 0.01 ; just needs to be small enough to make a nice curve
+
+  let x (x-min + x-increment)   ; don't start at x-min, which may be a special case
+  repeat ((x-max - x-min) / x-increment) - 1 [ ; count is -1 since skipping x-min
+    plotxy x (sigmoid x)
+    set x (x + x-increment)
+  ]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 180
@@ -1350,7 +1369,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-2
+1
 
 PLOT
 772
@@ -1445,7 +1464,7 @@ OUTPUT
 25
 1324
 329
-8
+7
 
 SWITCH
 1329
@@ -1454,7 +1473,7 @@ SWITCH
 43
 cropplan-a
 cropplan-a
-1
+0
 1
 -1000
 
@@ -1465,7 +1484,7 @@ SWITCH
 76
 cropplan-b
 cropplan-b
-1
+0
 1
 -1000
 
@@ -1476,7 +1495,7 @@ SWITCH
 109
 cropplan-c
 cropplan-c
-1
+0
 1
 -1000
 
@@ -1487,7 +1506,7 @@ SWITCH
 142
 cropplan-d
 cropplan-d
-1
+0
 1
 -1000
 
@@ -1498,7 +1517,7 @@ SWITCH
 175
 cropplan-e
 cropplan-e
-1
+0
 1
 -1000
 
@@ -1509,7 +1528,7 @@ SWITCH
 208
 cropplan-f
 cropplan-f
-1
+0
 1
 -1000
 
@@ -1531,7 +1550,7 @@ SWITCH
 274
 cropplan-h
 cropplan-h
-1
+0
 1
 -1000
 
@@ -1542,7 +1561,7 @@ SWITCH
 307
 cropplan-i
 cropplan-i
-1
+0
 1
 -1000
 
@@ -1597,7 +1616,7 @@ SWITCH
 472
 cropplan-n
 cropplan-n
-1
+0
 1
 -1000
 
@@ -1608,7 +1627,7 @@ SWITCH
 505
 cropplan-o
 cropplan-o
-1
+0
 1
 -1000
 
@@ -1619,7 +1638,7 @@ SWITCH
 538
 cropplan-p
 cropplan-p
-1
+0
 1
 -1000
 
@@ -1630,7 +1649,7 @@ SWITCH
 571
 cropplan-q
 cropplan-q
-1
+0
 1
 -1000
 
@@ -1641,7 +1660,7 @@ SWITCH
 604
 cropplan-r
 cropplan-r
-1
+0
 1
 -1000
 
@@ -1652,7 +1671,7 @@ SWITCH
 637
 cropplan-s
 cropplan-s
-1
+0
 1
 -1000
 
@@ -1663,7 +1682,7 @@ SWITCH
 670
 cropplan-t
 cropplan-t
-1
+0
 1
 -1000
 
@@ -1674,7 +1693,7 @@ SWITCH
 703
 cropplan-u
 cropplan-u
-1
+0
 1
 -1000
 
@@ -2162,7 +2181,7 @@ CHOOSER
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
-2
+0
 
 INPUTBOX
 5
@@ -2269,7 +2288,7 @@ sigmoid-center-curve
 sigmoid-center-curve
 0.001
 20
-0.489
+0.575
 0.001
 1
 NIL
@@ -2304,17 +2323,17 @@ NIL
 1.0
 true
 false
-"" ""
+";; See plot-spiritual-success-curve procedure." ";; See plot-spiritual-success-curve procedure."
 PENS
-"default" 1.0 0 -16777216 true "" "plot count turtles"
+"success-curve" 1.0 0 -7500403 true "" ""
 
 BUTTON
-818
+817
 658
-936
+935
 691
 plot success curve
-set-current-plot \"spiritual success curve\"\nclear-plot\nlet x -1 + 0.01\nlet y -1 \nrepeat 199\n  [plotxy x (sigmoid x)\n   set x x + 0.01]
+plot-spiritual-success-curve
 NIL
 1
 T
