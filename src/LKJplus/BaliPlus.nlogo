@@ -699,7 +699,7 @@ end
 
 to maybe-ignore-neighboring-plans  ask subaks [
     ; The closer relig-influence is to 0, the less probable ignoring best neighbor is:
-    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(sigmoid (1 - relig-type)) * (1 / relig-influence)] [1])
+    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(relig-effect (1 - relig-type)) * (1 / relig-influence)] [1])
     if random-float 1 < prob-ignore [  
       set SCC random (length cropplans)
       set sd random 12
@@ -1212,17 +1212,21 @@ end
 
 ; By Belov in response to my question at http://math.stackexchange.com/questions/367078/computationally-simple-sigmoid-with-specific-slopes-at-specific-points
 ; note: will divide by zero if given 1 or -1
-to-report sigmoid-normalizer [x]
-  ; let yo ((1 - x ^ 2) ^ (1 / sigmoid-endpts-curve)) ; DEBUG
-  report (sigmoid-center-curve * x) / ((1 - x ^ 2) ^ (1 / sigmoid-endpts-curve))
+to-report sigmoid-normalizer [x curve-center curve-endpts]
+  ; let yo ((1 - x ^ 2) ^ (1 / relig-effect-curve-endpt)) ; DEBUG
+  report (curve-center * x) / ((1 - x ^ 2) ^ (1 / curve-endpts))
 end
 
-to-report sigmoid [x]
+to-report sigmoid [x curve-center curve-endpts]
   if-else (x >= 1)  ; protect the normalizer
     [report 1]
     [if-else (x <= -1)
       [report -1]
-      [report tanh (sigmoid-normalizer x)]]
+      [report tanh (sigmoid-normalizer x curve-center curve-endpts)]]
+end
+
+to-report relig-effect [x]
+  report sigmoid x relig-effect-center relig-effect-endpt  ; globals are from UI sliders
 end
 
 to plot-relig-effect-curve
@@ -1238,7 +1242,7 @@ to plot-relig-effect-curve
 
   let x (x-min + x-increment)   ; don't start at x-min, which may be a special case
   repeat ((x-max - x-min) / x-increment) - 1 [ ; count is -1 since skipping x-min
-    plotxy x (sigmoid x)
+    plotxy x (relig-effect x)
     set x (x + x-increment)
   ]
 end
@@ -2275,9 +2279,9 @@ SLIDER
 500
 693
 939
-727
-sigmoid-center-curve
-sigmoid-center-curve
+726
+relig-effect-center
+relig-effect-center
 0.001
 5
 0.0030
@@ -2290,12 +2294,12 @@ SLIDER
 500
 727
 939
-761
-sigmoid-endpts-curve
-sigmoid-endpts-curve
+760
+relig-effect-endpt
+relig-effect-endpt
 0.01
 5
-0.28
+0.3
 0.005
 1
 NIL
