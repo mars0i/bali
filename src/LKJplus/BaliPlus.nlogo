@@ -801,8 +801,14 @@ to display-cropping-plan-etc
     [set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
     
   if-else show-relig-types
-    [ask my-subak-helper [set color (10 - 10 * [relig-type] of myself)]] ; extreme peasant is 1=black (the better option); extreme brahman is 0=white (note relig type is always < 1) 
-    [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
+    [ask my-subak-helper
+      [let reltype [relig-type] of myself
+       let anti-reltype 1 - reltype
+       set color rgb (reltype * 255) (anti-reltype * 255) 0]] ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
+    [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent 
+    ; old show-relig-types=true code:
+    ; [ask my-subak-helper [set color (10 - 10 * [relig-type] of myself)]] ; extreme peasant is 1=black (the better option); extreme brahman is 0=white (note relig type is always < 1) 
+  
   
   if-else show-subak-values
     [set label (word "[" SCC ":" sd "]")]
@@ -1459,7 +1465,7 @@ SWITCH
 43
 cropplan-a
 cropplan-a
-1
+0
 1
 -1000
 
@@ -1470,7 +1476,7 @@ SWITCH
 76
 cropplan-b
 cropplan-b
-1
+0
 1
 -1000
 
@@ -1481,7 +1487,7 @@ SWITCH
 109
 cropplan-c
 cropplan-c
-1
+0
 1
 -1000
 
@@ -1492,7 +1498,7 @@ SWITCH
 142
 cropplan-d
 cropplan-d
-1
+0
 1
 -1000
 
@@ -1503,7 +1509,7 @@ SWITCH
 175
 cropplan-e
 cropplan-e
-1
+0
 1
 -1000
 
@@ -1514,7 +1520,7 @@ SWITCH
 208
 cropplan-f
 cropplan-f
-1
+0
 1
 -1000
 
@@ -1536,7 +1542,7 @@ SWITCH
 274
 cropplan-h
 cropplan-h
-1
+0
 1
 -1000
 
@@ -1547,7 +1553,7 @@ SWITCH
 307
 cropplan-i
 cropplan-i
-1
+0
 1
 -1000
 
@@ -1602,7 +1608,7 @@ SWITCH
 472
 cropplan-n
 cropplan-n
-1
+0
 1
 -1000
 
@@ -1613,7 +1619,7 @@ SWITCH
 505
 cropplan-o
 cropplan-o
-1
+0
 1
 -1000
 
@@ -1624,7 +1630,7 @@ SWITCH
 538
 cropplan-p
 cropplan-p
-1
+0
 1
 -1000
 
@@ -1635,7 +1641,7 @@ SWITCH
 571
 cropplan-q
 cropplan-q
-1
+0
 1
 -1000
 
@@ -1646,7 +1652,7 @@ SWITCH
 604
 cropplan-r
 cropplan-r
-1
+0
 1
 -1000
 
@@ -1657,7 +1663,7 @@ SWITCH
 637
 cropplan-s
 cropplan-s
-1
+0
 1
 -1000
 
@@ -1668,7 +1674,7 @@ SWITCH
 670
 cropplan-t
 cropplan-t
-1
+0
 1
 -1000
 
@@ -1679,7 +1685,7 @@ SWITCH
 703
 cropplan-u
 cropplan-u
-1
+0
 1
 -1000
 
@@ -2266,10 +2272,10 @@ num-years-avgharvesthas
 11
 
 SLIDER
-513
-692
-938
-726
+500
+693
+939
+727
 sigmoid-center-curve
 sigmoid-center-curve
 0.001
@@ -2281,10 +2287,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-513
-726
-938
-760
+500
+727
+939
+761
 sigmoid-endpts-curve
 sigmoid-endpts-curve
 0.01
