@@ -76,7 +76,7 @@ subaks-own [
   relig-type ; a number in [0,1]: peasant-style religious values 1 vs. Brahmanic religious values 0
   new-relig-type ; newly copied type--so that update is parallel
   my-subak-helper
-  speakers ;; EXPERIMENTAL TEMPORARY YO
+  speakers
 ]
 
 dams-own [flow0 flow elevation 
@@ -749,7 +749,7 @@ end
 ;; listeners (which varies in size).  (It's the per-listener collection of
 ;; speakers to which a find-best procedure should be applied.)
 to set-listeners-speakers
-  ask subaks [set speakers n-of 0 subaks]
+  ask subaks [set speakers n-of 0 subaks] ; empty the speakers list from the previous tick
 
   foreach ( [list self (n-of relig-tran-global-# other subaks)] of subaks ) [  ; iterate through list of pairs: [speaker, listeners]
     let another-speaker item 0 ?
@@ -759,7 +759,7 @@ to set-listeners-speakers
     ]
   ]
 
-  ;; if requested, also listen to pestneighbors
+  ;; if requested, also listen to pestneighbors.
   if relig-pestneighbors [
     ask subaks [
       set speakers (turtle-set pestneighbors speakers)
@@ -775,7 +775,9 @@ to imitate-relig-types
   
   ask subaks [
     let best find-best speakers ; usually there will be only one
-    set new-relig-type ([relig-type] of best) + (random-normal 0 relig-tran-stddev)
+    if-else best = self
+      [set new-relig-type relig-type]   ; if not communicating, just persisting, no error.
+      [set new-relig-type ([relig-type] of best) + (random-normal 0 relig-tran-stddev)] ; communication should be more error-prone than remembering.
     if new-relig-type > 1 [ set new-relig-type 1]
     if new-relig-type < 0 [set new-relig-type 0]
   ]
@@ -1350,7 +1352,7 @@ NIL
 0.0
 10.0
 0.0
-5.0
+4.0
 true
 false
 "" ""
@@ -1379,7 +1381,7 @@ NIL
 0.0
 10.0
 0.0
-5.0
+4.0
 true
 false
 "" ""
@@ -1450,8 +1452,8 @@ TEXTBOX
 184
 693
 504
-791
-Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents relig value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\n(Crop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.)
+847
+Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents relig value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\nCrop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.\n\nMasceti/temple group colors: white: 1, yellow: 2, red: 3, blue: 4, cyan: 5, pink: 6, orange: 7, lime: 8, sky: 9, violet: 10, magenta: 11, green: 12, turquoise: 13, brown: 14.
 11
 0.0
 1
@@ -1470,7 +1472,7 @@ SWITCH
 43
 cropplan-a
 cropplan-a
-0
+1
 1
 -1000
 
@@ -1481,7 +1483,7 @@ SWITCH
 76
 cropplan-b
 cropplan-b
-0
+1
 1
 -1000
 
@@ -1492,7 +1494,7 @@ SWITCH
 109
 cropplan-c
 cropplan-c
-0
+1
 1
 -1000
 
@@ -1503,7 +1505,7 @@ SWITCH
 142
 cropplan-d
 cropplan-d
-0
+1
 1
 -1000
 
@@ -1514,7 +1516,7 @@ SWITCH
 175
 cropplan-e
 cropplan-e
-0
+1
 1
 -1000
 
@@ -1525,7 +1527,7 @@ SWITCH
 208
 cropplan-f
 cropplan-f
-0
+1
 1
 -1000
 
@@ -1547,7 +1549,7 @@ SWITCH
 274
 cropplan-h
 cropplan-h
-0
+1
 1
 -1000
 
@@ -1558,7 +1560,7 @@ SWITCH
 307
 cropplan-i
 cropplan-i
-0
+1
 1
 -1000
 
@@ -1613,7 +1615,7 @@ SWITCH
 472
 cropplan-n
 cropplan-n
-0
+1
 1
 -1000
 
@@ -1624,7 +1626,7 @@ SWITCH
 505
 cropplan-o
 cropplan-o
-0
+1
 1
 -1000
 
@@ -1635,7 +1637,7 @@ SWITCH
 538
 cropplan-p
 cropplan-p
-0
+1
 1
 -1000
 
@@ -1646,7 +1648,7 @@ SWITCH
 571
 cropplan-q
 cropplan-q
-0
+1
 1
 -1000
 
@@ -1657,7 +1659,7 @@ SWITCH
 604
 cropplan-r
 cropplan-r
-0
+1
 1
 -1000
 
@@ -1668,7 +1670,7 @@ SWITCH
 637
 cropplan-s
 cropplan-s
-0
+1
 1
 -1000
 
@@ -1679,7 +1681,7 @@ SWITCH
 670
 cropplan-t
 cropplan-t
-0
+1
 1
 -1000
 
@@ -1690,7 +1692,7 @@ SWITCH
 703
 cropplan-u
 cropplan-u
-0
+1
 1
 -1000
 
@@ -2013,7 +2015,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0.3
+0
 0.05
 1
 NIL
@@ -2053,7 +2055,7 @@ SWITCH
 580
 relig-influence?
 relig-influence?
-0
+1
 1
 -1000
 
@@ -2113,7 +2115,7 @@ relig-tran-stddev
 relig-tran-stddev
 0
 1.0
-0.02
+0.01
 0.01
 1
 NIL
@@ -2208,7 +2210,7 @@ SWITCH
 451
 relig-pestneighbors
 relig-pestneighbors
-0
+1
 1
 -1000
 
@@ -2300,7 +2302,7 @@ relig-effect-endpt
 relig-effect-endpt
 0.01
 5
-0.3
+0.57
 0.005
 1
 NIL
