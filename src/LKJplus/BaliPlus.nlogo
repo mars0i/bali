@@ -698,8 +698,9 @@ end
 ;; CULTURAL TRANSMISSION
 
 to maybe-ignore-neighboring-plans  ask subaks [
+    ;print (1 - (relig-effect relig-type)) ; DEBUG
     ; The closer relig-influence is to 0, the less probable ignoring best neighbor is:
-    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(relig-effect (1 - relig-type)) * (1 / relig-influence)] [1])
+    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(1 - (relig-effect relig-type)) * (1 / relig-influence)] [1])
     if random-float 1 < prob-ignore [  
       set SCC random (length cropplans)
       set sd random 12
@@ -804,7 +805,7 @@ to display-cropping-plan-etc
     [ask my-subak-helper
       [let reltype [relig-type] of myself
        let anti-reltype 1 - reltype
-       set color rgb (reltype * 255) (anti-reltype * 255) 0]] ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
+       set color rgb ((sigmoid reltype .03 .5) * 255) ((sigmoid anti-reltype .03 .5) * 255) 0]] ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
     [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent 
     ; old show-relig-types=true code:
     ; [ask my-subak-helper [set color (10 - 10 * [relig-type] of myself)]] ; extreme peasant is 1=black (the better option); extreme brahman is 0=white (note relig type is always < 1) 
@@ -1460,7 +1461,7 @@ OUTPUT
 25
 1324
 329
-7
+6
 
 SWITCH
 1329
@@ -2012,7 +2013,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0.05
+0.3
 0.05
 1
 NIL
@@ -2052,7 +2053,7 @@ SWITCH
 580
 relig-influence?
 relig-influence?
-1
+0
 1
 -1000
 
@@ -2112,7 +2113,7 @@ relig-tran-stddev
 relig-tran-stddev
 0
 1.0
-0.04
+0.02
 0.01
 1
 NIL
@@ -2127,7 +2128,7 @@ relig-tran-global-#
 relig-tran-global-#
 0
 171
-2
+0
 1
 1
 NIL
