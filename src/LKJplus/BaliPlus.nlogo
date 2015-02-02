@@ -26,6 +26,8 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           data-dir ; where data files, random seed files, etc. will be written
           min-yield
           previous-seed ; holds seed from previous run
+          prev-relig-effect-center
+          prev-relig-effect-endpt
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 
@@ -1216,7 +1218,6 @@ end
 ; By Belov in response to my question at http://math.stackexchange.com/questions/367078/computationally-simple-sigmoid-with-specific-slopes-at-specific-points
 ; note: will divide by zero if given 1 or -1
 to-report sigmoid-normalizer [x curve-center curve-endpts]
-  ; let yo ((1 - x ^ 2) ^ (1 / relig-effect-curve-endpt)) ; DEBUG
   report (curve-center * x) / ((1 - x ^ 2) ^ (1 / curve-endpts))
 end
 
@@ -1229,7 +1230,7 @@ to-report sigmoid [x curve-center curve-endpts]
 end
 
 to-report relig-effect [x]
-  report sigmoid x relig-effect-center relig-effect-endpt  ; globals are from UI sliders
+  report sigmoid x exp(-1 * relig-effect-center) exp(-1 * relig-effect-endpt)  ; globals are from UI sliders. I use exp() simply to make the effect of sliders less extremely nonlinear.
 end
 
 to plot-relig-effect-curve
@@ -1244,10 +1245,22 @@ to plot-relig-effect-curve
   let x-increment 0.0001 ; just needs to be small enough to make a nice curve
 
   let x (x-min + x-increment)   ; don't start at x-min, which may be a special case
-  repeat ((x-max - x-min) / x-increment) - 1 [ ; count is -1 since skipping x-min
-    plotxy x (relig-effect x)
-    set x (x + x-increment)
+  carefully [
+    repeat ((x-max - x-min) / x-increment) - 1 [ ; count is -1 since skipping x-min
+      plotxy x (relig-effect x)
+      set x (x + x-increment)
+    ]
+  ][
+    ;; if we're here, we chose a combination of params that caused div by zero.
+    ;; set back to values known to be OK.
+    user-message (word "relig-effect-center = " relig-effect-center " and relig-effect-endpt = " relig-effect-endpt " cause an error: " error-message)
+    set relig-effect-center prev-relig-effect-center
+    set relig-effect-endpt prev-relig-effect-endpt
   ]
+
+  ;; If we got this far, then the new values don't cause div by zero.  store in case next pair of values does.
+  set prev-relig-effect-center relig-effect-center
+  set prev-relig-effect-endpt relig-effect-endpt
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -2015,7 +2028,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0
+0.3
 0.05
 1
 NIL
@@ -2055,7 +2068,7 @@ SWITCH
 580
 relig-influence?
 relig-influence?
-1
+0
 1
 -1000
 
@@ -2115,7 +2128,7 @@ relig-tran-stddev
 relig-tran-stddev
 0
 1.0
-0.01
+0.02
 0.01
 1
 NIL
@@ -2130,7 +2143,7 @@ relig-tran-global-#
 relig-tran-global-#
 0
 171
-0
+1
 1
 1
 NIL
@@ -2210,7 +2223,7 @@ SWITCH
 451
 relig-pestneighbors
 relig-pestneighbors
-1
+0
 1
 -1000
 
@@ -2285,10 +2298,10 @@ SLIDER
 726
 relig-effect-center
 relig-effect-center
-0.001
-5
-0.0030
-0.001
+-5
+10
+7.83
+0.01
 1
 NIL
 HORIZONTAL
@@ -2300,10 +2313,10 @@ SLIDER
 760
 relig-effect-endpt
 relig-effect-endpt
+-10
+4
+3.41
 0.01
-5
-0.57
-0.005
 1
 NIL
 HORIZONTAL
