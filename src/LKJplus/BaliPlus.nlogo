@@ -1462,10 +1462,10 @@ TEXTBOX
 1
 
 TEXTBOX
-184
-693
-504
-847
+187
+728
+507
+882
 Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents relig value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\nCrop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.\n\nMasceti/temple group colors: white: 1, yellow: 2, red: 3, blue: 4, cyan: 5, pink: 6, orange: 7, lime: 8, sky: 9, violet: 10, magenta: 11, green: 12, turquoise: 13, brown: 14.
 11
 0.0
@@ -2143,7 +2143,7 @@ relig-tran-global-#
 relig-tran-global-#
 0
 171
-1
+0
 1
 1
 NIL
@@ -2292,7 +2292,7 @@ num-years-avgharvesthas
 11
 
 SLIDER
-500
+510
 693
 939
 726
@@ -2300,14 +2300,14 @@ relig-effect-center
 relig-effect-center
 -5
 10
-7.83
+7.34
 0.01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-500
+511
 727
 939
 760
@@ -2315,7 +2315,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
-3.41
+1.77
 0.01
 1
 NIL
@@ -2346,6 +2346,40 @@ BUTTON
 692
 plot relig curve
 plot-relig-effect-curve
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+151
+692
+329
+725
+set west watershed relig-type 1
+ask subaks with [([pxcor] of patch-here) < -1] \n  [set relig-type 1]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+331
+692
+512
+725
+set east watershed relig-type 1
+ask subaks with [([pxcor] of patch-here) >= -1] \n  [set relig-type 1]
 NIL
 1
 T
