@@ -753,9 +753,14 @@ end
 to set-listeners-speakers
   ;popco-choose-speakers  ; old version
   ask subaks [
-    let num-speakers round random-float subak-rand-global-tran  ;; NOT RIGHT.  if the param is < .5 here, that doesn't give you a small chance of tran--which is what I wanted.
-    set speakers n-of num-speakers other subaks
+    let rand-speakers random-float 172
+    if-else rand-speakers < subak-rand-global-tran [
+      let num-speakers round rand-speakers  ;; NOT RIGHT??  if the param is < .5 here, that doesn't give you a small chance of tran--which is what I wanted.
+      set speakers n-of num-speakers other subaks
+    ][
+      set speakers n-of 0 subaks
     ]
+  ]
 
   ;; if requested, also listen to pestneighbors.
   if relig-pestneighbors [
@@ -2447,12 +2452,12 @@ SLIDER
 0
 479
 176
-513
+512
 subak-rand-global-tran
 subak-rand-global-tran
 0
 171
-0
+37.17
 0.01
 1
 NIL
@@ -2463,7 +2468,7 @@ TEXTBOX
 460
 176
 480
-NOT RIGHT in progress:
+NOT RIGHT? in progress:
 11
 0.0
 1
