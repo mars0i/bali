@@ -1262,6 +1262,13 @@ to plot-relig-effect-curve
   set prev-relig-effect-center relig-effect-center
   set prev-relig-effect-endpt relig-effect-endpt
 end
+
+; population stddev: corrects for Bessel correction
+; allows passing length of vals explicitly for when it's known
+to-report stddev [vals]
+  let n length vals
+  report ((n - 1) / n) * (standard-deviation vals)
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 180
@@ -1385,9 +1392,9 @@ rainfall-scenario
 
 PLOT
 772
-453
+659
 1097
-640
+846
 Pestloss
 NIL
 NIL
@@ -1403,9 +1410,9 @@ PENS
 
 PLOT
 772
-263
+469
 1097
-453
+659
 Waterstress
 NIL
 NIL
@@ -1462,10 +1469,10 @@ TEXTBOX
 1
 
 TEXTBOX
-187
-728
-507
-882
+1663
+276
+1983
+430
 Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents relig value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\nCrop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.\n\nMasceti/temple group colors: white: 1, yellow: 2, red: 3, blue: 4, cyan: 5, pink: 6, orange: 7, lime: 8, sky: 9, violet: 10, magenta: 11, green: 12, turquoise: 13, brown: 14.
 11
 0.0
@@ -1711,9 +1718,9 @@ cropplan-u
 
 PLOT
 1102
-615
+613
 1322
-735
+733
 crop plan distribution
 NIL
 NIL
@@ -2074,9 +2081,9 @@ relig-influence?
 
 PLOT
 1102
-494
+492
 1324
-614
+612
 start month distribution
 NIL
 NIL
@@ -2092,9 +2099,9 @@ PENS
 
 PLOT
 1102
-375
+373
 1324
-495
+493
 relig type distribution
 NIL
 NIL
@@ -2143,7 +2150,7 @@ relig-tran-global-#
 relig-tran-global-#
 0
 171
-0
+1
 1
 1
 NIL
@@ -2193,7 +2200,7 @@ CHOOSER
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
-0
+2
 
 INPUTBOX
 5
@@ -2292,40 +2299,40 @@ num-years-avgharvesthas
 11
 
 SLIDER
-510
-693
-939
-726
+183
+725
+612
+758
 relig-effect-center
 relig-effect-center
 -5
 10
-7.34
+10
 0.01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-511
-727
-939
-760
+184
+759
+612
+792
 relig-effect-endpt
 relig-effect-endpt
 -10
 4
-1.77
+3.5
 0.01
 1
 NIL
 HORIZONTAL
 
 PLOT
-937
-643
-1097
-794
+612
+689
+772
+840
 relig effect curve
 NIL
 NIL
@@ -2340,10 +2347,10 @@ PENS
 "effect-curve" 1.0 0 -7500403 true "" "; See plot-relig-effect-curve procedure."
 
 BUTTON
-817
-658
-936
-692
+493
+792
+612
+826
 plot relig curve
 plot-relig-effect-curve
 NIL
@@ -2357,9 +2364,9 @@ NIL
 1
 
 BUTTON
-151
+223
 692
-329
+401
 725
 set west watershed relig-type 1
 ask subaks with [([pxcor] of patch-here) < -1] \n  [set relig-type 1]
@@ -2374,9 +2381,9 @@ NIL
 1
 
 BUTTON
-331
+403
 692
-512
+584
 725
 set east watershed relig-type 1
 ask subaks with [([pxcor] of patch-here) >= -1] \n  [set relig-type 1]
@@ -2388,6 +2395,35 @@ NIL
 NIL
 NIL
 NIL
+1
+
+PLOT
+772
+277
+1096
+469
+relig-type
+NIL
+NIL
+0.0
+10.0
+0.0
+1.0
+true
+false
+"" ""
+PENS
+"avg" 1.0 0 -2674135 true "" "plot mean [relig-type] of subaks"
+"stdv" 1.0 0 -13345367 true "" "plot stddev [relig-type] of subaks"
+
+TEXTBOX
+779
+264
+1013
+282
+red: mean, blue: standard deviation:
+11
+0.0
 1
 
 @#$#@#$#@
