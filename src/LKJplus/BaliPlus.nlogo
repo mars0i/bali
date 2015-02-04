@@ -743,23 +743,15 @@ to-report find-best [subak-set]
 end
 
 ;; The easiest way to sample speakers from the entire population is to give each listener
-;; a fixed number of speakers, using n-of.  However, in popco, the speaker chooses its
+;; a fixed number of speakers, using n-of. However, in popco, the speaker chooses its
 ;; listeners, and then that map from each speaker to its listeners is "inverted" to create
 ;; a map from listeners to those speaking to them.  This procedure does something analogous.
 ;; It chooses a set of listeners
 ;; for each speaker, and then inverts it, assigning to each subak's speakers var a set of
-;; listeners (which varies in size).  (It's the per-listener collection of
+;; speakers (which varies in size).  (It's the per-listener collection of
 ;; speakers to which a find-best procedure should be applied.)
 to set-listeners-speakers
-  ask subaks [set speakers n-of 0 subaks] ; empty the speakers list from the previous tick
-
-  foreach ( [list self (n-of relig-tran-global-# other subaks)] of subaks ) [  ; iterate through list of pairs: [speaker, listeners]
-    let another-speaker item 0 ?
-    let listener-agentset item 1 ?
-    ask listener-agentset [  ; each listener collects its speakers
-      set speakers (turtle-set another-speaker speakers) ; add this speaker to this listener's list of speakers   
-    ]
-  ]
+  popco-choose-speakers
 
   ;; if requested, also listen to pestneighbors.
   if relig-pestneighbors [
@@ -769,11 +761,22 @@ to set-listeners-speakers
   ]
 end
 
+to popco-choose-speakers
+  ask subaks [set speakers n-of 0 subaks] ; empty the speakers list from the previous tick
+  foreach ( [list self (n-of relig-tran-global-# other subaks)] of subaks ) [  ; iterate through list of pairs: [speaker, listeners]
+    let another-speaker item 0 ?
+    let listener-agentset item 1 ?
+    ask listener-agentset [  ; each listener collects its speakers
+      set speakers (turtle-set another-speaker speakers) ; add this speaker to this listener's list of speakers   
+    ]
+  ]
+end
+
 ;; Current version uses a random selection of speakers from the entire population,
 ;; using set-listeners-speakers.  Note this varies in size from one listener subak
 ;; to another.  (As a speaker, each subak has the same number of listeners, however.)
 to imitate-relig-types
-  set-listeners-speakers ; give every (listener) subak a set of speaker subaks for this tick
+  set-listeners-speakers ; give every (listener) subak a (possibly empty) set of speaker subaks for this tick
   
   ask subaks [
     let best find-best speakers ; usually there will be only one
@@ -2219,7 +2222,7 @@ TEXTBOX
 180
 133
 0: run forever\nN>0: run until\nmonth = N
-9
+8
 0.0
 1
 
@@ -2307,7 +2310,7 @@ relig-effect-center
 relig-effect-center
 -5
 10
-3
+2.7
 0.01
 1
 NIL
@@ -2322,7 +2325,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
-1.35
+1.2
 0.01
 1
 NIL
