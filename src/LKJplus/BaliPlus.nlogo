@@ -751,7 +751,11 @@ end
 ;; speakers (which varies in size).  (It's the per-listener collection of
 ;; speakers to which a find-best procedure should be applied.)
 to set-listeners-speakers
-  popco-choose-speakers
+  ;popco-choose-speakers  ; old version
+  ask subaks [
+    let num-speakers round random-float subak-rand-global-tran  ;; NOT RIGHT.  if the param is < .5 here, that doesn't give you a small chance of tran--which is what I wanted.
+    set speakers n-of num-speakers other subaks
+    ]
 
   ;; if requested, also listen to pestneighbors.
   if relig-pestneighbors [
@@ -1472,10 +1476,10 @@ TEXTBOX
 1
 
 TEXTBOX
-1663
-276
-1983
-430
+1110
+746
+1666
+882
 Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents relig value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\nCrop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.\n\nMasceti/temple group colors: white: 1, yellow: 2, red: 3, blue: 4, cyan: 5, pink: 6, orange: 7, lime: 8, sky: 9, violet: 10, magenta: 11, green: 12, turquoise: 13, brown: 14.
 11
 0.0
@@ -2145,10 +2149,10 @@ NIL
 HORIZONTAL
 
 SLIDER
--1
-480
-176
-513
+1676
+543
+1853
+576
 relig-tran-global-#
 relig-tran-global-#
 0
@@ -2160,10 +2164,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
--1
-454
-182
-481
+1676
+518
+1859
+545
 Spiritual tran from # indivs from pop in addition to pestneighbors:
 11
 0.0
@@ -2425,6 +2429,41 @@ TEXTBOX
 1013
 282
 red: mean, blue: standard deviation:
+11
+0.0
+1
+
+TEXTBOX
+1688
+496
+1903
+522
+Obsolete; currently unused:
+11
+0.0
+1
+
+SLIDER
+0
+479
+176
+513
+subak-rand-global-tran
+subak-rand-global-tran
+0
+171
+0
+0.01
+1
+NIL
+HORIZONTAL
+
+TEXTBOX
+9
+460
+176
+480
+NOT RIGHT in progress:
 11
 0.0
 1
