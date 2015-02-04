@@ -2200,7 +2200,7 @@ CHOOSER
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
-2
+0
 
 INPUTBOX
 5
@@ -2307,7 +2307,7 @@ relig-effect-center
 relig-effect-center
 -5
 10
-10
+3
 0.01
 1
 NIL
@@ -2322,7 +2322,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
-3.5
+1.35
 0.01
 1
 NIL
@@ -2353,7 +2353,7 @@ BUTTON
 826
 plot relig curve
 plot-relig-effect-curve
-NIL
+T
 1
 T
 OBSERVER
