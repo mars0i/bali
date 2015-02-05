@@ -26,8 +26,10 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           data-dir ; where data files, random seed files, etc. will be written
           min-yield
           previous-seed ; holds seed from previous run
-          prev-relig-effect-center
-          prev-relig-effect-endpt
+          relig-effect-center-prev
+          relig-effect-endpt-prev
+          global-tran-normalizer
+          global-tran-mean-prev
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 
@@ -752,21 +754,22 @@ end
 ;; speakers to which a find-best procedure should be applied.)
 to set-listeners-speakers
   ;popco-choose-speakers  ; old version
-  ask subaks [
-    let rand-speakers random-float 172
-    if-else rand-speakers < subak-rand-global-tran [
-      let num-speakers ceiling rand-speakers  ;; NOT RIGHT??  if the param is < .5 here, that doesn't give you a small chance of tran--which is what I wanted.
-      set speakers n-of num-speakers other subaks
-    ][
-      set speakers n-of 0 subaks
-    ]
-  ]
+  poisson-choose-speakers
 
   ;; if requested, also listen to pestneighbors.
   if relig-pestneighbors [
     ask subaks [
       set speakers (turtle-set pestneighbors speakers)
     ]
+  ]
+end
+
+to poisson-choose-speakers
+  ;if subak-global-spkrs-mean != global-tran-mean-prev [set global-tran-normalizer 1] ; FIXME.  oh no this strategy won't work--I'll get discrete non-integers
+  ask subaks [
+    let poisson-speakers random-poisson subak-global-spkrs-mean
+    let num-speakers ifelse-value (poisson-speakers > 171) [171] [poisson-speakers] ; NOT RIGHT
+    set speakers n-of num-speakers (other subaks)
   ]
 end
 
@@ -1266,13 +1269,13 @@ to plot-relig-effect-curve
     ;; if we're here, we chose a combination of params that caused div by zero.
     ;; set back to values known to be OK.
     user-message (word "relig-effect-center = " relig-effect-center " and relig-effect-endpt = " relig-effect-endpt " cause an error: " error-message)
-    set relig-effect-center prev-relig-effect-center
-    set relig-effect-endpt prev-relig-effect-endpt
+    set relig-effect-center relig-effect-center-prev
+    set relig-effect-endpt relig-effect-endpt-prev
   ]
 
   ;; If we got this far, then the new values don't cause div by zero.  store in case next pair of values does.
-  set prev-relig-effect-center relig-effect-center
-  set prev-relig-effect-endpt relig-effect-endpt
+  set relig-effect-center-prev relig-effect-center
+  set relig-effect-endpt-prev relig-effect-endpt
 end
 
 ; population stddev: corrects for Bessel correction
@@ -1495,7 +1498,7 @@ OUTPUT
 25
 1324
 329
-6
+5
 
 SWITCH
 1329
@@ -2451,14 +2454,14 @@ Obsolete; currently unused:
 SLIDER
 0
 479
-176
+177
 512
-subak-rand-global-tran
-subak-rand-global-tran
+subak-global-spkrs-mean
+subak-global-spkrs-mean
 0
 171
-37.17
-0.01
+1.3
+0.1
 1
 NIL
 HORIZONTAL
