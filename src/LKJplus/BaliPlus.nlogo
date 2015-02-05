@@ -2453,15 +2453,15 @@ Obsolete; currently unused:
 1
 
 SLIDER
-3
-793
-610
-826
+2
+845
+1354
+878
 subks-mean-global
 subks-mean-global
 0
 200
-0
+1
 0.001
 1
 NIL
@@ -2469,11 +2469,11 @@ HORIZONTAL
 
 TEXTBOX
 3
-780
-153
-798
+828
+221
+854
 per-subak mean # of global speakers:
-8
+10
 0.0
 1
 
