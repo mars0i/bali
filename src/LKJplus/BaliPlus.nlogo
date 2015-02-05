@@ -755,7 +755,7 @@ to set-listeners-speakers
   ask subaks [
     let rand-speakers random-float 172
     if-else rand-speakers < subak-rand-global-tran [
-      let num-speakers round rand-speakers  ;; NOT RIGHT??  if the param is < .5 here, that doesn't give you a small chance of tran--which is what I wanted.
+      let num-speakers ceiling rand-speakers  ;; NOT RIGHT??  if the param is < .5 here, that doesn't give you a small chance of tran--which is what I wanted.
       set speakers n-of num-speakers other subaks
     ][
       set speakers n-of 0 subaks
