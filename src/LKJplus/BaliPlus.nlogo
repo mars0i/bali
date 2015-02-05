@@ -28,8 +28,8 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           previous-seed ; holds seed from previous run
           relig-effect-center-prev
           relig-effect-endpt-prev
-          global-tran-normalizer
-          global-tran-mean-prev
+          ;global-tran-normalizer
+          ;global-tran-mean-prev
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 
@@ -389,7 +389,7 @@ end
 to go
   if run-until-month > 0 and ticks >= run-until-month
     [stop] ; exit go-forever if user specified a stop tick
-   
+
   poss-show-damsubaks ; display dam-subak-relations if requested from UI
   update-subak-months ; update month, crop states, etc. in subaks
 
@@ -402,6 +402,7 @@ to go
 
   ; at end of year, plot summary data on harvest, pests, and water stress
   if month = 11 [
+    ;print "" ; DEBUG
     set avgpestloss totpestloss / totpestlossarea ; average loss due to pests
     set avgWS totWS / totWSarea                   ; average water stress
     set avgharvestha compute-avg-harvest          ; average harvest yield
@@ -765,10 +766,10 @@ to set-listeners-speakers
 end
 
 to poisson-choose-speakers
-  ;if subak-global-spkrs-mean != global-tran-mean-prev [set global-tran-normalizer 1] ; FIXME.  oh no this strategy won't work--I'll get discrete non-integers
   ask subaks [
-    let poisson-speakers random-poisson subak-global-spkrs-mean
-    let num-speakers ifelse-value (poisson-speakers > 171) [171] [poisson-speakers] ; NOT RIGHT
+    let poisson-speakers random-poisson subks-mean-global
+    let num-speakers ifelse-value (poisson-speakers > 171) [171] [poisson-speakers]
+    ;if num-speakers > 0 [write (sentence ticks num-speakers)] ; DEBUG
     set speakers n-of num-speakers (other subaks)
   ]
 end
@@ -1784,10 +1785,10 @@ NIL
 1
 
 SWITCH
--5
-765
-148
-798
+1629
+603
+1782
+636
 global-startmonth
 global-startmonth
 1
@@ -1795,10 +1796,10 @@ global-startmonth
 -1000
 
 TEXTBOX
--3
-801
-147
-829
+1638
+639
+1788
+667
 If true, all subaks use same random start month.
 11
 0.0
@@ -2157,10 +2158,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1676
-543
-1853
-576
+1627
+541
+1804
+574
 relig-tran-global-#
 relig-tran-global-#
 0
@@ -2172,10 +2173,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-1676
-518
-1859
-545
+1627
+516
+1810
+543
 Spiritual tran from # indivs from pop in addition to pestneighbors:
 11
 0.0
@@ -2314,10 +2315,10 @@ num-years-avgharvesthas
 11
 
 SLIDER
-183
-725
-612
-758
+180
+691
+611
+724
 relig-effect-center
 relig-effect-center
 -5
@@ -2329,10 +2330,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-184
-759
-612
-792
+180
+725
+611
+758
 relig-effect-endpt
 relig-effect-endpt
 -10
@@ -2362,11 +2363,11 @@ PENS
 "effect-curve" 1.0 0 -7500403 true "" "; See plot-relig-effect-curve procedure."
 
 BUTTON
-493
-792
-612
-826
-plot relig curve
+532
+759
+610
+793
+plot curve
 plot-relig-effect-curve
 T
 1
@@ -2379,10 +2380,10 @@ NIL
 1
 
 BUTTON
-223
-692
-401
-725
+181
+759
+356
+792
 set west watershed relig-type 1
 ask subaks with [([pxcor] of patch-here) < -1] \n  [set relig-type 1]
 NIL
@@ -2396,10 +2397,10 @@ NIL
 1
 
 BUTTON
-403
-692
-584
-725
+355
+759
+531
+792
 set east watershed relig-type 1
 ask subaks with [([pxcor] of patch-here) >= -1] \n  [set relig-type 1]
 NIL
@@ -2442,37 +2443,37 @@ red: mean, blue: standard deviation:
 1
 
 TEXTBOX
-1688
-496
-1903
-522
+1639
+494
+1854
+520
 Obsolete; currently unused:
 11
 0.0
 1
 
 SLIDER
+3
+793
+610
+826
+subks-mean-global
+subks-mean-global
 0
-479
-177
-512
-subak-global-spkrs-mean
-subak-global-spkrs-mean
+200
 0
-171
-1.3
-0.1
+0.001
 1
 NIL
 HORIZONTAL
 
 TEXTBOX
-9
-460
-176
-480
-NOT RIGHT? in progress:
-11
+3
+780
+153
+798
+per-subak mean # of global speakers:
+8
 0.0
 1
 
