@@ -1443,10 +1443,10 @@ PENS
 "totWS" 1.0 0 -13345367 true "" ""
 
 SWITCH
--2
-732
-150
-765
+607
+738
+759
+771
 viewdamsubaks
 viewdamsubaks
 1
@@ -1454,20 +1454,20 @@ viewdamsubaks
 -1000
 
 CHOOSER
--2
-686
-150
-731
+606
+690
+758
+735
 Color_subaks
 Color_subaks
 "Temple groups" "cropping plans" "crops" "pests"
 1
 
 SWITCH
--3
-649
-173
-682
+-2
+590
+174
+623
 show-subak-values
 show-subak-values
 1
@@ -2085,10 +2085,10 @@ NIL
 1
 
 SWITCH
--1
-547
-176
-580
+0
+488
+177
+521
 relig-influence?
 relig-influence?
 0
@@ -2143,10 +2143,10 @@ mean [relig-type] of subaks
 11
 
 SLIDER
--1
-513
-176
-546
+0
+454
+177
+487
 relig-tran-stddev
 relig-tran-stddev
 0
@@ -2183,10 +2183,10 @@ Spiritual tran from # indivs from pop in addition to pestneighbors:
 1
 
 SWITCH
--3
-614
-176
-647
+-2
+555
+177
+588
 show-relig-types
 show-relig-types
 0
@@ -2194,10 +2194,10 @@ show-relig-types
 -1000
 
 SLIDER
--2
-580
-175
-613
+-1
+520
+176
+553
 relig-influence
 relig-influence
 1
@@ -2315,10 +2315,10 @@ num-years-avgharvesthas
 11
 
 SLIDER
-180
-691
-611
-724
+159
+693
+590
+726
 relig-effect-center
 relig-effect-center
 -5
@@ -2330,10 +2330,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-180
-725
-611
-758
+159
+727
+590
+760
 relig-effect-endpt
 relig-effect-endpt
 -10
@@ -2345,10 +2345,10 @@ NIL
 HORIZONTAL
 
 PLOT
-612
-689
-772
-840
+0
+625
+160
+776
 relig effect curve
 NIL
 NIL
@@ -2363,10 +2363,10 @@ PENS
 "effect-curve" 1.0 0 -7500403 true "" "; See plot-relig-effect-curve procedure."
 
 BUTTON
-532
-759
-610
-793
+162
+760
+240
+794
 plot curve
 plot-relig-effect-curve
 T
@@ -2380,10 +2380,10 @@ NIL
 1
 
 BUTTON
-181
-759
-356
-792
+239
+760
+414
+793
 set west watershed relig-type 1
 ask subaks with [([pxcor] of patch-here) < -1] \n  [set relig-type 1]
 NIL
@@ -2397,10 +2397,10 @@ NIL
 1
 
 BUTTON
-355
-759
-531
-792
+414
+760
+590
+793
 set east watershed relig-type 1
 ask subaks with [([pxcor] of patch-here) >= -1] \n  [set relig-type 1]
 NIL
@@ -2453,10 +2453,10 @@ Obsolete; currently unused:
 1
 
 SLIDER
-2
-845
-1354
-878
+-1
+795
+769
+829
 subks-mean-global
 subks-mean-global
 0
@@ -2469,11 +2469,11 @@ HORIZONTAL
 
 TEXTBOX
 3
-828
-221
-854
-per-subak mean # of global speakers:
-10
+782
+162
+801
+per-subak mean # global speakers:
+9
 0.0
 1
 
