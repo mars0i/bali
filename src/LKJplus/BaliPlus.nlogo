@@ -1,3 +1,5 @@
+extensions [rnd]
+
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-data from data in text files
           new-subaks subaks_array dams_array subakdams_array 
@@ -28,8 +30,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           previous-seed ; holds seed from previous run
           relig-effect-center-prev
           relig-effect-endpt-prev
-          ;global-tran-normalizer
-          ;global-tran-mean-prev
+;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 
@@ -382,7 +383,9 @@ to my-clear-globals
   set shuffle-cropplans? 0
   set data-dir 0
   set min-yield 0
-  ; set previous-seed 0
+  ; set previous-seed 0  ; we want this to be available in the next run
+  set relig-effect-center-prev 0
+  set relig-effect-endpt-prev 0
 end
 
 ;;;;;;;;;;;;;;;
@@ -499,6 +502,127 @@ to list-cropplans
      output-print ?
      set i i + 1]
 end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CULTURAL TRANSMISSION
+
+to maybe-ignore-neighboring-plans  ask subaks [
+    ;print (1 - (relig-effect relig-type)) ; DEBUG
+    ; The closer relig-influence is to 0, the less probable ignoring best neighbor is:
+    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(1 - (relig-effect relig-type)) * (1 / relig-influence)] [1])
+    if random-float 1 < prob-ignore [  
+      set SCC random (length cropplans)
+      set sd random 12
+    ]
+  ]
+end
+
+;; A top-level procedure, not an in-subak procedure.
+to imitate-best-neighboring-plans
+  ask subaks [
+    ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
+    if (crop <= 3) [; only those growing rice or fallow will imitiate.
+      let bestneighbor find-best pestneighbors  ; note bestneighbor might be self
+      set new-SCC [SCC] of bestneighbor ; copy cropping plan
+      set new-sd [sd] of bestneighbor   ; copy start month
+    ]
+  ]
+  
+  ask subaks [
+    set SCC new-SCC
+    set sd new-sd
+  ]
+end
+
+;; A subak-local procedure
+to-report find-best [subak-set]
+  let best self       ; until I learn of someone better, I'll consider myself to be my best "neighbor".
+  let bestharvest pyharvestha ; set bestharvest to my total harvest for the year
+
+  ask subak-set [
+    if pyharvestha > bestharvest [   ; if your total harvest for the year is more than anyone else's so far ... (note pyharvestha here is the *neighbor*'s var)
+         set bestharvest pyharvestha ; then my new best so far will be that value
+         set best self       ; and you will be my best neighbor so far
+    ]
+  ]
+  
+  report best
+end
+
+;; The easiest way to sample speakers from the entire population is to give each listener
+;; a fixed number of speakers, using n-of. However, in popco, the speaker chooses its
+;; listeners, and then that map from each speaker to its listeners is "inverted" to create
+;; a map from listeners to those speaking to them.  This procedure does something analogous.
+;; It chooses a set of listeners
+;; for each speaker, and then inverts it, assigning to each subak's speakers var a set of
+;; speakers (which varies in size).  (It's the per-listener collection of
+;; speakers to which a find-best procedure should be applied.)
+to set-listeners-speakers
+  ;popco-choose-speakers  ; old version
+  poisson-choose-speakers
+  ;poisson-choose-speakers-with-repeats
+
+  ;; if requested, also listen to pestneighbors.
+  if relig-pestneighbors [
+    ask subaks [
+      set speakers (turtle-set pestneighbors speakers)
+    ]
+  ]
+end
+
+;; The number of speakers 
+to poisson-choose-speakers-with-repeats
+  ask subaks [
+    let num-utterances random-poisson subks-mean-global
+    set speakers turtle-set (rnd:weighted-n-of-with-repeats num-utterances (other subaks) [0.0]) ; NOT RIGHT. turtle-set will collapse repeats
+  ]
+end
+
+;; Get a Poisson-distributed random integer n, and return an agentset with n unique subaks, or 171 subaks if n > 171
+to poisson-choose-speakers
+  ask subaks [
+    let poisson-speakers random-poisson subks-mean-global
+    let num-speakers ifelse-value (poisson-speakers > 171) [171] [poisson-speakers]
+    ;if num-speakers > 0 [write (sentence ticks num-speakers)] ; DEBUG
+    set speakers n-of num-speakers (other subaks)
+  ]
+end
+
+;to popco-choose-speakers
+;  ask subaks [set speakers n-of 0 subaks] ; empty the speakers list from the previous tick
+;  foreach ( [list self (n-of relig-tran-global-# other subaks)] of subaks ) [  ; iterate through list of pairs: [speaker, listeners]
+;    let another-speaker item 0 ?
+;    let listener-agentset item 1 ?
+;    ask listener-agentset [  ; each listener collects its speakers
+;      set speakers (turtle-set another-speaker speakers) ; add this speaker to this listener's list of speakers   
+;    ]
+;  ]
+;end
+
+;; Current version uses a random selection of speakers from the entire population,
+;; using set-listeners-speakers.  Note this varies in size from one listener subak
+;; to another.  (As a speaker, each subak has the same number of listeners, however.)
+to imitate-relig-types
+  set-listeners-speakers ; give every (listener) subak a (possibly empty) set of speaker subaks for this tick
+  
+  ask subaks [
+    let best find-best speakers ; usually there will be only one
+    if-else best = self
+      [set new-relig-type relig-type]   ; if not communicating, just persisting, no error.
+      [set new-relig-type ([relig-type] of best) + (random-normal 0 relig-tran-stddev)] ; communication should be more error-prone than remembering.
+    if new-relig-type > 1 [ set new-relig-type 1]
+    if new-relig-type < 0 [set new-relig-type 0]
+  ]
+  
+  ask subaks [
+    set relig-type new-relig-type
+  ]
+end
+;; alternatives to using set-listeners-speakers:
+    ;let best find-best pestneighbors  ; note bestneighbor might be self
+    ;let best find-best n-of 10 subaks ; superceded by use of set-listeners-speakers
+    ;let best find-best (turtle-set pestneighbors (n-of relig-tran-global-# (other subaks))) ; combine pestneighbors with random selection from population
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; NATURAL PROCESSES: Farming, Water, Pests
@@ -697,117 +821,6 @@ to determineharvest
         ] ; if
     ] ; ask
 end
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; CULTURAL TRANSMISSION
-
-to maybe-ignore-neighboring-plans  ask subaks [
-    ;print (1 - (relig-effect relig-type)) ; DEBUG
-    ; The closer relig-influence is to 0, the less probable ignoring best neighbor is:
-    let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(1 - (relig-effect relig-type)) * (1 / relig-influence)] [1])
-    if random-float 1 < prob-ignore [  
-      set SCC random (length cropplans)
-      set sd random 12
-    ]
-  ]
-end
-
-;; A top-level procedure, not an in-subak procedure.
-to imitate-best-neighboring-plans
-  ask subaks [
-    ;show (word "subak month = " mip ", crop = " crop ", cropplan: " SCC " " (item SCC cropplans))
-    if (crop <= 3) [; only those growing rice or fallow will imitiate.
-      let bestneighbor find-best pestneighbors  ; note bestneighbor might be self
-      set new-SCC [SCC] of bestneighbor ; copy cropping plan
-      set new-sd [sd] of bestneighbor   ; copy start month
-    ]
-  ]
-  
-  ask subaks [
-    set SCC new-SCC
-    set sd new-sd
-  ]
-end
-
-;; A subak-local procedure
-to-report find-best [subak-set]
-  let best self       ; until I learn of someone better, I'll consider myself to be my best "neighbor".
-  let bestharvest pyharvestha ; set bestharvest to my total harvest for the year
-
-  ask subak-set [
-    if pyharvestha > bestharvest [   ; if your total harvest for the year is more than anyone else's so far ... (note pyharvestha here is the *neighbor*'s var)
-         set bestharvest pyharvestha ; then my new best so far will be that value
-         set best self       ; and you will be my best neighbor so far
-    ]
-  ]
-  
-  report best
-end
-
-;; The easiest way to sample speakers from the entire population is to give each listener
-;; a fixed number of speakers, using n-of. However, in popco, the speaker chooses its
-;; listeners, and then that map from each speaker to its listeners is "inverted" to create
-;; a map from listeners to those speaking to them.  This procedure does something analogous.
-;; It chooses a set of listeners
-;; for each speaker, and then inverts it, assigning to each subak's speakers var a set of
-;; speakers (which varies in size).  (It's the per-listener collection of
-;; speakers to which a find-best procedure should be applied.)
-to set-listeners-speakers
-  ;popco-choose-speakers  ; old version
-  poisson-choose-speakers
-
-  ;; if requested, also listen to pestneighbors.
-  if relig-pestneighbors [
-    ask subaks [
-      set speakers (turtle-set pestneighbors speakers)
-    ]
-  ]
-end
-
-to poisson-choose-speakers
-  ask subaks [
-    let poisson-speakers random-poisson subks-mean-global
-    let num-speakers ifelse-value (poisson-speakers > 171) [171] [poisson-speakers]
-    ;if num-speakers > 0 [write (sentence ticks num-speakers)] ; DEBUG
-    set speakers n-of num-speakers (other subaks)
-  ]
-end
-
-to popco-choose-speakers
-  ask subaks [set speakers n-of 0 subaks] ; empty the speakers list from the previous tick
-  foreach ( [list self (n-of relig-tran-global-# other subaks)] of subaks ) [  ; iterate through list of pairs: [speaker, listeners]
-    let another-speaker item 0 ?
-    let listener-agentset item 1 ?
-    ask listener-agentset [  ; each listener collects its speakers
-      set speakers (turtle-set another-speaker speakers) ; add this speaker to this listener's list of speakers   
-    ]
-  ]
-end
-
-;; Current version uses a random selection of speakers from the entire population,
-;; using set-listeners-speakers.  Note this varies in size from one listener subak
-;; to another.  (As a speaker, each subak has the same number of listeners, however.)
-to imitate-relig-types
-  set-listeners-speakers ; give every (listener) subak a (possibly empty) set of speaker subaks for this tick
-  
-  ask subaks [
-    let best find-best speakers ; usually there will be only one
-    if-else best = self
-      [set new-relig-type relig-type]   ; if not communicating, just persisting, no error.
-      [set new-relig-type ([relig-type] of best) + (random-normal 0 relig-tran-stddev)] ; communication should be more error-prone than remembering.
-    if new-relig-type > 1 [ set new-relig-type 1]
-    if new-relig-type < 0 [set new-relig-type 0]
-  ]
-  
-  ask subaks [
-    set relig-type new-relig-type
-  ]
-end
-;; alternatives to using set-listeners-speakers:
-    ;let best find-best pestneighbors  ; note bestneighbor might be self
-    ;let best find-best n-of 10 subaks ; superceded by use of set-listeners-speakers
-    ;let best find-best (turtle-set pestneighbors (n-of relig-tran-global-# (other subaks))) ; combine pestneighbors with random selection from population
 
 ;; subak routine
 to display-cropping-plan-etc
@@ -2461,7 +2474,7 @@ subks-mean-global
 subks-mean-global
 0
 200
-1
+10
 0.001
 1
 NIL
