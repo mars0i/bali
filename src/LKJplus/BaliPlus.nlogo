@@ -2456,7 +2456,7 @@ SLIDER
 -1
 795
 769
-829
+828
 subks-mean-global
 subks-mean-global
 0
@@ -2473,7 +2473,7 @@ TEXTBOX
 162
 801
 per-subak mean # global speakers:
-9
+8
 0.0
 1
 
