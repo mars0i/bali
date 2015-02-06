@@ -1298,6 +1298,35 @@ to-report stddev [vals]
   let n length vals
   report ((n - 1) / n) * (standard-deviation vals)
 end
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; The following are based on suggestions by Bryan Head at
+;; https://groups.google.com/forum/#!topic/netlogo-devel/ntk0RuL1vzg
+
+;; Bryan Head wrote that one can call the following as:
+;;      ask-list agents-with-repeats task [ do-stuff ]
+;; Where `agents-with-repeats` is your list of agents. 
+;; Note the `task` primitive is unfortunately required. 
+;; Besides that, this should pretty much be a drop-in replacement
+;; for `ask` after you switch to using a list. 
+to ask-list [ agent-list commands ]
+  foreach agent-list [ ask ? [ run commands ] ]
+end
+
+;; Bryan Head wrote:
+;; `of` could be similarly transformed:
+;; Called like: of-list agents-with-repeats task [ turtle-variable ]
+to-report of-list [ agent-list reporter ]
+  report map [ [ runresult reporter ] of ? ] agent-list
+end
+
+;; Bryan Head wrote:
+;; Now `with`:
+;; Called like: with-list agents-with-repeats task [ turtle-variable = 5 ]
+to-report with-list [ agent-list reporter ]
+  report filter [ [ runresult reporter ] of ? ] agent-list
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 180
