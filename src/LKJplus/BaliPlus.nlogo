@@ -81,7 +81,7 @@ subaks-own [
   relig-type ; a number in [0,1]: peasant-style religious values 1 vs. Brahmanic religious values 0
   new-relig-type ; newly copied type--so that update is parallel
   my-subak-helper
-  speakers
+  speakers ; subaks who will (maybe only try to) transmit to me (probably only relig-type).  [agentset or list? may be different in diff versions of code]
 ]
 
 dams-own [flow0 flow elevation 
@@ -312,8 +312,6 @@ to setup
   ask subaks [
     ;let sdhelp 0
     set SCC random (length cropplans) ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?)
-    
-    ;set speakers [] ; EXPERIMENTAL TEMPORARY YO
     
     if-else global-startmonth
       [set sd global-sd]       ; experiment: what happens when all share same start month?
@@ -549,18 +547,11 @@ to-report find-best [subak-set]
   report best
 end
 
-;; The easiest way to sample speakers from the entire population is to give each listener
-;; a fixed number of speakers, using n-of. However, in popco, the speaker chooses its
-;; listeners, and then that map from each speaker to its listeners is "inverted" to create
-;; a map from listeners to those speaking to them.  This procedure does something analogous.
-;; It chooses a set of listeners
-;; for each speaker, and then inverts it, assigning to each subak's speakers var a set of
-;; speakers (which varies in size).  (It's the per-listener collection of
-;; speakers to which a find-best procedure should be applied.)
+
 to set-listeners-speakers
   ;popco-choose-speakers  ; old version
   poisson-choose-speakers
-  ;poisson-choose-speakers-with-repeats
+  ;poisson-choose-speakers-with-replacement
 
   ;; if requested, also listen to pestneighbors.
   if relig-pestneighbors [
@@ -571,7 +562,7 @@ to set-listeners-speakers
 end
 
 ;; The number of speakers 
-to poisson-choose-speakers-with-repeats
+to poisson-choose-speakers-with-replacement
   ask subaks [
     let num-utterances random-poisson subks-mean-global
     set speakers turtle-set (rnd:weighted-n-of-with-repeats num-utterances (other subaks) [0.0]) ; NOT RIGHT. turtle-set will collapse repeats
@@ -588,6 +579,14 @@ to poisson-choose-speakers
   ]
 end
 
+;; The easiest way to sample speakers from the entire population is to give each listener
+;; a fixed number of speakers, using n-of. However, in popco, the speaker chooses its
+;; listeners, and then that map from each speaker to its listeners is "inverted" to create
+;; a map from listeners to those speaking to them.  This procedure does something analogous.
+;; It chooses a set of listeners
+;; for each speaker, and then inverts it, assigning to each subak's speakers var a set of
+;; speakers (which varies in size).  (It's the per-listener collection of
+;; speakers to which a find-best procedure should be applied.)
 ;to popco-choose-speakers
 ;  ask subaks [set speakers n-of 0 subaks] ; empty the speakers list from the previous tick
 ;  foreach ( [list self (n-of relig-tran-global-# other subaks)] of subaks ) [  ; iterate through list of pairs: [speaker, listeners]
@@ -1305,8 +1304,8 @@ end
 ;; https://groups.google.com/forum/#!topic/netlogo-devel/ntk0RuL1vzg
 
 ;; Bryan Head wrote that one can call the following as:
-;;      ask-list agents-with-repeats task [ do-stuff ]
-;; Where `agents-with-repeats` is your list of agents. 
+;;      ask-list agents-with-replacement task [ do-stuff ]
+;; Where `agents-with-replacement` is your list of agents. 
 ;; Note the `task` primitive is unfortunately required. 
 ;; Besides that, this should pretty much be a drop-in replacement
 ;; for `ask` after you switch to using a list. 
@@ -1316,14 +1315,14 @@ end
 
 ;; Bryan Head wrote:
 ;; `of` could be similarly transformed:
-;; Called like: of-list agents-with-repeats task [ turtle-variable ]
+;; Called like: of-list agents-with-replacement task [ turtle-variable ]
 to-report of-list [ agent-list reporter ]
   report map [ [ runresult reporter ] of ? ] agent-list
 end
 
 ;; Bryan Head wrote:
 ;; Now `with`:
-;; Called like: with-list agents-with-repeats task [ turtle-variable = 5 ]
+;; Called like: with-list agents-with-replacement task [ turtle-variable = 5 ]
 to-report with-list [ agent-list reporter ]
   report filter [ [ runresult reporter ] of ? ] agent-list
 end
