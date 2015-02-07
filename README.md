@@ -3,8 +3,8 @@ bali
 
 Simulations building on ideas from Lansing and Kremer's simulations of
 Balinese irrigation water management--starting from Marco Janssen's
-NetLogo implementation.  For example, I've added a separate channel of
-cultural transmission that represents the spread of religious
+NetLogo implementation (see below).  For example, I've added a separate
+channel of cultural transmission that represents the spread of religious
 influences in Balinese farming.
 
 See:
