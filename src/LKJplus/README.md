@@ -10,6 +10,5 @@ revision of Janssen's model with bugfixes and UI enhancements, but
 simulations are intended to do no more and no less than what Janssen's
 model did or was intended to do.  See the README.md in that directory
 for more information.  The version in *this* directory adds
-functionality.  See files such as ArchitectureNotes*.md and Plan*.md in
-the doc directory for further information about what this is supposed to
-do.
+functionality.  More info to come, here.  (If you'd like more info
+immediately, please contact me.)
