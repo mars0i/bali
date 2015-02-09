@@ -2424,8 +2424,8 @@ BUTTON
 239
 760
 414
-793
-set west watershed relig-type 1
+794
+west watershed relig-type=1
 ask subaks with [([pxcor] of patch-here) < -1] \n  [set relig-type 1]
 NIL
 1
@@ -2440,9 +2440,9 @@ NIL
 BUTTON
 414
 760
-590
-793
-set east watershed relig-type 1
+591
+794
+east watershed relig-type=1
 ask subaks with [([pxcor] of patch-here) >= -1] \n  [set relig-type 1]
 NIL
 1
