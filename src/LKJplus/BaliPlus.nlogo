@@ -1,4 +1,4 @@
-extensions [rnd]
+;extensions [rnd]
 
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-data from data in text files
@@ -557,12 +557,12 @@ to set-listeners-speakers
 end
 
 ;; The number of speakers 
-to poisson-choose-speakers-with-replacement
-  ask subaks [
-    let num-utterances random-poisson subks-mean-global
-    set speakers turtle-set (rnd:weighted-n-of-with-repeats num-utterances (other subaks) [0.0]) ; NOT RIGHT. turtle-set will collapse repeats
-  ]
-end
+;to poisson-choose-speakers-with-replacement
+;  ask subaks [
+;    let num-utterances random-poisson subks-mean-global
+;    set speakers turtle-set (rnd:weighted-n-of-with-repeats num-utterances (other subaks) [0.0]) ; NOT RIGHT. turtle-set will collapse repeats
+;  ]
+;end
 
 ;; Get a Poisson-distributed random integer n, and return an agentset with n unique subaks, or 171 subaks if n > 171
 to poisson-choose-speakers
@@ -2840,7 +2840,130 @@ NetLogo 5.1.0
   <experiment name="test2linear4way" repetitions="5" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
-    <exitCondition>ticks &gt; 10000</exitCondition>
+    <exitCondition>ticks &gt; 5000</exitCondition>
+    <metric>mean [relig-type] of subaks</metric>
+    <metric>stddev [relig-type] of subaks</metric>
+    <metric>avgharvestha</metric>
+    <metric>avgWS</metric>
+    <metric>avgpestloss</metric>
+    <enumeratedValueSet variable="relig-effect-center">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-endpt">
+      <value value="-1.22"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-influence?">
+      <value value="false"/>
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-pestneighbors">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ignore-neighbors-prob">
+      <value value="0"/>
+      <value value="0.3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="subks-mean-global">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="viewdamsubaks">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Color_subaks">
+      <value value="&quot;cropping plans&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-relig-types">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-subak-values">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestdispersal-rate">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestgrowth-rate">
+      <value value="2.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rainfall-scenario">
+      <value value="&quot;high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-tran-stddev">
+      <value value="0.02"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-influence">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="run-until-month">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-a">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-b">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-c">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-d">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-e">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-f">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-g">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-h">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-i">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-j">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-k">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-l">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-m">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-n">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-o">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-p">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-q">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-r">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-s">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-t">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-u">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="yo" repetitions="5" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <exitCondition>ticks &gt; 5000</exitCondition>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
