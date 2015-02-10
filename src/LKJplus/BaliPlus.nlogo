@@ -2106,7 +2106,7 @@ SWITCH
 521
 relig-influence?
 relig-influence?
-1
+0
 1
 -1000
 
@@ -2313,7 +2313,7 @@ relig-effect-center
 relig-effect-center
 -5
 10
-10
+-0.02
 0.01
 1
 NIL
@@ -2328,7 +2328,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
-3.5
+-1.22
 0.01
 1
 NIL
@@ -2837,19 +2837,20 @@ NetLogo 5.1.0
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="test1" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="test2linear4way" repetitions="5" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <exitCondition>ticks &gt; 10000</exitCondition>
     <metric>mean [relig-type] of subaks</metric>
+    <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
     <metric>avgWS</metric>
     <metric>avgpestloss</metric>
     <enumeratedValueSet variable="relig-effect-center">
-      <value value="10"/>
+      <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-endpt">
-      <value value="3.5"/>
+      <value value="-1.22"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-influence?">
       <value value="false"/>
@@ -2859,6 +2860,7 @@ NetLogo 5.1.0
       <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="ignore-neighbors-prob">
+      <value value="0"/>
       <value value="0.3"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="subks-mean-global">
