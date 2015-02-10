@@ -1,6 +1,17 @@
-BehSpacePlan1.md
+BehSpacePlan2.md
 ====
 ## Notes on plans for Behavior Space Feb. 2015
+
+--------------
+
+### Values to track:
+
+* `relig-type` mean and variance (at least).
+* Harvest (`avgharvestha`).
+* Maybe waterstress (`avgWS`) and pestloss (`avgpestloss`).
+* Possibly modal cropplans and months.  Probably not.
+
+--------------
 
 ### Options to vary across experiments:
 
@@ -66,6 +77,11 @@ Each variable separately:
  `relig-effect-endpt` = 1.20 or `relig-effect-endpt` = 1.35  
  `relig-effect-endpt` = 3.5  
 
+-----------
+
+### Options to leave at single values throughout runs, initially
+
+These *could* be varied.
 
 ##### Initial state
 
@@ -73,7 +89,7 @@ Initially using only option 1 below, which seems to allow for spread of
 relig-type=1, and doesn't require assuming that a distinct process gave
 rise to pre-existing clustering of relig-types.
 
-1. Random relig values
+1. Random relig values (**Use this one.**)
 2. West watershed set to `relig-type` = 1.
 3. East watershed set to `relig-type` = 1.
 4. Various numbers of connected subnets set to `relig-type` =1.  
@@ -101,9 +117,3 @@ rise to pre-existing clustering of relig-types.
 1. relig-tran-stddev
 2. `relig-influence` = 1.50.
 3. Pest growth and dispersal, rainfall params.
-
-## Values to track:
-
-* `relig-type` mean and variance (at least).
-* Harvest (`avgharvestha`).
-* Maybe waterstress (`avgWS`) and pestloss (`avgpestloss`).

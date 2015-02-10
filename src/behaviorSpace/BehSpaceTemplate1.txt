@@ -1,0 +1,45 @@
+;; ---------------------
+;; Vary these:
+["relig-effect-center" 10]
+["relig-effect-endpt" 3.5]
+["relig-influence?" true]
+["relig-pestneighbors" true]
+["ignore-neighbors-prob" 0.3]
+["subks-mean-global" 1]
+;; ---------------------
+;; These only affect visualizations.  Can turn on, but only affects one run.
+["viewdamsubaks" false]
+["Color_subaks" "cropping plans"]
+["show-relig-types" true]
+["show-subak-values" false]
+;; ---------------------
+;; Leave the rest as is:
+["pestdispersal-rate" 1.5]
+["pestgrowth-rate" 2.4]
+["rainfall-scenario" "high"]
+["relig-tran-stddev" 0.02]
+["relig-influence" 1.5]
+["run-until-month" 0] ; use built-in Behavior Space functionality instead
+;; Only traditional crop plans are turned on here:
+["cropplan-a" false]
+["cropplan-b" false]
+["cropplan-c" false]
+["cropplan-d" false]
+["cropplan-e" false]
+["cropplan-f" false]
+["cropplan-g" true]
+["cropplan-h" false]
+["cropplan-i" false]
+["cropplan-j" true]
+["cropplan-k" true]
+["cropplan-l" true]
+["cropplan-m" true]
+["cropplan-n" false]
+["cropplan-o" false]
+["cropplan-p" false]
+["cropplan-q" false]
+["cropplan-r" false]
+["cropplan-s" false]
+["cropplan-t" false]
+["cropplan-u" false]
+
