@@ -2106,7 +2106,7 @@ SWITCH
 521
 relig-influence?
 relig-influence?
-0
+1
 1
 -1000
 
@@ -2328,7 +2328,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
--1
+3.5
 0.01
 1
 NIL
@@ -2441,7 +2441,7 @@ subks-mean-global
 subks-mean-global
 0
 200
-10
+1
 0.001
 1
 NIL
@@ -2840,7 +2840,7 @@ NetLogo 5.1.0
   <experiment name="test1" repetitions="10" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
-    <exitCondition>ticks &gt; 120</exitCondition>
+    <exitCondition>ticks &gt; 10000</exitCondition>
     <metric>mean [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
     <metric>avgWS</metric>
