@@ -2106,7 +2106,7 @@ SWITCH
 521
 relig-influence?
 relig-influence?
-1
+0
 1
 -1000
 
@@ -2837,11 +2837,12 @@ NetLogo 5.1.0
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="test1" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="test1" repetitions="3" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
-    <exitCondition>ticks &gt; 10000</exitCondition>
+    <exitCondition>ticks &gt; 100</exitCondition>
     <metric>mean [relig-type] of subaks</metric>
+    <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
     <metric>avgWS</metric>
     <metric>avgpestloss</metric>
