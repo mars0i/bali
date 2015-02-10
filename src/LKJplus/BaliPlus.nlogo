@@ -1,4 +1,4 @@
-extensions [rnd]
+;extensions [rnd]
 
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-data from data in text files
@@ -557,12 +557,12 @@ to set-listeners-speakers
 end
 
 ;; The number of speakers 
-to poisson-choose-speakers-with-replacement
-  ask subaks [
-    let num-utterances random-poisson subks-mean-global
-    set speakers turtle-set (rnd:weighted-n-of-with-repeats num-utterances (other subaks) [0.0]) ; NOT RIGHT. turtle-set will collapse repeats
-  ]
-end
+;to poisson-choose-speakers-with-replacement
+;  ask subaks [
+;    let num-utterances random-poisson subks-mean-global
+;    set speakers turtle-set (rnd:weighted-n-of-with-repeats num-utterances (other subaks) [0.0]) ; NOT RIGHT. turtle-set will collapse repeats
+;  ]
+;end
 
 ;; Get a Poisson-distributed random integer n, and return an agentset with n unique subaks, or 171 subaks if n > 171
 to poisson-choose-speakers
