@@ -1,11 +1,11 @@
 ;; ---------------------
 ;; Vary these:
-["relig-effect-center" 10]
-["relig-effect-endpt" 3.5]
-["relig-influence?" false true]
+["relig-effect-center" 10] ; This combo produces step-shaped effect curve
+["relig-effect-endpt" 3.5] ; This combo produces step-shaped effect curve
+["subks-mean-global" 0.05 1 25 200] ; 200 = everyone talks to everyone always
+["relig-influence?" false true] ; when false, preceding parameters irrelevant
 ["relig-pestneighbors" true]
 ["ignore-neighbors-prob" 0.3]
-["subks-mean-global" 1]
 ;; ---------------------
 ;; These only affect visualizations, so only relevant to front run.
 ["viewdamsubaks" false]
