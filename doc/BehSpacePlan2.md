@@ -32,10 +32,11 @@ BehSpacePlan2.md
 
 ##### Relig effect function
 
-1. Big shelf: Step-like change from 0 to a 1 near 0.5. Could be a
-   literal step function, or e.g.
+1. Big shelf: Step-like change from 0 to a 1 near 0.5.
 
-	`relig-effect-center` = 10, `relig-effect-endpt` = 3.5.  
+	a. step at 0.5
+
+	b. sigmoid-ey: `relig-effect-center` = 10, `relig-effect-endpt` = 3.5.  
 
 2. Smaller shelf, with steep but gradual curve starting at around 0.5,
    e.g.
@@ -43,24 +44,31 @@ BehSpacePlan2.md
 	`relig-effect-center` = 3, `relig-effect-endpt` = 1.35.  
 	`relig-effect-center` = 2.70, `relig-effect-endpt` = 1.20.
 
-3. Less steep curve with small corner of a shelf in the upper right,
+3. Smaller step, e.g. at 0.75 or 0.80, or maybe 0.90.
+
+4. Less steep curve with small corner of a shelf in the upper right,
    e.g.
 
 	`relig-effect-center` = 1.80, `relig-effect-endpt` = 0.30.  
 
-4. Linear, effect = `relig-type`.  Do this literally, or use e.g.
-
-	`relig-effect-center` = 0, `relig-effect-endpt` = -1.15
+5. Linear. (Note: Similar effect can be gotten using sigmod-ey with
+   `relig-effect-center` = 0, `relig-effect-endpt` = -1.15.)
 
 (For publishable/presentable results it may be preferable to use
 literal step and linear functions.)
 
 Summary:
 
+linear  
+step: `relig-effect-step` at 0.5, 0.75, etc.  
+sigmoidey:  
 `relig-effect-center` = 10, `relig-effect-endpt` = 3.5   ; big shelf  
 `relig-effect-center` = 3, `relig-effect-endpt` = 1.35     ; small shelf  
 `relig-effect-center` = 2.70, `relig-effect-endpt` = 1.20   ; small shelf  
 `relig-effect-center` = 1.80, `relig-effect-endpt` = 0.30   ; corner  
+
+
+obsolete:
 `relig-effect-center` = 0, `relig-effect-endpt` = -1.15 ; linear  
 
 Note both vars are monotonic in the same direction.
