@@ -30,6 +30,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           previous-seed ; holds seed from previous run
           relig-effect-center-prev
           relig-effect-endpt-prev
+          relig-effect-curve-number ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
@@ -118,9 +119,9 @@ to setup
   set data-dir "../../data/"
   
   let seed 0
-  if-else random-seed-source = "new seed"
+  ifelse random-seed-source = "new seed"
     [set seed new-seed]
-    [if-else random-seed-source = "read from file"
+    [ifelse random-seed-source = "read from file"
       [carefully
         [file-open user-file
          set seed file-read]
@@ -161,7 +162,7 @@ to setup
   ;; That's why not all possible combinations of 0's, 1's, 2's, and 3's are included.
   
   ;show (word "initial cropplan-bools: " cropplan-bools)
-  ;if-else cropplan-bools = 0
+  ;ifelse cropplan-bools = 0
   ;  [show "initial cropplan-bools was 0.  Really!"]
   ;  [show "initial cropplan-bools was actually not 0."]
   
@@ -234,6 +235,8 @@ to setup
   ;set-histogram-num-bars (length cropplans) ; will apply to whatever is the first histogram
   
   list-cropplans
+  
+  set-relig-effect-curve-number
 
   set devtime [0 6 4 3] ; development time for crops. first one is no-crop, i.e. fallow.  the rest are for the three varieties of rice.
   set yldmax [0 5 5 10] ; maximum yld of rice crops
@@ -379,6 +382,7 @@ to my-clear-globals
   ; set previous-seed 0  ; we want this to be available in the next run
   set relig-effect-center-prev 0
   set relig-effect-endpt-prev 0
+  set relig-effect-curve-number 0
 end
 
 ;;;;;;;;;;;;;;;
@@ -399,6 +403,7 @@ to go
   ; at end of year, plot summary data on harvest, pests, and water stress
   if month = 11 [
     ;print "" ; DEBUG
+    set-relig-effect-curve-number
     set avgpestloss totpestloss / totpestlossarea ; average loss due to pests
     set avgWS totWS / totWSarea                   ; average water stress
     set avgharvestha compute-avg-harvest          ; average harvest yield
@@ -437,7 +442,7 @@ end
 ;;;;;;;;;;;;;;; end of go
 
 to poss-show-damsubaks
-    if-else viewdamsubaks [
+    ifelse viewdamsubaks [
     ask damsubaks [set size distanceab]
     ask subakdams [set size distanceab]
   ][
@@ -467,9 +472,9 @@ to-report filter-plans [plans]
 end
 
 to-report filter-plans-helper [plans bools]
-  if-else (empty? bools)
+  ifelse (empty? bools)
     [report []]
-    [if-else (first bools)
+    [ifelse (first bools)
       [report (fput (first plans)
                     (filter-plans-helper (but-first plans)
                                          (but-first bools)))]
@@ -499,7 +504,8 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CULTURAL TRANSMISSION
 
-to maybe-ignore-neighboring-plans  ask subaks [
+to maybe-ignore-neighboring-plans
+  ask subaks [
     ;print (1 - (relig-effect relig-type)) ; DEBUG
     ; The closer relig-influence is to 0, the less probable ignoring best neighbor is:
     let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(1 - (relig-effect relig-type)) * (1 / relig-influence)] [1])
@@ -601,7 +607,7 @@ to imitate-relig-types
   
   ask subaks [
     let best find-best speakers ; usually there will be only one
-    if-else best = self
+    ifelse best = self
       [set new-relig-type relig-type]   ; if not communicating, just persisting, no error.
       [set new-relig-type ([relig-type] of best) + (random-normal 0 relig-tran-stddev)] ; communication should be more error-prone than remembering.
     if new-relig-type > 1 [ set new-relig-type 1]
@@ -824,11 +830,11 @@ to display-cropping-plan-etc
   
   ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
   
-  if-else SCC < 14
+  ifelse SCC < 14
     [set color low-scc-base-color + (10 * SCC)]         ; colors from column low-scc-base-color of swatches
     [set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
     
-  if-else show-relig-types
+  ifelse show-relig-types
     [ask my-subak-helper
       [let reltype [relig-type] of myself
        let anti-reltype 1 - reltype
@@ -838,7 +844,7 @@ to display-cropping-plan-etc
     ; [ask my-subak-helper [set color (10 - 10 * [relig-type] of myself)]] ; extreme peasant is 1=black (the better option); extreme brahman is 0=white (note relig type is always < 1) 
   
   
-  if-else show-subak-values
+  ifelse show-subak-values
     [set label (word "[" SCC ":" sd "]")]
     [set label ""]
 end
@@ -850,7 +856,7 @@ to-report compute-avg-harvest
     set totarea totarea + totharvestarea
     set totharvest totharvest + pyharvest
   ]
-  if-else totarea = 0
+  ifelse totarea = 0
     [report "totarea is 0"]       ; hack for running on every tick in BehaviorSpace.  Outside of BS, should be called only at end of year.
     [report totharvest / totarea]
 end
@@ -1222,7 +1228,7 @@ end
 
 to-report pos-ints-aux [n lst]
   let ndec n - 1
-  if-else (n <= 0)
+  ifelse (n <= 0)
     [report lst]
     [report pos-ints-aux ndec (fput ndec lst)] ; this will handle recursion to at least 50K
 end
@@ -1245,21 +1251,34 @@ to-report sigmoid-normalizer [x curve-center curve-endpts]
 end
 
 to-report sigmoid [x curve-center curve-endpts]
-  if-else (x >= 1)  ; protect the normalizer
+  ifelse (x >= 1)  ; protect the normalizer
     [report 1]
-    [if-else (x <= -1)
+    [ifelse (x <= -1)
       [report -1]
       [report tanh (sigmoid-normalizer x curve-center curve-endpts)]]
 end
 
+to set-relig-effect-curve-number
+  set relig-effect-curve-number position relig-effect-curve ["linear" "step" "sigmodey"]
+end
+
+;; relig-effect-curve-number is set in the go procedure from the value of
+;; the relig-effect-curve chooser, or in plot-relig-effect-curve.
+;; (This function is called once per subak per year; why slow it down with string comparisons?)
 to-report relig-effect [x]
-  report sigmoid x exp(-1 * relig-effect-center) exp(-1 * relig-effect-endpt)  ; globals are from UI sliders. I use exp() simply to make the effect of sliders less extremely nonlinear.
+  ifelse relig-effect-curve-number = 0
+    [report x]                                                                         ; linear
+    [ifelse relig-effect-curve-number = 1
+      [report ifelse-value (x < relig-effect-step) [0] [1] ]                           ; step
+      [report sigmoid x exp(-1 * relig-effect-center) exp(-1 * relig-effect-endpt) ]]  ; sigmodey.  (I use exp() simply to make the effect of sliders less extremely nonlinear.)
 end
 
 to plot-relig-effect-curve
   set-current-plot "relig effect curve"
   set-current-plot-pen "effect-curve"
   clear-plot
+  
+  set-relig-effect-curve-number
   
   let x-min plot-x-min
   let x-max plot-x-max
@@ -1479,10 +1498,10 @@ PENS
 "totWS" 1.0 0 -13345367 true "" ""
 
 SWITCH
-607
-738
-759
-771
+618
+739
+770
+772
 viewdamsubaks
 viewdamsubaks
 1
@@ -1490,9 +1509,9 @@ viewdamsubaks
 -1000
 
 CHOOSER
-606
+617
 690
-758
+769
 735
 Color_subaks
 Color_subaks
@@ -2313,7 +2332,7 @@ relig-effect-center
 relig-effect-center
 -5
 10
--0.02
+1.8
 0.01
 1
 NIL
@@ -2328,7 +2347,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
--1.22
+0.3
 0.01
 1
 NIL
@@ -2370,10 +2389,10 @@ NIL
 1
 
 BUTTON
-239
-760
-414
-794
+772
+847
+947
+881
 west watershed relig-type=1
 ask subaks with [([pxcor] of patch-here) < -1] \n  [set relig-type 1]
 NIL
@@ -2387,10 +2406,10 @@ NIL
 1
 
 BUTTON
-414
-760
-591
-794
+947
+847
+1124
+881
 east watershed relig-type=1
 ask subaks with [([pxcor] of patch-here) >= -1] \n  [set relig-type 1]
 NIL
@@ -2433,10 +2452,10 @@ red: mean, blue: standard deviation:
 1
 
 SLIDER
--1
-795
-769
-828
+0
+807
+770
+840
 subks-mean-global
 subks-mean-global
 0
@@ -2449,11 +2468,46 @@ HORIZONTAL
 
 TEXTBOX
 3
-782
+794
 162
-801
+813
 per-subak mean # global speakers:
 8
+0.0
+1
+
+CHOOSER
+241
+761
+414
+806
+relig-effect-curve
+relig-effect-curve
+"linear" "step" "sigmoidey"
+1
+
+SLIDER
+414
+775
+586
+808
+relig-effect-step
+relig-effect-step
+0
+1
+0.8
+0.05
+1
+NIL
+HORIZONTAL
+
+TEXTBOX
+417
+763
+615
+782
+Use above if sigmoidey, below if step.
+9
 0.0
 1
 
