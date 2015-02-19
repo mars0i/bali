@@ -1,5 +1,7 @@
 ;; ---------------------
 ;; Vary these:
+["relig-effect-curve" "linear"]
+["relig-effect-step" 0.7]
 ["relig-effect-center" 10]
 ["relig-effect-endpt" 3.5]
 ["relig-influence?" true]
