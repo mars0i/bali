@@ -1540,10 +1540,10 @@ TEXTBOX
 1
 
 TEXTBOX
-1110
-746
-1666
-882
+216
+845
+772
+981
 Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents relig value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\nCrop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.\n\nMasceti/temple group colors: white: 1, yellow: 2, red: 3, blue: 4, cyan: 5, pink: 6, orange: 7, lime: 8, sky: 9, violet: 10, magenta: 11, green: 12, turquoise: 13, brown: 14.
 11
 0.0
@@ -1788,10 +1788,10 @@ cropplan-u
 -1000
 
 PLOT
-1102
-613
-1322
-733
+1103
+616
+1323
+736
 crop plan distribution
 NIL
 NIL
@@ -2130,10 +2130,10 @@ relig-influence?
 -1000
 
 PLOT
-1102
-492
-1324
-612
+1103
+495
+1325
+615
 start month distribution
 NIL
 NIL
@@ -2148,10 +2148,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [sd] of subaks"
 
 PLOT
-1102
-373
-1324
-493
+1103
+376
+1325
+496
 relig type distribution
 NIL
 NIL
@@ -2166,10 +2166,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [relig-type] of subaks"
 
 MONITOR
-1102
-329
-1325
-374
+1103
+333
+1326
+378
 mean relig type
 mean [relig-type] of subaks
 17
@@ -2484,7 +2484,7 @@ CHOOSER
 relig-effect-curve
 relig-effect-curve
 "linear" "step" "sigmoidey"
-0
+1
 
 SLIDER
 414
@@ -2900,6 +2900,7 @@ NetLogo 5.1.0
     <metric>avgharvestha</metric>
     <metric>avgWS</metric>
     <metric>avgpestloss</metric>
+    <metric>previous-seed</metric>
     <enumeratedValueSet variable="relig-effect-curve">
       <value value="&quot;linear&quot;"/>
     </enumeratedValueSet>
