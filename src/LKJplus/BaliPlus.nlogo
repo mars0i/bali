@@ -31,6 +31,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           relig-effect-center-prev
           relig-effect-endpt-prev
           relig-effect-curve-number ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
+          relig-type-years-above-threshold
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
@@ -383,6 +384,7 @@ to my-clear-globals
   set relig-effect-center-prev 0
   set relig-effect-endpt-prev 0
   set relig-effect-curve-number 0
+  set relig-type-years-above-threshold 0
 end
 
 ;;;;;;;;;;;;;;;
@@ -412,6 +414,7 @@ to go
     set last-n-years-avgharvesthas fput avgharvestha last-n-years-avgharvesthas ; add current avg harvest yield
     if length last-n-years-avgharvesthas > num-years-avgharvesthas         ; implement FIFO:
       [set last-n-years-avgharvesthas but-last last-n-years-avgharvesthas] ; once the running list of harvest yields is long enough, remove the last one
+    set relig-type-years-above-threshold (calc-relig-type-years-above-threshold relig-type-years-above-threshold)
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-relig-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
@@ -821,6 +824,14 @@ to determineharvest
         ] ; if
     ] ; ask
 end
+
+to-report calc-relig-type-years-above-threshold [years]
+  let mean-relig-type mean [relig-type] of subaks ; dupes calculation in plot TODO
+  ifelse ticks > burn-in-months and mean-relig-type > relig-type-threshold
+    [report years + 1]
+    [report years]
+end
+
 
 ;; subak routine
 to display-cropping-plan-etc
@@ -1434,9 +1445,9 @@ HORIZONTAL
 
 PLOT
 772
-73
-1097
-263
+154
+1098
+303
 Harvest
 NIL
 NIL
@@ -1462,10 +1473,10 @@ rainfall-scenario
 2
 
 PLOT
-772
-659
-1097
-846
+773
+617
+1100
+763
 Pestloss
 NIL
 NIL
@@ -1480,10 +1491,10 @@ PENS
 "totpestloss" 1.0 0 -2674135 true "" ""
 
 PLOT
-772
-469
-1097
-659
+773
+467
+1099
+616
 Waterstress
 NIL
 NIL
@@ -2293,9 +2304,9 @@ max-avgharvestha
 
 TEXTBOX
 774
-57
+135
 1059
-75
+153
 Current harvest: black, rolling average: blue:
 11
 0.0
@@ -2389,10 +2400,10 @@ NIL
 1
 
 BUTTON
-772
-847
-947
-881
+769
+763
+944
+797
 west watershed relig-type=1
 ask subaks with [([pxcor] of patch-here) < -1] \n  [set relig-type 1]
 NIL
@@ -2406,10 +2417,10 @@ NIL
 1
 
 BUTTON
-947
-847
-1124
-881
+945
+763
+1122
+797
 east watershed relig-type=1
 ask subaks with [([pxcor] of patch-here) >= -1] \n  [set relig-type 1]
 NIL
@@ -2423,10 +2434,10 @@ NIL
 1
 
 PLOT
-772
-277
-1096
-469
+773
+316
+1099
+466
 relig-type
 NIL
 NIL
@@ -2443,9 +2454,9 @@ PENS
 
 TEXTBOX
 779
-264
+304
 1013
-282
+322
 red: mean, blue: standard deviation:
 11
 0.0
@@ -2510,6 +2521,47 @@ Use above if sigmoidey, below if step.
 9
 0.0
 1
+
+SLIDER
+776
+95
+939
+129
+burn-in-months
+burn-in-months
+0
+12000
+0
+120
+1
+NIL
+HORIZONTAL
+
+SLIDER
+775
+62
+939
+96
+relig-type-threshold
+relig-type-threshold
+0
+1
+0.9
+0.01
+1
+NIL
+HORIZONTAL
+
+MONITOR
+939
+62
+1079
+108
+mean years > threshold
+relig-type-years-above-threshold / ticks
+17
+1
+11
 
 @#$#@#$#@
 ## LICENSE
