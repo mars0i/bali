@@ -576,7 +576,7 @@ end
 ;; Get a Poisson-distributed random integer n, and return an agentset with n unique subaks, or 171 subaks if n > 171
 to poisson-choose-speakers
   ask subaks [
-    let poisson-speakers random-poisson subks-mean-global
+    let poisson-speakers random-poisson subaks-mean-global
     let num-speakers ifelse-value (poisson-speakers > 171) [171] [poisson-speakers]
     ;if num-speakers > 0 [write (sentence ticks num-speakers)] ; DEBUG
     set speakers n-of num-speakers (other subaks)
@@ -2236,7 +2236,7 @@ CHOOSER
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
-0
+2
 
 INPUTBOX
 5
@@ -2343,7 +2343,7 @@ relig-effect-center
 relig-effect-center
 -5
 10
--0.06
+2.25
 0.01
 1
 NIL
@@ -2358,7 +2358,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
--0.04
+1.17
 0.01
 1
 NIL
@@ -2454,9 +2454,9 @@ PENS
 
 TEXTBOX
 779
-304
+302
 1013
-322
+320
 red: mean, blue: standard deviation:
 11
 0.0
@@ -2465,10 +2465,10 @@ red: mean, blue: standard deviation:
 SLIDER
 0
 807
-770
+1329
 840
-subks-mean-global
-subks-mean-global
+subaks-mean-global
+subaks-mean-global
 0
 200
 1
@@ -2495,7 +2495,7 @@ CHOOSER
 relig-effect-curve
 relig-effect-curve
 "linear" "step" "sigmoidey"
-1
+2
 
 SLIDER
 414
@@ -2526,12 +2526,12 @@ SLIDER
 776
 95
 939
-129
+128
 burn-in-months
 burn-in-months
 0
+24000
 12000
-0
 120
 1
 NIL
@@ -2541,12 +2541,12 @@ SLIDER
 775
 62
 939
-96
+95
 relig-type-threshold
 relig-type-threshold
 0
 1
-0.9
+0.75
 0.01
 1
 NIL
@@ -2556,9 +2556,9 @@ MONITOR
 939
 62
 1079
-108
+107
 mean years > threshold
-relig-type-years-above-threshold / ticks
+relig-type-years-above-threshold / (12 * ticks)
 17
 1
 11
