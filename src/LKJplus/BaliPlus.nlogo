@@ -2465,7 +2465,7 @@ red: mean, blue: standard deviation:
 SLIDER
 0
 807
-1329
+1122
 840
 subaks-mean-global
 subaks-mean-global
@@ -2546,7 +2546,7 @@ relig-type-threshold
 relig-type-threshold
 0
 1
-0.75
+0.9
 0.01
 1
 NIL
@@ -2558,7 +2558,7 @@ MONITOR
 1079
 107
 mean years > threshold
-relig-type-years-above-threshold / (12 * ticks)
+relig-type-years-above-threshold / (12 * (ticks - burn-in-months))
 17
 1
 11
