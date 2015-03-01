@@ -825,11 +825,20 @@ to determineharvest
     ] ; ask
 end
 
+;; normally called only at 1-year intervals in the 11th (i.e. 12th) month
 to-report calc-relig-type-years-above-threshold [years]
   let mean-relig-type mean [relig-type] of subaks ; dupes calculation in plot TODO
-  ifelse ticks > burn-in-months and mean-relig-type > relig-type-threshold
+  let months-past-burn-in ticks - burn-in-months
+  show months-past-burn-in ; DEBUG
+  ifelse months-past-burn-in >= 0 and mean-relig-type > relig-type-threshold  ; >= 0 since ticks and months are zero-based; December = 11.
     [report years + 1]
     [report years]
+end
+
+;; should be called after calc-relig-type-years-above-threshold has updated relig-type-years-above-threshold
+to-report mean-years-relig-type-above-threshold
+  let years-past-threshold floor ((ticks + 1 - burn-in-months) / 12) ; +1 to turn December=11 into 12. normally called on tick 11, so floor s/b redundant
+  report relig-type-years-above-threshold / years-past-threshold 
 end
 
 
@@ -1444,10 +1453,10 @@ NIL
 HORIZONTAL
 
 PLOT
-772
-154
-1098
-303
+773
+318
+1099
+467
 Harvest
 NIL
 NIL
@@ -1561,10 +1570,10 @@ Cropping plan colors: Large circle represents crop plan, square represents start
 1
 
 OUTPUT
-1101
-25
-1324
-329
+1103
+433
+1326
+737
 5
 
 SWITCH
@@ -1800,9 +1809,9 @@ cropplan-u
 
 PLOT
 1103
-616
+295
 1323
-736
+415
 crop plan distribution
 NIL
 NIL
@@ -2078,10 +2087,10 @@ TEXTBOX
 1
 
 TEXTBOX
-1104
-10
-1270
-28
+1105
+417
+1271
+435
 seed, crop plans in this run:
 11
 0.0
@@ -2142,9 +2151,9 @@ relig-influence?
 
 PLOT
 1103
-495
+174
 1325
-615
+294
 start month distribution
 NIL
 NIL
@@ -2159,10 +2168,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [sd] of subaks"
 
 PLOT
-1103
-376
-1325
-496
+1101
+53
+1323
+173
 relig type distribution
 NIL
 NIL
@@ -2177,10 +2186,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [relig-type] of subaks"
 
 MONITOR
-1103
-333
-1326
-378
+1101
+10
+1324
+55
 mean relig type
 mean [relig-type] of subaks
 17
@@ -2281,10 +2290,10 @@ Copy pestneighbors if true:
 1
 
 MONITOR
-773
-10
-853
-55
+775
+249
+855
+294
 Curr harvest
 avgharvestha
 3
@@ -2292,10 +2301,10 @@ avgharvestha
 11
 
 MONITOR
-978
-10
-1089
-55
+980
+249
+1091
+294
 Max harvest so far
 max-avgharvestha
 3
@@ -2303,20 +2312,20 @@ max-avgharvestha
 11
 
 TEXTBOX
-774
-135
-1059
-153
+775
+299
+1060
+317
 Current harvest: black, rolling average: blue:
 11
 0.0
 1
 
 MONITOR
-853
-10
-929
-55
+855
+249
+931
+294
 Rolling avg
 mean last-n-years-avgharvesthas
 3
@@ -2324,10 +2333,10 @@ mean last-n-years-avgharvesthas
 11
 
 MONITOR
-929
-10
-979
-55
+931
+249
+981
+294
 years
 num-years-avgharvesthas
 17
@@ -2434,10 +2443,10 @@ NIL
 1
 
 PLOT
-773
-316
-1099
-466
+774
+97
+1100
+247
 relig-type
 NIL
 NIL
@@ -2453,10 +2462,10 @@ PENS
 "stdv" 1.0 0 -13345367 true "" "plot stddev [relig-type] of subaks"
 
 TEXTBOX
-779
-302
-1013
-320
+780
+83
+1014
+101
 red: mean, blue: standard deviation:
 11
 0.0
@@ -2523,42 +2532,42 @@ Use above if sigmoidey, below if step.
 1
 
 SLIDER
-776
-95
-939
-128
+775
+43
+938
+76
 burn-in-months
 burn-in-months
 0
 24000
-12000
+0
 120
 1
 NIL
 HORIZONTAL
 
 SLIDER
-775
-62
-939
-95
+774
+10
+938
+43
 relig-type-threshold
 relig-type-threshold
 0
 1
-0.9
+0.5
 0.01
 1
 NIL
 HORIZONTAL
 
 MONITOR
-939
-62
-1079
-107
+938
+10
+1099
+55
 mean years > threshold
-relig-type-years-above-threshold / (12 * (ticks - burn-in-months))
+precision mean-years-relig-type-above-threshold 3
 17
 1
 11
