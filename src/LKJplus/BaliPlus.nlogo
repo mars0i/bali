@@ -829,7 +829,7 @@ end
 to-report calc-relig-type-years-above-threshold [years]
   let mean-relig-type mean [relig-type] of subaks ; dupes calculation in plot TODO
   let months-past-burn-in ticks - burn-in-months
-  show months-past-burn-in ; DEBUG
+  ;show months-past-burn-in ; DEBUG
   ifelse months-past-burn-in >= 0 and mean-relig-type > relig-type-threshold  ; >= 0 since ticks and months are zero-based; December = 11.
     [report years + 1]
     [report years]
@@ -1431,7 +1431,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.4
+2
 0.01
 1
 NIL
@@ -1463,7 +1463,7 @@ NIL
 0.0
 10.0
 0.0
-4.0
+3.0
 true
 false
 "" ""
@@ -1570,10 +1570,10 @@ Cropping plan colors: Large circle represents crop plan, square represents start
 1
 
 OUTPUT
-1103
-433
-1326
-737
+1101
+390
+1324
+694
 5
 
 SWITCH
@@ -1808,10 +1808,10 @@ cropplan-u
 -1000
 
 PLOT
-1103
-295
-1323
-415
+1101
+252
+1321
+372
 crop plan distribution
 NIL
 NIL
@@ -2087,10 +2087,10 @@ TEXTBOX
 1
 
 TEXTBOX
-1105
-417
-1271
-435
+1103
+374
+1269
+392
 seed, crop plans in this run:
 11
 0.0
@@ -2150,10 +2150,10 @@ relig-influence?
 -1000
 
 PLOT
-1103
-174
-1325
-294
+1101
+131
+1323
+251
 start month distribution
 NIL
 NIL
@@ -2168,10 +2168,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [sd] of subaks"
 
 PLOT
-1101
-53
-1323
-173
+1100
+10
+1322
+130
 relig type distribution
 NIL
 NIL
@@ -2186,12 +2186,12 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [relig-type] of subaks"
 
 MONITOR
-1101
-10
-1324
+999
 55
+1099
+100
 mean relig type
-mean [relig-type] of subaks
+precision (mean [relig-type] of subaks) 3
 17
 1
 11
@@ -2367,7 +2367,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
-1.17
+1.71
 0.01
 1
 NIL
@@ -2445,7 +2445,7 @@ NIL
 PLOT
 774
 97
-1100
+1099
 247
 relig-type
 NIL
@@ -2504,7 +2504,7 @@ CHOOSER
 relig-effect-curve
 relig-effect-curve
 "linear" "step" "sigmoidey"
-2
+1
 
 SLIDER
 414
@@ -2540,7 +2540,7 @@ burn-in-months
 burn-in-months
 0
 24000
-0
+3000
 120
 1
 NIL
@@ -2555,7 +2555,7 @@ relig-type-threshold
 relig-type-threshold
 0
 1
-0.5
+0.85
 0.01
 1
 NIL
