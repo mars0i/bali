@@ -827,16 +827,16 @@ end
 
 ;; normally called only at 1-year intervals in the 11th (i.e. 12th) month
 to-report calc-relig-type-years-above-threshold [years]
-  let mean-relig-type mean [relig-type] of subaks ; dupes calculation in plot TODO
+  let mean-relig-type mean [relig-type] of subaks
   let months-past-burn-in ticks - burn-in-months
-  ;show months-past-burn-in ; DEBUG
+
   ifelse months-past-burn-in >= 0 and mean-relig-type > relig-type-threshold  ; >= 0 since ticks and months are zero-based; December = 11.
     [report years + 1]
     [report years]
 end
 
 ;; should be called after calc-relig-type-years-above-threshold has updated relig-type-years-above-threshold
-to-report mean-years-relig-type-above-threshold
+to-report fract-years-relig-type-above-threshold
   let years-past-threshold floor ((ticks + 1 - burn-in-months) / 12) ; +1 to turn December=11 into 12. normally called on tick 11, so floor s/b redundant
   report relig-type-years-above-threshold / years-past-threshold 
 end
@@ -1382,8 +1382,8 @@ GRAPHICS-WINDOW
 28
 -30
 28
-0
-0
+1
+1
 1
 months
 30.0
@@ -2186,10 +2186,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [relig-type] of subaks"
 
 MONITOR
-999
-55
-1099
-100
+1003
+53
+1097
+98
 mean relig type
 precision (mean [relig-type] of subaks) 3
 17
@@ -2466,7 +2466,7 @@ TEXTBOX
 83
 1014
 101
-red: mean, blue: standard deviation:
+red: mean, blue: std dev:
 11
 0.0
 1
@@ -2504,7 +2504,7 @@ CHOOSER
 relig-effect-curve
 relig-effect-curve
 "linear" "step" "sigmoidey"
-1
+2
 
 SLIDER
 414
@@ -2534,13 +2534,13 @@ Use above if sigmoidey, below if step.
 SLIDER
 775
 43
-938
+914
 76
 burn-in-months
 burn-in-months
 0
 24000
-3000
+1200
 120
 1
 NIL
@@ -2562,12 +2562,23 @@ NIL
 HORIZONTAL
 
 MONITOR
-938
+964
 10
 1099
 55
-mean years > threshold
-precision mean-years-relig-type-above-threshold 3
+% years > threshold
+precision (100 * fract-years-relig-type-above-threshold) 2
+17
+1
+11
+
+MONITOR
+913
+53
+1004
+98
+yrs > threshold
+relig-type-years-above-threshold
 17
 1
 11
