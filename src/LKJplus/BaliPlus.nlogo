@@ -1596,10 +1596,10 @@ Cropping plan colors: Large circle represents crop plan, square represents start
 1
 
 OUTPUT
-1101
-390
-1324
-694
+1105
+512
+1329
+809
 5
 
 SWITCH
@@ -1834,10 +1834,10 @@ cropplan-u
 -1000
 
 PLOT
-1101
-252
-1321
-372
+1105
+374
+1325
+494
 crop plan distribution
 NIL
 NIL
@@ -2113,10 +2113,10 @@ TEXTBOX
 1
 
 TEXTBOX
-1103
-374
-1269
-392
+1107
+496
+1273
+514
 seed, crop plans in this run:
 11
 0.0
@@ -2176,10 +2176,10 @@ relig-influence?
 -1000
 
 PLOT
-1101
-131
-1323
-251
+1105
+253
+1327
+373
 start month distribution
 NIL
 NIL
@@ -2194,10 +2194,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [sd] of subaks"
 
 PLOT
-1100
-10
-1322
-130
+1104
+132
+1326
+252
 relig type distribution
 NIL
 NIL
@@ -2435,10 +2435,10 @@ NIL
 1
 
 BUTTON
-769
-763
-944
-797
+1330
+742
+1505
+776
 west watershed relig-type=1
 ask subaks with [([pxcor] of patch-here) < -1] \n  [set relig-type 1]
 NIL
@@ -2452,10 +2452,10 @@ NIL
 1
 
 BUTTON
-945
-763
-1122
-797
+1506
+742
+1683
+776
 east watershed relig-type=1
 ask subaks with [([pxcor] of patch-here) >= -1] \n  [set relig-type 1]
 NIL
@@ -2566,7 +2566,7 @@ burn-in-months
 burn-in-months
 0
 24000
-2400
+0
 120
 1
 NIL
@@ -2608,6 +2608,24 @@ relig-type-years-above-threshold
 17
 1
 11
+
+PLOT
+1104
+12
+1327
+132
+(doesn't work) years mean relig-type buckets
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"set-histogram-num-bars 20" ""
+PENS
+"default" 1.0 1 -16777216 true "" "histogram relig-type-years-buckets"
 
 @#$#@#$#@
 ## LICENSE
