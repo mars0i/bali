@@ -32,6 +32,8 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           relig-effect-endpt-prev
           relig-effect-curve-number ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
           relig-type-years-above-threshold
+          relig-type-years-buckets
+          relig-type-bucket-size
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
@@ -145,6 +147,8 @@ to setup
   set min-yield 1000000 ; dummy value
   set last-n-years-avgharvesthas []
   set num-years-avgharvesthas 10
+  set relig-type-bucket-size 5
+  set relig-type-years-buckets [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 
   ask patches [set pcolor default-pcolor]
   
@@ -385,10 +389,13 @@ to my-clear-globals
   set relig-effect-endpt-prev 0
   set relig-effect-curve-number 0
   set relig-type-years-above-threshold 0
+  set relig-type-years-buckets 0
 end
 
 ;;;;;;;;;;;;;;;
 to go
+  show relig-type-years-buckets ; DEBUG
+  
   if run-until-month > 0 and ticks >= run-until-month
     [stop] ; exit go-forever if user specified a stop tick
 
@@ -414,7 +421,8 @@ to go
     set last-n-years-avgharvesthas fput avgharvestha last-n-years-avgharvesthas ; add current avg harvest yield
     if length last-n-years-avgharvesthas > num-years-avgharvesthas         ; implement FIFO:
       [set last-n-years-avgharvesthas but-last last-n-years-avgharvesthas] ; once the running list of harvest yields is long enough, remove the last one
-    set relig-type-years-above-threshold (calc-relig-type-years-above-threshold relig-type-years-above-threshold)
+    set relig-type-years-above-threshold (calc-relig-type-years-above-threshold relig-type-years-above-threshold) ;; OBSOLETE?
+    calc-relig-type-years-buckets
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-relig-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
@@ -825,6 +833,7 @@ to determineharvest
     ] ; ask
 end
 
+;; DEPRECATED?
 ;; normally called only at 1-year intervals in the 11th (i.e. 12th) month
 to-report calc-relig-type-years-above-threshold [years]
   let mean-relig-type mean [relig-type] of subaks
@@ -835,12 +844,29 @@ to-report calc-relig-type-years-above-threshold [years]
     [report years]
 end
 
+;; DEPRECATED?
 ;; should be called after calc-relig-type-years-above-threshold has updated relig-type-years-above-threshold
 to-report fract-years-relig-type-above-threshold
   let years-past-threshold floor ((ticks + 1 - burn-in-months) / 12) ; +1 to turn December=11 into 12. normally called on tick 11, so floor s/b redundant
   report relig-type-years-above-threshold / years-past-threshold 
 end
 
+;; update a list of buckets that records number of years that the mean relig-type fell into
+;; one of several "buckets", i.e. ranges of values.  e.g. there might be 20 buckets:
+;; [0,5)
+to calc-relig-type-years-buckets
+  if (ticks - burn-in-months) >= 0 [     ; >= 0 since ticks and months are zero-based; December = 11.
+    let bucket relig-type-bucket (mean [relig-type] of subaks)
+    let old-value item bucket relig-type-years-buckets
+    set relig-type-years-buckets replace-item bucket relig-type-years-buckets (old-value + 1)
+  ]
+end
+
+to-report relig-type-bucket [x]
+  ifelse (x = 1.0)
+    [report (length relig-type-years-buckets) - 1]  ; extend the top bucket to include the max value.  note length runs in constant time.
+    [report floor ((x * 100) / relig-type-bucket-size)]
+end
 
 ;; subak routine
 to display-cropping-plan-etc
@@ -2245,7 +2271,7 @@ CHOOSER
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
-2
+0
 
 INPUTBOX
 5
@@ -2540,7 +2566,7 @@ burn-in-months
 burn-in-months
 0
 24000
-1200
+2400
 120
 1
 NIL
