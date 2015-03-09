@@ -31,9 +31,10 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           relig-effect-center-prev
           relig-effect-endpt-prev
           relig-effect-curve-number ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
-          relig-type-years-above-threshold
-          relig-type-years-buckets
-          relig-type-bucket-size
+          relig-type-years-above-threshold ; maybe DEPRECATED
+          relig-type-years-buckets ; collects numbers of years in which relig type falls in each of several ranges
+          relig-type-bucket-size   ; bucket size, i.e. size of range for each bucket
+          relig-type-num-buckets   ; will be calculated from bucket size
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
@@ -147,8 +148,9 @@ to setup
   set min-yield 1000000 ; dummy value
   set last-n-years-avgharvesthas []
   set num-years-avgharvesthas 10
-  set relig-type-bucket-size 5
-  set relig-type-years-buckets [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+  set relig-type-bucket-size 0.05 ; next two definitions depend on this one
+  set relig-type-num-buckets 1 / relig-type-bucket-size
+  set relig-type-years-buckets n-values relig-type-num-buckets [0]
 
   ask patches [set pcolor default-pcolor]
   
@@ -390,6 +392,8 @@ to my-clear-globals
   set relig-effect-curve-number 0
   set relig-type-years-above-threshold 0
   set relig-type-years-buckets 0
+  set relig-type-bucket-size 0
+  set relig-type-num-buckets 0
 end
 
 ;;;;;;;;;;;;;;;
@@ -865,7 +869,7 @@ end
 to-report relig-type-bucket [x]
   ifelse (x = 1.0)
     [report (length relig-type-years-buckets) - 1]  ; extend the top bucket to include the max value.  note length runs in constant time.
-    [report floor ((x * 100) / relig-type-bucket-size)]
+    [report floor (x / relig-type-bucket-size)]
 end
 
 ;; subak routine
@@ -907,34 +911,16 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
+;; Plot some values.
+;; Code for other plots appears in the plot objects in the UI.
 to plot-figs
-  ;; REPLACE WITH compute-avg-harvest
-  ;let totarea 0
-  ;let totharvest 0
-  ;ask subaks [
-  ;  set totarea totarea + totharvestarea
-  ;  set totharvest totharvest + pyharvest
-  ;]
-  ;set avgharvestha totharvest / totarea
   set-current-plot "Harvest"
   set-current-plot-pen "harvest"
-  ;set avgharvestha compute-avg-harvest ; replaces preceding commented-out lines.  Now moved to 'go'
   plot avgharvestha
   set-current-plot-pen "n-year-avg"
   plot mean last-n-years-avgharvesthas
-
-  ;; doesn't work:
-  ;if ticks >= 120 [
-  ;   if avgharvestha < min-yield [
-  ;     set min-yield avgharvestha
-  ;   ]
-  ;   set-current-plot-pen "min-yield"
-  ;   plot min-yield
-  ;]
-  
   set-current-plot "Pestloss"
   plot avgpestloss
-  
   set-current-plot "Waterstress"
   plot avgWS
 end
@@ -2566,7 +2552,7 @@ burn-in-months
 burn-in-months
 0
 24000
-0
+240
 120
 1
 NIL
@@ -2614,7 +2600,7 @@ PLOT
 12
 1327
 132
-(doesn't work) years mean relig-type buckets
+years mean relig-type buckets
 NIL
 NIL
 0.0
@@ -2623,9 +2609,9 @@ NIL
 10.0
 true
 false
-"set-histogram-num-bars 20" ""
+"set-histogram-num-bars relig-type-num-buckets" ""
 PENS
-"default" 1.0 1 -16777216 true "" "histogram relig-type-years-buckets"
+"default" 1.0 1 -16777216 true "" "let i 0 foreach relig-type-years-buckets\n  [plotxy i ?\n   set i i + 1]"
 
 @#$#@#$#@
 ## LICENSE
