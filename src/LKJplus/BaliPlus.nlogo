@@ -35,6 +35,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           relig-type-years-buckets ; collects numbers of years in which relig type falls in each of several ranges
           relig-type-bucket-size   ; bucket size, i.e. size of range for each bucket
           relig-type-num-buckets   ; will be calculated from bucket size
+          months-past-burn-in      ; will contain ticks - burn-in-months
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
@@ -394,12 +395,14 @@ to my-clear-globals
   set relig-type-years-buckets 0
   set relig-type-bucket-size 0
   set relig-type-num-buckets 0
+  set months-past-burn-in 0
 end
 
 ;;;;;;;;;;;;;;;
 to go
+  show (sentence ticks months-past-burn-in) ; DEBUG
   show relig-type-years-buckets ; DEBUG
-  
+
   if run-until-month > 0 and ticks >= run-until-month
     [stop] ; exit go-forever if user specified a stop tick
 
@@ -425,8 +428,8 @@ to go
     set last-n-years-avgharvesthas fput avgharvestha last-n-years-avgharvesthas ; add current avg harvest yield
     if length last-n-years-avgharvesthas > num-years-avgharvesthas         ; implement FIFO:
       [set last-n-years-avgharvesthas but-last last-n-years-avgharvesthas] ; once the running list of harvest yields is long enough, remove the last one
-    set relig-type-years-above-threshold (calc-relig-type-years-above-threshold relig-type-years-above-threshold) ;; OBSOLETE?
     calc-relig-type-years-buckets
+    set relig-type-years-above-threshold (calc-relig-type-years-above-threshold relig-type-years-above-threshold) ;; DEPRECATED. OBSOLETE?
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-relig-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
@@ -837,12 +840,28 @@ to determineharvest
     ] ; ask
 end
 
+;; update a list of buckets that records number of years that the mean relig-type fell into
+;; one of several "buckets", i.e. ranges of values.  e.g. there might be 20 buckets:
+;; [0,5)
+to calc-relig-type-years-buckets
+  set months-past-burn-in ticks - (burn-in-months + 1) ; +1 since zero-based: December = 11.  Also used elsewhere.
+  if months-past-burn-in >= 0 [
+    let bucket relig-type-bucket (mean [relig-type] of subaks)
+    let old-value item bucket relig-type-years-buckets
+    set relig-type-years-buckets replace-item bucket relig-type-years-buckets (old-value + 1)
+  ]
+end
+
+to-report relig-type-bucket [x]
+  ifelse (x = 1.0)
+    [report (length relig-type-years-buckets) - 1]  ; extend the top bucket to include the max value.  note length runs in constant time.
+    [report floor (x / relig-type-bucket-size)]
+end
+
 ;; DEPRECATED?
 ;; normally called only at 1-year intervals in the 11th (i.e. 12th) month
 to-report calc-relig-type-years-above-threshold [years]
   let mean-relig-type mean [relig-type] of subaks
-  let months-past-burn-in ticks - burn-in-months
-
   ifelse months-past-burn-in >= 0 and mean-relig-type > relig-type-threshold  ; >= 0 since ticks and months are zero-based; December = 11.
     [report years + 1]
     [report years]
@@ -855,22 +874,6 @@ to-report fract-years-relig-type-above-threshold
   report relig-type-years-above-threshold / years-past-threshold 
 end
 
-;; update a list of buckets that records number of years that the mean relig-type fell into
-;; one of several "buckets", i.e. ranges of values.  e.g. there might be 20 buckets:
-;; [0,5)
-to calc-relig-type-years-buckets
-  if (ticks - burn-in-months) >= 0 [     ; >= 0 since ticks and months are zero-based; December = 11.
-    let bucket relig-type-bucket (mean [relig-type] of subaks)
-    let old-value item bucket relig-type-years-buckets
-    set relig-type-years-buckets replace-item bucket relig-type-years-buckets (old-value + 1)
-  ]
-end
-
-to-report relig-type-bucket [x]
-  ifelse (x = 1.0)
-    [report (length relig-type-years-buckets) - 1]  ; extend the top bucket to include the max value.  note length runs in constant time.
-    [report floor (x / relig-type-bucket-size)]
-end
 
 ;; subak routine
 to display-cropping-plan-etc
@@ -914,6 +917,16 @@ end
 ;; Plot some values.
 ;; Code for other plots appears in the plot objects in the UI.
 to plot-figs
+  ;; This one is a slightly complicated--better to do it here:
+  if months-past-burn-in >= 0 [
+    show "plotting" ; DEBUG
+    let i 0
+    foreach relig-type-years-buckets [
+      plotxy i (? / (months-past-burn-in + 1)) ; +1 since zero-based.  i.e. this counts the number of times we've plotted, not months-past-burn-in per se.
+      set i i + 1
+    ]
+  ]
+  ;; These could be moved into the UI:
   set-current-plot "Harvest"
   set-current-plot-pen "harvest"
   plot avgharvestha
@@ -2552,7 +2565,7 @@ burn-in-months
 burn-in-months
 0
 24000
-240
+60
 120
 1
 NIL
@@ -2604,14 +2617,14 @@ years mean relig-type buckets
 NIL
 NIL
 0.0
-10.0
+1.0
 0.0
-10.0
+0.1
 true
 false
 "set-histogram-num-bars relig-type-num-buckets" ""
 PENS
-"default" 1.0 1 -16777216 true "" "let i 0 foreach relig-type-years-buckets\n  [plotxy i ?\n   set i i + 1]"
+"default" 1.0 1 -16777216 true "" "; see procedure plot-figs"
 
 @#$#@#$#@
 ## LICENSE
