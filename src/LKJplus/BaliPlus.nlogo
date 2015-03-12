@@ -1,5 +1,7 @@
 ;extensions [rnd]
 
+;; A NEW COMMENT!
+
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-data from data in text files
           new-subaks subaks_array dams_array subakdams_array 
@@ -31,11 +33,9 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           relig-effect-center-prev
           relig-effect-endpt-prev
           relig-effect-curve-number ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
-          relig-type-years-above-threshold ; maybe DEPRECATED
-          relig-type-years-buckets ; collects numbers of years in which relig type falls in each of several ranges
-          relig-type-bucket-size   ; bucket size, i.e. size of range for each bucket
-          relig-type-num-buckets   ; will be calculated from bucket size
-          months-past-burn-in      ; will contain ticks - burn-in-months
+          relig-type-years-above-threshold
+          relig-type-years-buckets
+          relig-type-bucket-size
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
@@ -149,9 +149,8 @@ to setup
   set min-yield 1000000 ; dummy value
   set last-n-years-avgharvesthas []
   set num-years-avgharvesthas 10
-  set relig-type-bucket-size 0.05 ; next two definitions depend on this one
-  set relig-type-num-buckets 1 / relig-type-bucket-size
-  set relig-type-years-buckets n-values relig-type-num-buckets [0]
+  set relig-type-bucket-size 5
+  set relig-type-years-buckets [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 
   ask patches [set pcolor default-pcolor]
   
@@ -393,16 +392,12 @@ to my-clear-globals
   set relig-effect-curve-number 0
   set relig-type-years-above-threshold 0
   set relig-type-years-buckets 0
-  set relig-type-bucket-size 0
-  set relig-type-num-buckets 0
-  set months-past-burn-in 0
 end
 
 ;;;;;;;;;;;;;;;
 to go
-  show (sentence ticks months-past-burn-in) ; DEBUG
   show relig-type-years-buckets ; DEBUG
-
+  
   if run-until-month > 0 and ticks >= run-until-month
     [stop] ; exit go-forever if user specified a stop tick
 
@@ -428,8 +423,8 @@ to go
     set last-n-years-avgharvesthas fput avgharvestha last-n-years-avgharvesthas ; add current avg harvest yield
     if length last-n-years-avgharvesthas > num-years-avgharvesthas         ; implement FIFO:
       [set last-n-years-avgharvesthas but-last last-n-years-avgharvesthas] ; once the running list of harvest yields is long enough, remove the last one
+    set relig-type-years-above-threshold (calc-relig-type-years-above-threshold relig-type-years-above-threshold) ;; OBSOLETE?
     calc-relig-type-years-buckets
-    set relig-type-years-above-threshold (calc-relig-type-years-above-threshold relig-type-years-above-threshold) ;; DEPRECATED. OBSOLETE?
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-relig-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
@@ -840,28 +835,12 @@ to determineharvest
     ] ; ask
 end
 
-;; update a list of buckets that records number of years that the mean relig-type fell into
-;; one of several "buckets", i.e. ranges of values.  e.g. there might be 20 buckets:
-;; [0,5)
-to calc-relig-type-years-buckets
-  set months-past-burn-in ticks - (burn-in-months + 1) ; +1 since zero-based: December = 11.  Also used elsewhere.
-  if months-past-burn-in >= 0 [
-    let bucket relig-type-bucket (mean [relig-type] of subaks)
-    let old-value item bucket relig-type-years-buckets
-    set relig-type-years-buckets replace-item bucket relig-type-years-buckets (old-value + 1)
-  ]
-end
-
-to-report relig-type-bucket [x]
-  ifelse (x = 1.0)
-    [report (length relig-type-years-buckets) - 1]  ; extend the top bucket to include the max value.  note length runs in constant time.
-    [report floor (x / relig-type-bucket-size)]
-end
-
 ;; DEPRECATED?
 ;; normally called only at 1-year intervals in the 11th (i.e. 12th) month
 to-report calc-relig-type-years-above-threshold [years]
   let mean-relig-type mean [relig-type] of subaks
+  let months-past-burn-in ticks - burn-in-months
+
   ifelse months-past-burn-in >= 0 and mean-relig-type > relig-type-threshold  ; >= 0 since ticks and months are zero-based; December = 11.
     [report years + 1]
     [report years]
@@ -874,6 +853,22 @@ to-report fract-years-relig-type-above-threshold
   report relig-type-years-above-threshold / years-past-threshold 
 end
 
+;; update a list of buckets that records number of years that the mean relig-type fell into
+;; one of several "buckets", i.e. ranges of values.  e.g. there might be 20 buckets:
+;; [0,5)
+to calc-relig-type-years-buckets
+  if (ticks - burn-in-months) >= 0 [     ; >= 0 since ticks and months are zero-based; December = 11.
+    let bucket relig-type-bucket (mean [relig-type] of subaks)
+    let old-value item bucket relig-type-years-buckets
+    set relig-type-years-buckets replace-item bucket relig-type-years-buckets (old-value + 1)
+  ]
+end
+
+to-report relig-type-bucket [x]
+  ifelse (x = 1.0)
+    [report (length relig-type-years-buckets) - 1]  ; extend the top bucket to include the max value.  note length runs in constant time.
+    [report floor ((x * 100) / relig-type-bucket-size)]
+end
 
 ;; subak routine
 to display-cropping-plan-etc
@@ -914,26 +909,34 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
-;; Plot some values.
-;; Code for other plots appears in the plot objects in the UI.
 to plot-figs
-  ;; This one is a slightly complicated--better to do it here:
-  if months-past-burn-in >= 0 [
-    show "plotting" ; DEBUG
-    let i 0
-    foreach relig-type-years-buckets [
-      plotxy i (? / (months-past-burn-in + 1)) ; +1 since zero-based.  i.e. this counts the number of times we've plotted, not months-past-burn-in per se.
-      set i i + 1
-    ]
-  ]
-  ;; These could be moved into the UI:
+  ;; REPLACE WITH compute-avg-harvest
+  ;let totarea 0
+  ;let totharvest 0
+  ;ask subaks [
+  ;  set totarea totarea + totharvestarea
+  ;  set totharvest totharvest + pyharvest
+  ;]
+  ;set avgharvestha totharvest / totarea
   set-current-plot "Harvest"
   set-current-plot-pen "harvest"
+  ;set avgharvestha compute-avg-harvest ; replaces preceding commented-out lines.  Now moved to 'go'
   plot avgharvestha
   set-current-plot-pen "n-year-avg"
   plot mean last-n-years-avgharvesthas
+
+  ;; doesn't work:
+  ;if ticks >= 120 [
+  ;   if avgharvestha < min-yield [
+  ;     set min-yield avgharvestha
+  ;   ]
+  ;   set-current-plot-pen "min-yield"
+  ;   plot min-yield
+  ;]
+  
   set-current-plot "Pestloss"
   plot avgpestloss
+  
   set-current-plot "Waterstress"
   plot avgWS
 end
@@ -2270,7 +2273,7 @@ CHOOSER
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
-0
+2
 
 INPUTBOX
 5
@@ -2565,7 +2568,7 @@ burn-in-months
 burn-in-months
 0
 24000
-60
+0
 120
 1
 NIL
@@ -2613,18 +2616,18 @@ PLOT
 12
 1327
 132
-years mean relig-type buckets
+(doesn't work) years mean relig-type buckets
 NIL
 NIL
 0.0
-1.0
+10.0
 0.0
-0.1
+10.0
 true
 false
-"set-histogram-num-bars relig-type-num-buckets" ""
+"set-histogram-num-bars 20" ""
 PENS
-"default" 1.0 1 -16777216 true "" "; see procedure plot-figs"
+"default" 1.0 1 -16777216 true "" "histogram relig-type-years-buckets"
 
 @#$#@#$#@
 ## LICENSE
@@ -3132,6 +3135,138 @@ NetLogo 5.1.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="cropplan-u">
       <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="experiment" repetitions="20" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="5000"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="cropplan-u">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-e">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-subak-values">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="subaks-mean-global">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-influence">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-tran-stddev">
+      <value value="0.02"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-curve">
+      <value value="&quot;sigmoidey&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-q">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-relig-types">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-t">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestdispersal-rate">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-l">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-b">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-i">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="random-seed-source">
+      <value value="&quot;use previous&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-p">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="viewdamsubaks">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="burn-in-months">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-step">
+      <value value="0.7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestgrowth-rate">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-j">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-r">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ignore-neighbors-prob">
+      <value value="0.3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="run-until-month">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-d">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-type-threshold">
+      <value value="0.85"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-c">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-f">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rainfall-scenario">
+      <value value="&quot;high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-k">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-o">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-center">
+      <value value="2.25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-g">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-n">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-a">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-h">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-endpt">
+      <value value="1.71"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-pestneighbors">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-s">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Color_subaks">
+      <value value="&quot;cropping plans&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-m">
+      <value value="true"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
