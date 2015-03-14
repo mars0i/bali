@@ -150,8 +150,10 @@ to setup
   set last-n-years-avgharvesthas []
   set num-years-avgharvesthas 10
   set relig-type-bucket-size 0.05 ; next two definitions depend on this one
-  set relig-type-num-buckets 1 / relig-type-bucket-size
+  set relig-type-num-buckets ceiling (1 / relig-type-bucket-size)
   set relig-type-years-buckets n-values relig-type-num-buckets [0]
+  set-current-plot "years mean relig-type buckets"
+  set-plot-x-range 0 relig-type-num-buckets
 
   ask patches [set pcolor default-pcolor]
   
@@ -400,9 +402,6 @@ end
 
 ;;;;;;;;;;;;;;;
 to go
-  show (sentence ticks months-past-burn-in) ; DEBUG
-  show relig-type-years-buckets ; DEBUG
-
   if run-until-month > 0 and ticks >= run-until-month
     [stop] ; exit go-forever if user specified a stop tick
 
@@ -844,9 +843,9 @@ end
 ;; one of several "buckets", i.e. ranges of values.  e.g. there might be 20 buckets:
 ;; [0,5)
 to calc-relig-type-years-buckets
-  set months-past-burn-in ticks - (burn-in-months + 1) ; +1 since zero-based: December = 11.  Also used elsewhere.
+  set months-past-burn-in ticks - (burn-in-months - 1) ; -1 since zero-based: December = 11.  Also used elsewhere.
   if months-past-burn-in >= 0 [
-    let bucket relig-type-bucket (mean [relig-type] of subaks)
+    let bucket (relig-type-bucket (mean [relig-type] of subaks))
     let old-value item bucket relig-type-years-buckets
     set relig-type-years-buckets replace-item bucket relig-type-years-buckets (old-value + 1)
   ]
@@ -914,15 +913,21 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
-;; Plot some values.
-;; Code for other plots appears in the plot objects in the UI.
+;; Plot some values.  Code for other plots appears in the plot objects in the UI.
 to plot-figs
   ;; This one is a slightly complicated--better to do it here:
+  show (sentence ticks months-past-burn-in) ; DEBUG
   if months-past-burn-in >= 0 [
-    show "plotting" ; DEBUG
+    let buckets-total sum relig-type-years-buckets  ; do this once here, since map will reexecute calcs each time
+    let normalized-buckets map [? / buckets-total] relig-type-years-buckets
+    ;show relig-type-years-buckets ; DEBUG
+    ;show normalized-buckets ; DEBUG
+    set-current-plot "years mean relig-type buckets"
+    clear-plot
     let i 0
-    foreach relig-type-years-buckets [
-      plotxy i (? / (months-past-burn-in + 1)) ; +1 since zero-based.  i.e. this counts the number of times we've plotted, not months-past-burn-in per se.
+    foreach normalized-buckets [
+      plotxy i ?
+      ;set i i + relig-type-bucket-size
       set i i + 1
     ]
   ]
@@ -2487,10 +2492,10 @@ PENS
 "stdv" 1.0 0 -13345367 true "" "plot stddev [relig-type] of subaks"
 
 TEXTBOX
-780
-83
-1014
-101
+777
+84
+913
+102
 red: mean, blue: std dev:
 11
 0.0
@@ -2565,7 +2570,7 @@ burn-in-months
 burn-in-months
 0
 24000
-60
+2400
 120
 1
 NIL
@@ -2619,7 +2624,7 @@ NIL
 0.0
 1.0
 0.0
-0.1
+1.0
 true
 false
 "set-histogram-num-bars relig-type-num-buckets" ""
