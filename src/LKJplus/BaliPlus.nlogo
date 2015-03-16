@@ -152,8 +152,11 @@ to setup
   set relig-type-bucket-size 0.05 ; next two definitions depend on this one
   set relig-type-num-buckets ceiling (1 / relig-type-bucket-size)
   set relig-type-years-buckets n-values relig-type-num-buckets [0]
-  set-current-plot "years mean relig-type buckets"
-  set-plot-x-range 0 relig-type-num-buckets
+  set-current-plot "mean years at mean relig-type"
+  ;set-plot-x-range 0 (relig-type-num-buckets + 1)
+  ;set-plot-x-range 0 1
+  ;set-histogram-num-bars 20
+  ;set-plot-x-range 0 20
 
   ask patches [set pcolor default-pcolor]
   
@@ -922,13 +925,13 @@ to plot-figs
     let normalized-buckets map [? / buckets-total] relig-type-years-buckets
     ;show relig-type-years-buckets ; DEBUG
     ;show normalized-buckets ; DEBUG
-    set-current-plot "years mean relig-type buckets"
+    set-current-plot "mean years at mean relig-type"
     clear-plot
-    let i 0
+    let x 0
     foreach normalized-buckets [
-      plotxy i ?
-      ;set i i + relig-type-bucket-size
-      set i i + 1
+      plotxy x ?
+      ;set x x + relig-type-bucket-size
+      set x x + 1
     ]
   ]
   ;; These could be moved into the UI:
@@ -2570,7 +2573,7 @@ burn-in-months
 burn-in-months
 0
 24000
-2400
+0
 120
 1
 NIL
@@ -2592,9 +2595,9 @@ NIL
 HORIZONTAL
 
 MONITOR
-964
+962
 10
-1099
+1097
 55
 % years > threshold
 precision (100 * fract-years-relig-type-above-threshold) 2
@@ -2618,7 +2621,7 @@ PLOT
 12
 1327
 132
-years mean relig-type buckets
+mean years at mean relig-type
 NIL
 NIL
 0.0
@@ -2627,7 +2630,7 @@ NIL
 1.0
 true
 false
-"set-histogram-num-bars relig-type-num-buckets" ""
+";set-plot-x-range 0 21\n;set-histogram-num-bars 21\n;set-histogram-num-bars (relig-type-num-buckets + 1)\n;set-plot-x-range 0 (relig-type-num-buckets + 1)" ""
 PENS
 "default" 1.0 1 -16777216 true "" "; see procedure plot-figs"
 
