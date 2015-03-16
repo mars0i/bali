@@ -919,7 +919,6 @@ end
 ;; Plot some values.  Code for other plots appears in the plot objects in the UI.
 to plot-figs
   ;; This one is a slightly complicated--better to do it here:
-  show (sentence ticks months-past-burn-in) ; DEBUG
   if months-past-burn-in >= 0 [
     let buckets-total sum relig-type-years-buckets  ; do this once here, since map will reexecute calcs each time
     let normalized-buckets map [? / buckets-total] relig-type-years-buckets
@@ -930,8 +929,8 @@ to plot-figs
     let x 0
     foreach normalized-buckets [
       plotxy x ?
-      ;set x x + relig-type-bucket-size
-      set x x + 1
+      set x x + relig-type-bucket-size
+      ;set x x + 1
     ]
   ]
   ;; These could be moved into the UI:
@@ -1464,7 +1463,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2
+2.4
 0.01
 1
 NIL
@@ -2400,7 +2399,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
-1.71
+1.7
 0.01
 1
 NIL
@@ -2573,7 +2572,7 @@ burn-in-months
 burn-in-months
 0
 24000
-0
+2400
 120
 1
 NIL
@@ -2632,7 +2631,7 @@ true
 false
 ";set-plot-x-range 0 21\n;set-histogram-num-bars 21\n;set-histogram-num-bars (relig-type-num-buckets + 1)\n;set-plot-x-range 0 (relig-type-num-buckets + 1)" ""
 PENS
-"default" 1.0 1 -16777216 true "" "; see procedure plot-figs"
+"default" 1.0 2 -16777216 true "" "; see procedure plot-figs"
 
 @#$#@#$#@
 ## LICENSE
@@ -3014,7 +3013,7 @@ NetLogo 5.1.0
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="test2linear4way" repetitions="5" runMetricsEveryStep="true">
+  <experiment name="test2linear4way (obsolete)" repetitions="5" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <exitCondition>ticks &gt; 5000</exitCondition>

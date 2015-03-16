@@ -1,0 +1,90 @@
+;; -----------------------------------------------
+;; Notes:
+;; Set repetitions to 50 (100?)
+;; Turn off "measure runs at each step"
+;; -----------------------------------------------
+;; "Measure runs using these reporters:"
+mean [relig-type] of subaks
+stddev [relig-type] of subaks
+avgharvestha
+max-avgharvestha
+avgWS
+avgpestloss
+previous-seed
+relig-type-years-buckets
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Paste the following over the contents of the "vary variables as follows" box.
+;; Note that comments will be stripped out when you save the beh space spec.
+
+;; ===============================================
+;; Parameters to vary
+
+["burn-in-months" 3600]
+["ignore-neighbors-prob" 0 0.3]
+
+;; ------------------------------------------
+;; Choose ONE of the following three groups
+
+;; (1) This option is not affected by numeric params
+["relig-effect-curve" "linear"]
+
+;; (2) The numeric param in this group only works when relig-effect-curve is "step"
+["relig-effect-curve" "step"]
+["relig-effect-step" 0.5 0.8]
+
+;; (3) The numeric params in this group only work when relig-effect-curve is "sigmoidey"
+["relig-effect-curve" "sigmoidey"]
+["relig-effect-center" 2.25] ; can be varied for different effect curves (leave as is initially)
+["relig-effect-endpt" 1.7]   ; can be varied for different effect curves (leave as is initially)
+; 2.25, 1.7:
+; plateaus around 0.7, with steep near-linear slope from about 0.5, gentle slope from 0 before that.
+
+["relig-influence?" false true]
+["subaks-mean-global" 1]
+
+;; ===============================================
+;; Parameters to set and forget are below.
+
+;; We might want to vary these in the future
+["burn-in-months" 6000]
+["run-until-month" 66000]    ; This should be a fixed amount past burn-in-months.
+["relig-pestneighbors" true] ; will only have an effect when there is noise and relig tran
+["relig-tran-stddev" 0.02]
+["relig-influence" 1.5]
+["rainfall-scenario" "high"] 
+["pestdispersal-rate" 1.5]
+["pestgrowth-rate" 2.40]
+
+["random-seed-source" "new seed"] ; Important!
+["relig-type-threshold" 0.90] ; deprecated (i.e. will probably go away in the future)
+
+;; Only traditional crop plans are turned on here:
+["cropplan-a" false]
+["cropplan-b" false]
+["cropplan-c" false]
+["cropplan-d" false]
+["cropplan-e" false]
+["cropplan-f" false]
+["cropplan-g" true]
+["cropplan-h" false]
+["cropplan-i" false]
+["cropplan-j" true]
+["cropplan-k" true]
+["cropplan-l" true]
+["cropplan-m" true]
+["cropplan-n" false]
+["cropplan-o" false]
+["cropplan-p" false]
+["cropplan-q" false]
+["cropplan-r" false]
+["cropplan-s" false]
+["cropplan-t" false]
+["cropplan-u" false]
+
+;; These only affect visualizations.
+["Color_subaks" "cropping plans"]
+["viewdamsubaks" false]
+["show-relig-types" true]
+["show-subak-values" false]
