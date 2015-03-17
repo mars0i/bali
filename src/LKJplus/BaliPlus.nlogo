@@ -3285,7 +3285,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="NoNoise60KticksPastBurnin" repetitions="50" runMetricsEveryStep="false">
+  <experiment name="NoNoise60KticksPast6KBurnin40runs" repetitions="40" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="66000"/>
@@ -3297,6 +3297,9 @@ NetLogo 5.1.0
     <metric>max-avgharvestha</metric>
     <metric>avgWS</metric>
     <metric>avgpestloss</metric>
+    <enumeratedValueSet variable="burn-in-months">
+      <value value="6000"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="ignore-neighbors-prob">
       <value value="0"/>
     </enumeratedValueSet>
@@ -3317,9 +3320,6 @@ NetLogo 5.1.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="burn-in-months">
-      <value value="600"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-pestneighbors">
       <value value="true"/>
