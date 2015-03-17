@@ -153,6 +153,7 @@ to setup
   set relig-type-num-buckets ceiling (1 / relig-type-bucket-size)
   set relig-type-years-buckets n-values relig-type-num-buckets [0]
   set-current-plot "mean years at mean relig-type"
+  set-plot-pen-interval relig-type-bucket-size
   ;set-plot-x-range 0 (relig-type-num-buckets + 1)
   ;set-plot-x-range 0 1
   ;set-histogram-num-bars 20
@@ -926,11 +927,11 @@ to plot-figs
     ;show normalized-buckets ; DEBUG
     set-current-plot "mean years at mean relig-type"
     clear-plot
+    set-plot-pen-interval relig-type-bucket-size ; gives bars the appropriate width. must come after clear-plot.
     let x 0
     foreach normalized-buckets [
       plotxy x ?
-      set x x + relig-type-bucket-size
-      ;set x x + 1
+      set x x + relig-type-bucket-size ; need this in addition to set-plot-pen-interval.
     ]
   ]
   ;; These could be moved into the UI:
@@ -2572,7 +2573,7 @@ burn-in-months
 burn-in-months
 0
 24000
-2400
+3600
 120
 1
 NIL
@@ -2627,11 +2628,11 @@ NIL
 1.0
 0.0
 1.0
-true
 false
-";set-plot-x-range 0 21\n;set-histogram-num-bars 21\n;set-histogram-num-bars (relig-type-num-buckets + 1)\n;set-plot-x-range 0 (relig-type-num-buckets + 1)" ""
+false
+"" ""
 PENS
-"default" 1.0 2 -16777216 true "" "; see procedure plot-figs"
+"default" 1.0 1 -16777216 true "" "; see procedure plot-figs"
 
 @#$#@#$#@
 ## LICENSE
