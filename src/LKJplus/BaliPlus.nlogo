@@ -917,14 +917,16 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
+to-report normalize-buckets [buckets]
+  let buckets-total sum buckets ; do this once here, since map will reexecute calcs each time
+  report map [? / buckets-total] buckets
+end
+
 ;; Plot some values.  Code for other plots appears in the plot objects in the UI.
 to plot-figs
   ;; This one is a slightly complicated--better to do it here:
   if months-past-burn-in >= 0 [
-    let buckets-total sum relig-type-years-buckets  ; do this once here, since map will reexecute calcs each time
-    let normalized-buckets map [? / buckets-total] relig-type-years-buckets
-    ;show relig-type-years-buckets ; DEBUG
-    ;show normalized-buckets ; DEBUG
+    let normalized-buckets (normalize-buckets relig-type-years-buckets)
     set-current-plot "mean years at mean relig-type"
     clear-plot
     set-plot-pen-interval relig-type-bucket-size ; gives bars the appropriate width. must come after clear-plot.
