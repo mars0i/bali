@@ -6,7 +6,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           damsubaks_array Rel Rem Reh 
           month ; actual month in the current year
           ET RRT LRS Xf devtime yldmax 
-          pestsens ; holds sensitivity to pests of each of the rice varieties 
+          pestsens ; holds sensitivity to pests of each of the rice varieties NoNoise60KticksPastBurnin
           growthrates cropuse 
           totpestloss      ; data collected every month until end of year
           totpestlossarea  ; data collected every month until end of year
@@ -2140,7 +2140,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0.3
+0
 0.05
 1
 NIL
@@ -2180,7 +2180,7 @@ SWITCH
 521
 relig-influence?
 relig-influence?
-0
+1
 1
 -1000
 
@@ -2515,7 +2515,7 @@ subaks-mean-global
 subaks-mean-global
 0
 200
-1
+1.001
 0.001
 1
 NIL
@@ -2539,7 +2539,7 @@ CHOOSER
 relig-effect-curve
 relig-effect-curve
 "linear" "step" "sigmoidey"
-2
+0
 
 SLIDER
 414
@@ -2550,7 +2550,7 @@ relig-effect-step
 relig-effect-step
 0
 1
-0.7
+0.5
 0.05
 1
 NIL
@@ -2575,7 +2575,7 @@ burn-in-months
 burn-in-months
 0
 24000
-3600
+6000
 120
 1
 NIL
@@ -2590,7 +2590,7 @@ relig-type-threshold
 relig-type-threshold
 0
 1
-0.85
+0.9
 0.01
 1
 NIL
@@ -3141,6 +3141,284 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="cropplan-u">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="NoNoise60KticksPastBurninTest" repetitions="5" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="1000"/>
+    <metric>previous-seed</metric>
+    <metric>normalize-buckets relig-type-years-buckets</metric>
+    <metric>mean [relig-type] of subaks</metric>
+    <metric>stddev [relig-type] of subaks</metric>
+    <metric>avgharvestha</metric>
+    <metric>max-avgharvestha</metric>
+    <metric>avgWS</metric>
+    <metric>avgpestloss</metric>
+    <enumeratedValueSet variable="ignore-neighbors-prob">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-influence?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="subaks-mean-global">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-curve">
+      <value value="&quot;linear&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-step">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-center">
+      <value value="2.25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-endpt">
+      <value value="1.7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="burn-in-months">
+      <value value="600"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-pestneighbors">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="run-until-month">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-tran-stddev">
+      <value value="0.02"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-influence">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rainfall-scenario">
+      <value value="&quot;high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestdispersal-rate">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestgrowth-rate">
+      <value value="2.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="random-seed-source">
+      <value value="&quot;new seed&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-type-threshold">
+      <value value="0.9"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-a">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-b">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-c">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-d">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-e">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-f">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-g">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-h">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-i">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-j">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-k">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-l">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-m">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-n">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-o">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-p">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-q">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-r">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-s">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-t">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-u">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Color_subaks">
+      <value value="&quot;cropping plans&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="viewdamsubaks">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-relig-types">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-subak-values">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="NoNoise60KticksPastBurnin" repetitions="50" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="66000"/>
+    <metric>previous-seed</metric>
+    <metric>normalize-buckets relig-type-years-buckets</metric>
+    <metric>mean [relig-type] of subaks</metric>
+    <metric>stddev [relig-type] of subaks</metric>
+    <metric>avgharvestha</metric>
+    <metric>max-avgharvestha</metric>
+    <metric>avgWS</metric>
+    <metric>avgpestloss</metric>
+    <enumeratedValueSet variable="ignore-neighbors-prob">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-influence?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="subaks-mean-global">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-curve">
+      <value value="&quot;linear&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-step">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-center">
+      <value value="2.25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-endpt">
+      <value value="1.7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="burn-in-months">
+      <value value="600"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-pestneighbors">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="run-until-month">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-tran-stddev">
+      <value value="0.02"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-influence">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rainfall-scenario">
+      <value value="&quot;high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestdispersal-rate">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestgrowth-rate">
+      <value value="2.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="random-seed-source">
+      <value value="&quot;new seed&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-type-threshold">
+      <value value="0.9"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-a">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-b">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-c">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-d">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-e">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-f">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-g">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-h">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-i">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-j">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-k">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-l">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-m">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-n">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-o">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-p">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-q">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-r">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-s">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-t">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-u">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Color_subaks">
+      <value value="&quot;cropping plans&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="viewdamsubaks">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-relig-types">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-subak-values">
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
