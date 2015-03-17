@@ -408,6 +408,8 @@ end
 to go
   if run-until-month > 0 and ticks >= run-until-month
     [stop] ; exit go-forever if user specified a stop tick
+    
+  if ticks mod 600 = 0 [print (word "run " behaviorspace-run-number " tick " ticks)]
 
   poss-show-damsubaks ; display dam-subak-relations if requested from UI
   update-subak-months ; update month, crop states, etc. in subaks
