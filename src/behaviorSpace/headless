@@ -1,0 +1,17 @@
+#!/bin/sh
+netlogo="/Applications/NetLogo 5.1.0/NetLogo.jar"
+experiment="$1"
+if [ -z "$1" ]; then
+	echo "usage: $0 <experimentname>"
+	exit 1
+fi
+
+set -x
+java -Xmx1024m -Dfile.encoding=UTF-8 -cp "$netlogo" org.nlogo.headless.Main \
+  --model src/LKJplus/BaliPlus.nlogo \
+  --experiment "$experiment" \
+  --table data/"$experiment.csv"
+
+# maybe add:
+# --threads <number>: use this many threads to do model runs in parallel
+# defaults to one thread per processor. 
