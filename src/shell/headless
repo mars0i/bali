@@ -1,5 +1,9 @@
 #!/bin/sh
-netlogo="/Applications/NetLogo 5.1.0/NetLogo.jar"
+
+# Assume that src/NetLogo.jar is a link to the real NetLogo.jar.
+netlogo=src/NetLogo.jar
+# netlogo="/Applications/NetLogo 5.1.0/NetLogo.jar"
+
 if [ -z "$1" ]; then
 	echo "usage: $0 <experimentname>"
 	exit 1
