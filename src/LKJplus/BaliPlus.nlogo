@@ -3437,7 +3437,7 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="NoiseRelig05step60KticksPast6KBurnin3x40runs" repetitions="40" runMetricsEveryStep="false">
+  <experiment name="NoiseRelig08step60KticksPast6KBurnin3x40runs" repetitions="40" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="66000"/>
@@ -3470,7 +3470,7 @@ NetLogo 5.1.0
       <value value="&quot;step&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-step">
-      <value value="0.5"/>
+      <value value="0.8"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-center">
       <value value="2.25"/>
