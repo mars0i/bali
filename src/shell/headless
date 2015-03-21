@@ -1,7 +1,11 @@
 #!/bin/sh
-netlogo="/Applications/NetLogo 5.1.0/NetLogo.jar"
+
+# Assume that src/NetLogo.jar is a link to the real NetLogo.jar.
+netlogo=~/bali/src/NetLogo.jar
+# netlogo="/Applications/NetLogo 5.1.0/NetLogo.jar"
+
 if [ -z "$1" ]; then
-	echo "usage: $0 <experimentname>"
+	echo "usage: $0 <experimentname> [ --additional netlogo-args ]"
 	exit 1
 fi
 
@@ -9,10 +13,11 @@ experiment="$1"
 shift
 
 set -x
-java -Xmx1024m -Dfile.encoding=UTF-8 "$@" -cp "$netlogo" org.nlogo.headless.Main \
+java -Xmx1024m -Dfile.encoding=UTF-8 -cp "$netlogo" org.nlogo.headless.Main \
   --model src/LKJplus/BaliPlus.nlogo \
   --experiment "$experiment" \
-  --table data/"$experiment.csv"
+  --table data/"$experiment.csv" "$@"
+
 
 # maybe add:
 # --threads <number>: use this many threads to do model runs in parallel
