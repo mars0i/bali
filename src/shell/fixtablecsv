@@ -8,7 +8,7 @@
 # converted, but a new special case would have to be added for the header
 # line.
 
-sed -e 's/"normalize-buckets relig-type-years-buckets",/"bucket0","bucket1","bucket2","bucket3","bucket4","bucket5","bucket6","bucket7","bucket8","bucket9","bucket10","bucket11","bucket12","bucket13","bucket14","bucket15","bucket16","bucket17","bucket18","bucket19",/' \
+sed -e 's/"normalize-buckets relig-type-years-buckets",/"bin0","bin1","bin2","bin3","bin4","bin5","bin6","bin7","bin8","bin9","bin10","bin11","bin12","bin13","bin14","bin15","bin16","bin17","bin18","bin19",/' \
     -e '8,$s/"\[/ /' \
     -e '8,$s/\]",//' \
     -e '8,$s/ \([0-9.][0-9.E-]*\)/"\1",/g'
