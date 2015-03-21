@@ -2,7 +2,7 @@
 #$ -cwd
 #$ -V
 #$ -S /bin/bash
-#$ -l h_rt=24:00:00,vf=4G
+#$ -l h_rt=48:00:00,vf=4G
 #$ -e err$JOB_ID.txt
 #$ -o out$JOB_ID.txt
 #$ -m eas
