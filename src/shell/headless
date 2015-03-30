@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# This version runs a single thread at a time.  Means that we can run as a cheaha job
+# without worrying about how to manage the SGE multi-thread/slot configuration.
+
 # Assume that src/NetLogo.jar is a link to the real NetLogo.jar.
 netlogo=~/bali/src/NetLogo.jar
 # netlogo="/Applications/NetLogo 5.1.0/NetLogo.jar"
@@ -12,13 +15,23 @@ fi
 experiment="$1"
 shift
 
+# make unique id number for this invocation of the experiment.
+# if run by qsub, use the queue job id; else use the unix process number:
+if [ -n "$JOB_ID" ]; then
+	runid=$JOB_ID
+else
+	runid=$$
+fi
+
 set -x
 java -Xmx1024m -Dfile.encoding=UTF-8 -cp "$netlogo" org.nlogo.headless.Main \
   --model src/LKJplus/BaliPlus.nlogo \
   --experiment "$experiment" \
-  --table data/"$experiment.csv" "$@"
+  --spreadsheet data/"$experiment$runid.csv" \
+  --threads 1
+  "$@"
 
-
-# maybe add:
+# notes:
+# --table data/"table$experiment.csv" "$@"
 # --threads <number>: use this many threads to do model runs in parallel
 # defaults to one thread per processor. 
