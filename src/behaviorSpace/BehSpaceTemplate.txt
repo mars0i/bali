@@ -63,7 +63,6 @@ avgpestloss
 ["pestgrowth-rate" 2.40] ; (15)
 
 ["random-seed-source" "new seed"] ; (16) ; Important!
-["relig-type-threshold" 0.90] ; (17) ; deprecated (i.e. will probably go away in the future)
 
 ;; Only traditional crop plans are turned on here:
 ["cropplan-a" false] ; (18)
