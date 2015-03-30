@@ -31,9 +31,9 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           relig-effect-center-prev
           relig-effect-endpt-prev
           relig-effect-curve-number ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
-          relig-type-years-buckets ; collects numbers of years in which relig type falls in each of several ranges
-          relig-type-bucket-size   ; bucket size, i.e. size of range for each bucket
-          relig-type-num-buckets   ; will be calculated from bucket size
+          relig-type-years-bins ; collects numbers of years in which relig type falls in each of several ranges
+          relig-type-bin-size   ; bin size, i.e. size of range for each bin
+          relig-type-num-bins   ; will be calculated from bin size
           months-past-burn-in      ; will contain ticks - burn-in-months
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
         ]
@@ -148,12 +148,12 @@ to setup
   set min-yield 1000000 ; dummy value
   set last-n-years-avgharvesthas []
   set num-years-avgharvesthas 10
-  set relig-type-bucket-size 0.05 ; next two definitions depend on this one
-  set relig-type-num-buckets ceiling (1 / relig-type-bucket-size)
-  set relig-type-years-buckets n-values relig-type-num-buckets [0]
+  set relig-type-bin-size 0.05 ; next two definitions depend on this one
+  set relig-type-num-bins ceiling (1 / relig-type-bin-size)
+  set relig-type-years-bins n-values relig-type-num-bins [0]
   set-current-plot "mean years at mean relig-type"
-  set-plot-pen-interval relig-type-bucket-size
-  ;set-plot-x-range 0 (relig-type-num-buckets + 1)
+  set-plot-pen-interval relig-type-bin-size
+  ;set-plot-x-range 0 (relig-type-num-bins + 1)
   ;set-plot-x-range 0 1
   ;set-histogram-num-bars 20
   ;set-plot-x-range 0 20
@@ -396,9 +396,9 @@ to my-clear-globals
   set relig-effect-center-prev 0
   set relig-effect-endpt-prev 0
   set relig-effect-curve-number 0
-  set relig-type-years-buckets 0
-  set relig-type-bucket-size 0
-  set relig-type-num-buckets 0
+  set relig-type-years-bins 0
+  set relig-type-bin-size 0
+  set relig-type-num-bins 0
   set months-past-burn-in 0
 end
 
@@ -431,7 +431,7 @@ to go
     set last-n-years-avgharvesthas fput avgharvestha last-n-years-avgharvesthas ; add current avg harvest yield
     if length last-n-years-avgharvesthas > num-years-avgharvesthas         ; implement FIFO:
       [set last-n-years-avgharvesthas but-last last-n-years-avgharvesthas] ; once the running list of harvest yields is long enough, remove the last one
-    calc-relig-type-years-buckets
+    calc-relig-type-years-bins
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-relig-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
@@ -842,22 +842,22 @@ to determineharvest
     ] ; ask
 end
 
-;; update a list of buckets that records number of years that the mean relig-type fell into
-;; one of several "buckets", i.e. ranges of values.  e.g. there might be 20 buckets:
+;; update a list of bins that records number of years that the mean relig-type fell into
+;; one of several "bins", i.e. ranges of values.  e.g. there might be 20 bins:
 ;; [0,5)
-to calc-relig-type-years-buckets
+to calc-relig-type-years-bins
   set months-past-burn-in ticks - (burn-in-months - 1) ; -1 since zero-based: December = 11.  Also used elsewhere.
   if months-past-burn-in >= 0 [
-    let bucket (relig-type-bucket (mean [relig-type] of subaks))
-    let old-value item bucket relig-type-years-buckets
-    set relig-type-years-buckets replace-item bucket relig-type-years-buckets (old-value + 1)
+    let bin (relig-type-bin (mean [relig-type] of subaks))
+    let old-value item bin relig-type-years-bins
+    set relig-type-years-bins replace-item bin relig-type-years-bins (old-value + 1)
   ]
 end
 
-to-report relig-type-bucket [x]
+to-report relig-type-bin [x]
   ifelse (x = 1.0)
-    [report (length relig-type-years-buckets) - 1]  ; extend the top bucket to include the max value.  note length runs in constant time.
-    [report floor (x / relig-type-bucket-size)]
+    [report (length relig-type-years-bins) - 1]  ; extend the top bin to include the max value.  note length runs in constant time.
+    [report floor (x / relig-type-bin-size)]
 end
 
 ;; subak routine
@@ -899,23 +899,23 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
-to-report normalize-buckets [buckets]
-  let buckets-total sum buckets ; do this once here, since map will reexecute calcs each time
-  report map [? / buckets-total] buckets
+to-report normalize-bins [bins]
+  let bins-total sum bins ; do this once here, since map will reexecute calcs each time
+  report map [? / bins-total] bins
 end
 
 ;; Plot some values.  Code for other plots appears in the plot objects in the UI.
 to plot-figs
   ;; This one is a slightly complicated--better to do it here:
   if months-past-burn-in >= 0 [
-    let normalized-buckets (normalize-buckets relig-type-years-buckets)
+    let normalized-bins (normalize-bins relig-type-years-bins)
     set-current-plot "mean years at mean relig-type"
     clear-plot
-    set-plot-pen-interval relig-type-bucket-size ; gives bars the appropriate width. must come after clear-plot.
+    set-plot-pen-interval relig-type-bin-size ; gives bars the appropriate width. must come after clear-plot.
     let x 0
-    foreach normalized-buckets [
+    foreach normalized-bins [
       plotxy x ?
-      set x x + relig-type-bucket-size ; need this in addition to set-plot-pen-interval.
+      set x x + relig-type-bin-size ; need this in addition to set-plot-pen-interval.
     ]
   ]
   ;; These could be moved into the UI:
@@ -2162,7 +2162,7 @@ SWITCH
 521
 relig-influence?
 relig-influence?
-0
+1
 1
 -1000
 
