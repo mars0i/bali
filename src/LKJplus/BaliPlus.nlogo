@@ -434,7 +434,6 @@ to go
     if length last-n-years-avgharvesthas > num-years-avgharvesthas         ; implement FIFO:
       [set last-n-years-avgharvesthas but-last last-n-years-avgharvesthas] ; once the running list of harvest yields is long enough, remove the last one
     calc-relig-type-years-buckets
-    set relig-type-years-above-threshold (calc-relig-type-years-above-threshold relig-type-years-above-threshold) ;; DEPRECATED. OBSOLETE?
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-relig-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
@@ -862,23 +861,6 @@ to-report relig-type-bucket [x]
     [report (length relig-type-years-buckets) - 1]  ; extend the top bucket to include the max value.  note length runs in constant time.
     [report floor (x / relig-type-bucket-size)]
 end
-
-;; DEPRECATED?
-;; normally called only at 1-year intervals in the 11th (i.e. 12th) month
-to-report calc-relig-type-years-above-threshold [years]
-  let mean-relig-type mean [relig-type] of subaks
-  ifelse months-past-burn-in >= 0 and mean-relig-type > relig-type-threshold  ; >= 0 since ticks and months are zero-based; December = 11.
-    [report years + 1]
-    [report years]
-end
-
-;; DEPRECATED?
-;; should be called after calc-relig-type-years-above-threshold has updated relig-type-years-above-threshold
-to-report fract-years-relig-type-above-threshold
-  let years-past-threshold floor ((ticks + 1 - burn-in-months) / 12) ; +1 to turn December=11 into 12. normally called on tick 11, so floor s/b redundant
-  report relig-type-years-above-threshold / years-past-threshold 
-end
-
 
 ;; subak routine
 to display-cropping-plan-etc
@@ -2223,10 +2205,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [relig-type] of subaks"
 
 MONITOR
-1003
-53
-1097
-98
+1006
+50
+1100
+95
 mean relig type
 precision (mean [relig-type] of subaks) 3
 17
@@ -2569,10 +2551,10 @@ Use above if sigmoidey, below if step.
 1
 
 SLIDER
-775
-43
-914
-76
+960
+16
+1099
+49
 burn-in-months
 burn-in-months
 0
@@ -2582,43 +2564,6 @@ burn-in-months
 1
 NIL
 HORIZONTAL
-
-SLIDER
-774
-10
-938
-43
-relig-type-threshold
-relig-type-threshold
-0
-1
-0.9
-0.01
-1
-NIL
-HORIZONTAL
-
-MONITOR
-962
-10
-1097
-55
-% years > threshold
-precision (100 * fract-years-relig-type-above-threshold) 2
-17
-1
-11
-
-MONITOR
-913
-53
-1004
-98
-yrs > threshold
-relig-type-years-above-threshold
-17
-1
-11
 
 PLOT
 1104
