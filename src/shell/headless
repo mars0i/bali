@@ -25,9 +25,9 @@ fi
 
 set -x
 java -Xmx1024m -Dfile.encoding=UTF-8 -cp "$netlogo" org.nlogo.headless.Main \
-  --model src/LKJplus/BaliPlus.nlogo \
+  --model $HOME/bali/src/LKJplus/BaliPlus.nlogo \
   --experiment "$experiment" \
-  --spreadsheet data/"$experiment$runid.csv" \
+  --spreadsheet $HOME/bali/data/"$experiment$runid.csv" \
   --threads 1
   "$@"
 
