@@ -120,7 +120,7 @@ to setup
   plot-relig-effect-curve
   clear-output
   file-close-all
-  set data-dir "../../data/"
+  set data-dir "../../data/" ; this is relative to where this .nlogo file resides
   
   let seed 0
   ifelse random-seed-source = "new seed"
