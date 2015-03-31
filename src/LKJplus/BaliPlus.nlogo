@@ -860,6 +860,20 @@ to-report relig-type-bin [x]
     [report floor (x / relig-type-bin-size)]
 end
 
+;; TODO EXPERIMENTAL GENERALIZATION OF calc-relig-type-years-bins
+to calc-bins [subak-var bins which-bin bin-size]
+  if ticks - (burn-in-months - 1) >= 0 [; -1 since zero-based: December = 11.  Also used elsewhere.
+    let binnum (which-bin-num bin-size (length bins) (mean [subak-var] of subaks))  ; note length runs in constant time.  THIS WILL FAIL. CAN'T PASS subak-var LIKE THIS.
+    let old-value item binnum bins
+    set bins replace-item binnum bins (old-value + 1)
+  ]
+end
+to-report which-bin-num [bin-size num-bins x]
+  ifelse (x = 1.0)
+    [report num-bins - 1]  ; extend the top bin to include the max value
+    [report floor (x / bin-size)]
+end
+
 ;; subak routine
 to display-cropping-plan-etc
   let low-scc-base-color 4
