@@ -600,25 +600,6 @@ to poisson-choose-speakers
   ]
 end
 
-;; The easiest way to sample speakers from the entire population is to give each listener
-;; a fixed number of speakers, using n-of. However, in popco, the speaker chooses its
-;; listeners, and then that map from each speaker to its listeners is "inverted" to create
-;; a map from listeners to those speaking to them.  This procedure does something analogous.
-;; It chooses a set of listeners
-;; for each speaker, and then inverts it, assigning to each subak's speakers var a set of
-;; speakers (which varies in size).  (It's the per-listener collection of
-;; speakers to which a find-best procedure should be applied.)
-;to popco-choose-speakers
-;  ask subaks [set speakers n-of 0 subaks] ; empty the speakers list from the previous tick
-;  foreach ( [list self (n-of relig-tran-global-# other subaks)] of subaks ) [  ; iterate through list of pairs: [speaker, listeners]
-;    let another-speaker item 0 ?
-;    let listener-agentset item 1 ?
-;    ask listener-agentset [  ; each listener collects its speakers
-;      set speakers (turtle-set another-speaker speakers) ; add this speaker to this listener's list of speakers   
-;    ]
-;  ]
-;end
-
 ;; Current version uses a random selection of speakers from the entire population,
 ;; using set-listeners-speakers.  Note this varies in size from one listener subak
 ;; to another.  (As a speaker, each subak has the same number of listeners, however.)
@@ -844,7 +825,6 @@ end
 
 ;; update a list of bins that records number of years that the mean relig-type fell into
 ;; one of several "bins", i.e. ranges of values.  e.g. there might be 20 bins:
-;; [0,5)
 to calc-relig-type-years-bins
   set months-past-burn-in ticks - (burn-in-months - 1) ; -1 since zero-based: December = 11.  Also used elsewhere.
   if months-past-burn-in >= 0 [
@@ -858,20 +838,6 @@ to-report relig-type-bin [x]
   ifelse (x = 1.0)
     [report (length relig-type-years-bins) - 1]  ; extend the top bin to include the max value.  note length runs in constant time.
     [report floor (x / relig-type-bin-size)]
-end
-
-;; TODO EXPERIMENTAL GENERALIZATION OF calc-relig-type-years-bins
-to calc-bins [subak-var bins which-bin bin-size]
-  if ticks - (burn-in-months - 1) >= 0 [; -1 since zero-based: December = 11.  Also used elsewhere.
-    let binnum (which-bin-num bin-size (length bins) (mean [subak-var] of subaks))  ; note length runs in constant time.  THIS WILL FAIL. CAN'T PASS subak-var LIKE THIS.
-    let old-value item binnum bins
-    set bins replace-item binnum bins (old-value + 1)
-  ]
-end
-to-report which-bin-num [bin-size num-bins x]
-  ifelse (x = 1.0)
-    [report num-bins - 1]  ; extend the top bin to include the max value
-    [report floor (x / bin-size)]
 end
 
 ;; subak routine
