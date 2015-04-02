@@ -1612,7 +1612,7 @@ OUTPUT
 635
 1329
 932
-4
+5
 
 SWITCH
 1329
@@ -2227,7 +2227,7 @@ MONITOR
 1006
 50
 1101
-96
+95
 mean relig type
 precision (mean [relig-type] of subaks) 3
 17
@@ -2578,7 +2578,7 @@ burn-in-months
 burn-in-months
 0
 24000
-60
+6000
 60
 1
 NIL
@@ -5048,12 +5048,13 @@ NetLogo 5.1.0
       <value value="false"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="yo" repetitions="1" runMetricsEveryStep="false">
+  <experiment name="NoiseRelig08step1global60KticksPast6KBurnin1run" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="660"/>
+    <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>normalize-buckets relig-type-years-buckets</metric>
+    <metric>normalize-bins relig-type-years-bins</metric>
+    <metric>normalize-bins avgharvestha-bins</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -5061,7 +5062,7 @@ NetLogo 5.1.0
     <metric>avgWS</metric>
     <metric>avgpestloss</metric>
     <enumeratedValueSet variable="burn-in-months">
-      <value value="60"/>
+      <value value="6000"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="ignore-neighbors-prob">
       <value value="0.3"/>
