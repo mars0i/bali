@@ -158,15 +158,9 @@ to setup
   set relig-type-bin-size relig-type-bins-max / relig-type-num-bins
   set relig-type-years-bins n-values relig-type-num-bins [0]
   set avgharvestha-num-bins 20
-  set avgharvestha-bins-max 4 ; IS THIS large enough for extreme cases using the modern rice variety?
+  set avgharvestha-bins-max 2 ; IS THIS large enough for extreme cases using the modern rice variety?
   set avgharvestha-bin-size avgharvestha-bins-max / avgharvestha-num-bins
   set avgharvestha-bins n-values avgharvestha-num-bins [0]
-  set-current-plot "mean years at mean relig-type"
-  ;set-plot-pen-interval bin-size
-  ;set-plot-x-range 0 (num-bins + 1)
-  ;set-plot-x-range 0 1
-  ;set-histogram-num-bars 20
-  ;set-plot-x-range 0 20
 
   ask patches [set pcolor default-pcolor]
   
@@ -447,6 +441,7 @@ to go
     if length last-n-years-avgharvesthas > num-years-avgharvesthas         ; implement FIFO:
       [set last-n-years-avgharvesthas but-last last-n-years-avgharvesthas] ; once the running list of harvest yields is long enough, remove the last one
     calc-relig-type-years-bins
+    calc-avgharvestha-years-bins
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-relig-types
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
@@ -916,16 +911,32 @@ end
 
 ;; Plot some values.  Code for other plots appears in the plot objects in the UI.
 to plot-figs
-  ;; This one is a slightly complicated--better to do it here:
+  ;; These are slightly complicated--better to do it here:
   if months-past-burn-in >= 0 [
-    let normalized-bins (normalize-bins relig-type-years-bins)
+    let x 0
+    ;; relig-type bins
+    ;print "running relig-type bins plot"
+    let relig-type-normalized-bins (normalize-bins relig-type-years-bins)
     set-current-plot "mean years at mean relig-type"
     clear-plot
+    set-plot-x-range 0 relig-type-bins-max
     set-plot-pen-interval relig-type-bin-size ; gives bars the appropriate width. must come after clear-plot.
-    let x 0
-    foreach normalized-bins [
+    set x 0
+    foreach relig-type-normalized-bins [
       plotxy x ?
       set x x + relig-type-bin-size ; need this in addition to set-plot-pen-interval.
+    ]
+    ;; average harvest bins:
+    ;print "running harvest bin plot"
+    let avgharvestha-normalized-bins (normalize-bins avgharvestha-bins)
+    set-current-plot "mean years at harvest"
+    clear-plot
+    set-plot-x-range 0 avgharvestha-bins-max
+    set-plot-pen-interval avgharvestha-bin-size ; gives bars the appropriate width. must come after clear-plot.
+    set x 0
+    foreach avgharvestha-normalized-bins [
+      plotxy x ?
+      set x x + avgharvestha-bin-size ; need this in addition to set-plot-pen-interval.
     ]
   ]
   ;; These could be moved into the UI:
@@ -1598,9 +1609,9 @@ Cropping plan colors: Large circle represents crop plan, square represents start
 
 OUTPUT
 1105
-512
+635
 1329
-809
+932
 4
 
 SWITCH
@@ -1836,9 +1847,9 @@ cropplan-u
 
 PLOT
 1105
-374
+497
 1325
-494
+617
 crop plan distribution
 NIL
 NIL
@@ -2115,9 +2126,9 @@ TEXTBOX
 
 TEXTBOX
 1107
-496
+619
 1273
-514
+637
 seed, crop plans in this run:
 11
 0.0
@@ -2178,9 +2189,9 @@ relig-influence?
 
 PLOT
 1105
-253
-1327
-373
+376
+1325
+496
 start month distribution
 NIL
 NIL
@@ -2215,8 +2226,8 @@ PENS
 MONITOR
 1006
 50
-1100
-95
+1101
+96
 mean relig type
 precision (mean [relig-type] of subaks) 3
 17
@@ -2579,6 +2590,24 @@ PLOT
 1327
 132
 mean years at mean relig-type
+NIL
+NIL
+0.0
+1.0
+0.0
+1.0
+false
+false
+"" ""
+PENS
+"default" 1.0 1 -16777216 true "" "; see procedure plot-figs"
+
+PLOT
+1105
+252
+1328
+372
+mean years at harvest
 NIL
 NIL
 0.0
