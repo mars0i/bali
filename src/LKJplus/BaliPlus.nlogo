@@ -855,6 +855,21 @@ to-report relig-type-bin [x]
     [report floor (x / relig-type-bin-size)]
 end
 
+to calc-avgharvestha-years-bins
+  set months-past-burn-in ticks - (burn-in-months - 1) ; -1 since zero-based: December = 11.  Also used elsewhere.
+  if months-past-burn-in >= 0 [
+    let bin (avgharvestha-bin avgharvestha)
+    let old-value item bin avgharvestha-bins
+    set avgharvestha-bins replace-item bin avgharvestha-bins (old-value + 1)
+  ]
+end
+
+to-report avgharvestha-bin [x]
+  ifelse (x = 1.0)
+    [report (length avgharvestha-bins) - 1]  ; extend the top bin to include the max value.  note length runs in constant time.
+    [report floor (x / avgharvestha-bin-size)]
+end
+
 ;; subak routine
 to display-cropping-plan-etc
   let low-scc-base-color 4
