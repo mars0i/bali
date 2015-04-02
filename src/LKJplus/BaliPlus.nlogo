@@ -28,14 +28,18 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           data-dir ; where data files, random seed files, etc. will be written
           min-yield
           previous-seed ; holds seed from previous run
+          months-past-burn-in      ; will contain ticks - burn-in-months
           relig-effect-center-prev
           relig-effect-endpt-prev
           relig-effect-curve-number ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
+          relig-type-num-bins
           relig-type-years-bins ; collects numbers of years in which relig type falls in each of several ranges
+          relig-type-bins-max ; max value for the top bin
+          relig-type-bin-size   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
           avgharvestha-bins ; collects numbers of years in which average harvest falls in each of several ranges
-          bin-size   ; bin size, i.e. size of range for each bin
-          num-bins   ; will be calculated from bin size
-          months-past-burn-in      ; will contain ticks - burn-in-months
+          avgharvestha-num-bins
+          avgharvestha-bins-max ; max value for the top bin
+          avgharvestha-bin-size   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
@@ -149,11 +153,16 @@ to setup
   set min-yield 1000000 ; dummy value
   set last-n-years-avgharvesthas []
   set num-years-avgharvesthas 10
-  set bin-size 0.05 ; next two definitions depend on this one
-  set num-bins ceiling (1 / bin-size)
-  set relig-type-years-bins n-values num-bins [0]
+  set relig-type-num-bins 20
+  set relig-type-bins-max 1
+  set relig-type-bin-size relig-type-bins-max / relig-type-num-bins
+  set relig-type-years-bins n-values relig-type-num-bins [0]
+  set avgharvestha-num-bins 20
+  set avgharvestha-bins-max 4 ; IS THIS large enough for extreme cases using the modern rice variety?
+  set avgharvestha-bin-size avgharvestha-bins-max / avgharvestha-num-bins
+  set avgharvestha-bins n-values avgharvestha-num-bins [0]
   set-current-plot "mean years at mean relig-type"
-  set-plot-pen-interval bin-size
+  ;set-plot-pen-interval bin-size
   ;set-plot-x-range 0 (num-bins + 1)
   ;set-plot-x-range 0 1
   ;set-histogram-num-bars 20
@@ -394,13 +403,18 @@ to my-clear-globals
   set data-dir 0
   set min-yield 0
   ; set previous-seed 0  ; we want this to be available in the next run
+  set months-past-burn-in 0      ; will contain ticks - burn-in-months
   set relig-effect-center-prev 0
   set relig-effect-endpt-prev 0
-  set relig-effect-curve-number 0
-  set relig-type-years-bins 0
-  set bin-size 0
-  set num-bins 0
-  set months-past-burn-in 0
+  set relig-effect-curve-number 0 ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
+  set relig-type-num-bins 0
+  set relig-type-years-bins 0 ; collects numbers of years in which relig type falls in each of several ranges
+  set relig-type-bins-max 0 ; max value for the top bin
+  set relig-type-bin-size 0   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
+  set avgharvestha-bins 0 ; collects numbers of years in which average harvest falls in each of several ranges
+  set avgharvestha-num-bins 0
+  set avgharvestha-bins-max 0 ; max value for the top bin
+  set avgharvestha-bin-size 0   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
 end
 
 ;;;;;;;;;;;;;;;
@@ -838,7 +852,7 @@ end
 to-report relig-type-bin [x]
   ifelse (x = 1.0)
     [report (length relig-type-years-bins) - 1]  ; extend the top bin to include the max value.  note length runs in constant time.
-    [report floor (x / bin-size)]
+    [report floor (x / relig-type-bin-size)]
 end
 
 ;; subak routine
@@ -892,11 +906,11 @@ to plot-figs
     let normalized-bins (normalize-bins relig-type-years-bins)
     set-current-plot "mean years at mean relig-type"
     clear-plot
-    set-plot-pen-interval bin-size ; gives bars the appropriate width. must come after clear-plot.
+    set-plot-pen-interval relig-type-bin-size ; gives bars the appropriate width. must come after clear-plot.
     let x 0
     foreach normalized-bins [
       plotxy x ?
-      set x x + bin-size ; need this in addition to set-plot-pen-interval.
+      set x x + relig-type-bin-size ; need this in addition to set-plot-pen-interval.
     ]
   ]
   ;; These could be moved into the UI:
@@ -2143,7 +2157,7 @@ SWITCH
 521
 relig-influence?
 relig-influence?
-1
+0
 1
 -1000
 
@@ -2539,7 +2553,7 @@ burn-in-months
 0
 24000
 60
-120
+60
 1
 NIL
 HORIZONTAL
