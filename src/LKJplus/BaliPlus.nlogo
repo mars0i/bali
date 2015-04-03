@@ -34,9 +34,11 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           relig-effect-curve-number ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
           relig-type-num-bins
           relig-type-years-bins ; collects numbers of years in which relig type falls in each of several ranges
+          relig-type-years-bins-normalized ; preceding converted into averages i.e. that sum to 1
           relig-type-bins-max ; max value for the top bin
           relig-type-bin-size   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
           avgharvestha-bins ; collects numbers of years in which average harvest falls in each of several ranges
+          avgharvestha-bins-normalized ; preceding converted into averages i.e. that sum to 1
           avgharvestha-num-bins
           avgharvestha-bins-max ; max value for the top bin
           avgharvestha-bin-size   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
@@ -153,14 +155,16 @@ to setup
   set min-yield 1000000 ; dummy value
   set last-n-years-avgharvesthas []
   set num-years-avgharvesthas 10
-  set relig-type-num-bins 20
+  set relig-type-num-bins 50
   set relig-type-bins-max 1
   set relig-type-bin-size relig-type-bins-max / relig-type-num-bins
   set relig-type-years-bins n-values relig-type-num-bins [0]
-  set avgharvestha-num-bins 20
-  set avgharvestha-bins-max 2 ; IS THIS large enough for extreme cases using the modern rice variety?
+  set relig-type-years-bins-normalized n-values relig-type-num-bins [0]
+  set avgharvestha-num-bins 50
+  set avgharvestha-bins-max 10
   set avgharvestha-bin-size avgharvestha-bins-max / avgharvestha-num-bins
   set avgharvestha-bins n-values avgharvestha-num-bins [0]
+  set avgharvestha-bins-normalized n-values avgharvestha-num-bins [0]
 
   ask patches [set pcolor default-pcolor]
   
@@ -403,9 +407,11 @@ to my-clear-globals
   set relig-effect-curve-number 0 ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
   set relig-type-num-bins 0
   set relig-type-years-bins 0 ; collects numbers of years in which relig type falls in each of several ranges
+  set relig-type-years-bins-normalized 0
   set relig-type-bins-max 0 ; max value for the top bin
   set relig-type-bin-size 0   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
   set avgharvestha-bins 0 ; collects numbers of years in which average harvest falls in each of several ranges
+  set avgharvestha-bins-normalized 0 
   set avgharvestha-num-bins 0
   set avgharvestha-bins-max 0 ; max value for the top bin
   set avgharvestha-bin-size 0   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
@@ -841,6 +847,7 @@ to calc-relig-type-years-bins
     let bin (relig-type-bin (mean [relig-type] of subaks))
     let old-value item bin relig-type-years-bins
     set relig-type-years-bins replace-item bin relig-type-years-bins (old-value + 1)
+    set relig-type-years-bins-normalized normalize-bins relig-type-years-bins
   ]
 end
 
@@ -856,6 +863,7 @@ to calc-avgharvestha-years-bins
     let bin (avgharvestha-bin avgharvestha)
     let old-value item bin avgharvestha-bins
     set avgharvestha-bins replace-item bin avgharvestha-bins (old-value + 1)
+    set avgharvestha-bins-normalized normalize-bins avgharvestha-bins
   ]
 end
 
@@ -863,6 +871,11 @@ to-report avgharvestha-bin [x]
   ifelse (x = 1.0)
     [report (length avgharvestha-bins) - 1]  ; extend the top bin to include the max value.  note length runs in constant time.
     [report floor (x / avgharvestha-bin-size)]
+end
+
+to-report normalize-bins [bins]
+  let bins-total sum bins ; do this once here, since map will reexecute calcs each time
+  report map [? / bins-total] bins
 end
 
 ;; subak routine
@@ -904,11 +917,6 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
-to-report normalize-bins [bins]
-  let bins-total sum bins ; do this once here, since map will reexecute calcs each time
-  report map [? / bins-total] bins
-end
-
 ;; Plot some values.  Code for other plots appears in the plot objects in the UI.
 to plot-figs
   ;; These are slightly complicated--better to do it here:
@@ -916,25 +924,23 @@ to plot-figs
     let x 0
     ;; relig-type bins
     ;print "running relig-type bins plot"
-    let relig-type-normalized-bins (normalize-bins relig-type-years-bins)
     set-current-plot "mean years at mean relig-type"
     clear-plot
     set-plot-x-range 0 relig-type-bins-max
     set-plot-pen-interval relig-type-bin-size ; gives bars the appropriate width. must come after clear-plot.
     set x 0
-    foreach relig-type-normalized-bins [
+    foreach relig-type-years-bins-normalized [
       plotxy x ?
       set x x + relig-type-bin-size ; need this in addition to set-plot-pen-interval.
     ]
     ;; average harvest bins:
     ;print "running harvest bin plot"
-    let avgharvestha-normalized-bins (normalize-bins avgharvestha-bins)
     set-current-plot "mean years at harvest"
     clear-plot
     set-plot-x-range 0 avgharvestha-bins-max
     set-plot-pen-interval avgharvestha-bin-size ; gives bars the appropriate width. must come after clear-plot.
     set x 0
-    foreach avgharvestha-normalized-bins [
+    foreach avgharvestha-bins-normalized [
       plotxy x ?
       set x x + avgharvestha-bin-size ; need this in addition to set-plot-pen-interval.
     ]
@@ -1621,7 +1627,7 @@ SWITCH
 43
 cropplan-a
 cropplan-a
-1
+0
 1
 -1000
 
@@ -1687,7 +1693,7 @@ SWITCH
 241
 cropplan-g
 cropplan-g
-0
+1
 1
 -1000
 
@@ -1720,7 +1726,7 @@ SWITCH
 340
 cropplan-j
 cropplan-j
-0
+1
 1
 -1000
 
@@ -1731,7 +1737,7 @@ SWITCH
 373
 cropplan-k
 cropplan-k
-0
+1
 1
 -1000
 
@@ -1742,7 +1748,7 @@ SWITCH
 406
 cropplan-l
 cropplan-l
-0
+1
 1
 -1000
 
@@ -1753,7 +1759,7 @@ SWITCH
 439
 cropplan-m
 cropplan-m
-0
+1
 1
 -1000
 
@@ -2512,8 +2518,8 @@ red: mean, blue: std dev:
 SLIDER
 0
 807
-1122
-840
+1107
+841
 subaks-mean-global
 subaks-mean-global
 0
@@ -2578,7 +2584,7 @@ burn-in-months
 burn-in-months
 0
 24000
-6000
+60
 60
 1
 NIL
@@ -2605,7 +2611,7 @@ PENS
 PLOT
 1105
 252
-1328
+1327
 372
 mean years at harvest
 NIL
