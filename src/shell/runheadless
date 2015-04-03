@@ -16,12 +16,8 @@ experiment="$1"
 shift
 
 # make unique id number for this invocation of the experiment.
-# if run by qsub, use the queue job id; else use the unix process number:
-if [ -n "$JOB_ID" ]; then
-	runid=$JOB_ID
-else
-	runid=$$
-fi
+# if run by qsub, includes the queue job id
+runid=$JOB_ID$$
 
 set -x
 java -Xmx1024m -Dfile.encoding=UTF-8 -cp "$netlogo" org.nlogo.headless.Main \
