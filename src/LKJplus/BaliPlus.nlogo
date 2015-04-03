@@ -878,6 +878,14 @@ to-report normalize-bins [bins]
   report map [? / bins-total] bins
 end
 
+to-report list2csv [ls]
+  if-else empty? ls [
+    report ""
+  ][
+    report (word (first ls) "," (list2csv (but-first ls)))
+  ]
+end
+
 ;; subak routine
 to display-cropping-plan-etc
   let low-scc-base-color 4
@@ -1627,7 +1635,7 @@ SWITCH
 43
 cropplan-a
 cropplan-a
-0
+1
 1
 -1000
 
@@ -1693,7 +1701,7 @@ SWITCH
 241
 cropplan-g
 cropplan-g
-1
+0
 1
 -1000
 
@@ -1726,7 +1734,7 @@ SWITCH
 340
 cropplan-j
 cropplan-j
-1
+0
 1
 -1000
 
@@ -1737,7 +1745,7 @@ SWITCH
 373
 cropplan-k
 cropplan-k
-1
+0
 1
 -1000
 
@@ -1748,7 +1756,7 @@ SWITCH
 406
 cropplan-l
 cropplan-l
-1
+0
 1
 -1000
 
@@ -1759,7 +1767,7 @@ SWITCH
 439
 cropplan-m
 cropplan-m
-1
+0
 1
 -1000
 
@@ -5059,8 +5067,8 @@ NetLogo 5.1.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>normalize-bins relig-type-years-bins</metric>
-    <metric>normalize-bins avgharvestha-bins</metric>
+    <metric>list2csv relig-type-years-bins-normalized</metric>
+    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
