@@ -2,8 +2,17 @@
 # Takes an output csv file from BaliPlus.nlogo, and reformats the data file
 # in whatever way's needed.
 
+
+# This version kludgey: changes to header row have to be modified by hand to reflect NetLogo config.
+sed \
+    -e 's/"list2csv relig-type-years-bins-normalized",/"relig-type-bin0","relig-type-bin1","relig-type-bin2","relig-type-bin3","relig-type-bin4","relig-type-bin5","relig-type-bin6","relig-type-bin7","relig-type-bin8","relig-type-bin9","relig-type-bin10","relig-type-bin11","relig-type-bin12","relig-type-bin13","relig-type-bin14","relig-type-bin15","relig-type-bin16","relig-type-bin17","relig-type-bin18","relig-type-bin19","relig-type-bin20","relig-type-bin21","relig-type-bin22","relig-type-bin23","relig-type-bin24","relig-type-bin25","relig-type-bin26","relig-type-bin27","relig-type-bin28","relig-type-bin29","relig-type-bin30","relig-type-bin31","relig-type-bin32","relig-type-bin33","relig-type-bin34","relig-type-bin35","relig-type-bin36","relig-type-bin37","relig-type-bin38","relig-type-bin39","relig-type-bin40","relig-type-bin41","relig-type-bin42","relig-type-bin43","relig-type-bin44","relig-type-bin45","relig-type-bin46","relig-type-bin47","relig-type-bin48","relig-type-bin49",/' \
+    -e 's/"list2csv avgharvestha-bins-normalized",/"avgharvestha-bin0","avgharvestha-bin1","avgharvestha-bin2","avgharvestha-bin3","avgharvestha-bin4","avgharvestha-bin5","avgharvestha-bin6","avgharvestha-bin7","avgharvestha-bin8","avgharvestha-bin9","avgharvestha-bin10","avgharvestha-bin11","avgharvestha-bin12","avgharvestha-bin13","avgharvestha-bin14","avgharvestha-bin15","avgharvestha-bin16","avgharvestha-bin17","avgharvestha-bin18","avgharvestha-bin19","avgharvestha-bin20","avgharvestha-bin21","avgharvestha-bin22","avgharvestha-bin23","avgharvestha-bin24","avgharvestha-bin25","avgharvestha-bin26","avgharvestha-bin27","avgharvestha-bin28","avgharvestha-bin29","avgharvestha-bin30","avgharvestha-bin31","avgharvestha-bin32","avgharvestha-bin33","avgharvestha-bin34","avgharvestha-bin35","avgharvestha-bin36","avgharvestha-bin37","avgharvestha-bin38","avgharvestha-bin39","avgharvestha-bin40","avgharvestha-bin41","avgharvestha-bin42","avgharvestha-bin43","avgharvestha-bin44","avgharvestha-bin45","avgharvestha-bin46","avgharvestha-bin47","avgharvestha-bin48","avgharvestha-bin49",/' \
+    -e 's/""",//g' \
+    -e 's/"""//g' \
+    "$@"
+
+# Notes:
 # In NetLogo, we convert the NetLogo bin lists to a string containing a bin list in csv format.
 # In the csv file, the quotation mark from the string is quoted with two double quotes, 
 # resulting in three double-quotes in a row.  By stripping them out, we get regular csv columns
 # (since numbers don't need to be quoted).
-sed 's/"""//g'
