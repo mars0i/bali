@@ -7,13 +7,25 @@
 netlogo=~/bali/src/NetLogo.jar
 # netlogo="/Applications/NetLogo 5.1.0/NetLogo.jar"
 
+datadir=$HOME/bali/data
+
 if [ -z "$1" ]; then
-	echo "usage: $0 <experimentname> [ --additional netlogo-args ]"
+	echo "usage: $0 <experimentname> [subdirname] [ additional-netlogo-args ]"
 	exit 1
 fi
 
 experiment="$1"
-shift
+
+if [ -n "$2" ]; then
+    subdir="$2"
+    shift 2
+    # if user wants to put data in subdir of data dir, make the subdir if necessary
+    if [ ! -e $datadir/$subdir ]; then
+        mkdir $datadir/$subdir
+    fi
+else
+    subdirname=.
+fi
 
 # make unique id number for this invocation of the experiment.
 # if run by qsub, includes the queue job id
@@ -23,7 +35,7 @@ set -x
 java -Xmx1024m -Dfile.encoding=UTF-8 -cp "$netlogo" org.nlogo.headless.Main \
   --model $HOME/bali/src/LKJplus/BaliPlus.nlogo \
   --experiment "$experiment" \
-  --spreadsheet $HOME/bali/data/"$experiment$runid.csv" \
+  --spreadsheet "$datadir/$subdir/$experiment$runid.csv" \
   --threads 1
   "$@"
 
