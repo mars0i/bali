@@ -1,0 +1,9 @@
+#!/bin/sh
+# Takes an output csv file from BaliPlus.nlogo, and reformats the data file
+# in whatever way's needed.
+
+# In NetLogo, we convert the NetLogo bin lists to a string containing a bin list in csv format.
+# In the csv file, the quotation mark from the string is quoted with two double quotes, 
+# resulting in three double-quotes in a row.  By stripping them out, we get regular csv columns
+# (since numbers don't need to be quoted).
+sed 's/"""//g'
