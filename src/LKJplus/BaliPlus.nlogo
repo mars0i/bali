@@ -25,7 +25,8 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           cropplan-bools
           default-pcolor ; color of all patches except when patch color used to indicate start month
           shuffle-cropplans?  ; can be put back into UI if desired
-          data-dir ; where data files, random seed files, etc. will be written
+          data-dir ; where data files will be written
+          seed-dir ; where random seed files will be written
           min-yield
           previous-seed ; holds seed from previous run
           months-past-burn-in      ; will contain ticks - burn-in-months
@@ -128,6 +129,7 @@ to setup
   clear-output
   file-close-all
   set data-dir "../../data/" ; this is relative to where this .nlogo file resides
+  set seed-dir "../../seeds/"
   
   let seed 0
   ifelse random-seed-source = "new seed"
@@ -399,6 +401,7 @@ to my-clear-globals
   set default-pcolor 0
   set shuffle-cropplans? 0
   set data-dir 0
+  set seed-dir 0
   set min-yield 0
   ; set previous-seed 0  ; we want this to be available in the next run
   set months-past-burn-in 0      ; will contain ticks - burn-in-months
@@ -1285,7 +1288,7 @@ end
 ;; General-purpose utilities
 
 to set-random-seed [seed]
-  let filename (word data-dir "seed" seed ".txt")
+  let filename (word seed-dir "seed" seed ".txt")
   random-seed seed
   file-open filename
   file-write seed
@@ -2527,7 +2530,7 @@ SLIDER
 0
 807
 1107
-841
+840
 subaks-mean-global
 subaks-mean-global
 0
