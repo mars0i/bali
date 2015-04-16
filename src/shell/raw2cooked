@@ -6,7 +6,7 @@ srcdir=~/bali/src/shell
 parentdatadir=~/src/data.bali/april2015
 
 if [ -z "$3" ]; then
-	echo usage: "$0 global-tran-type relig-effect-typ csv-file ..."  >&2
+	echo usage: "${0##*/} global-tran-type relig-effect-typ csv-file ..."  >&2
 	exit 1
 fi
 
@@ -37,13 +37,12 @@ for f in "$@"; do
 	$srcdir/fixcsv50bins "$f" > "$cookdir/runs/$f"
 done
 
-
+pushd $cookdir/runs
 # create header file from one of the raw data files:
-$srcdir/spreadsheetCSVextractHeader $cookdir/runs/"$1" > $cookdir/header.csv
-
+$srcdir/spreadsheetCSVextractHeader "$1" > $cookdir/header.csv
 # create data file from all of the raw data files:
-$srcdir/spreadsheetsCSVextractData $cookdir/runs/"$@" > $cookdir/data.csv
-
+$srcdir/spreadsheetsCSVextractData "$@" > $cookdir/data.csv
+popd
 
 # now extract specific data files from the main data file:
 $srcdir/cooked2avgharvesthaOnly $cookdir/data.csv > $cookdir/avgharvestha.csv
