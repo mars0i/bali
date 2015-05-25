@@ -596,7 +596,14 @@ to set-listeners-speakers
   ;; if requested, also listen to pestneighbors.
   if relig-pestneighbors [
     ask subaks [
-      set speakers (turtle-set pestneighbors speakers)
+      let communic-neighbors pestneighbors
+      ;; if neighbor-levels = 2, pay attention to neighbors of neighbors for relig tran; if = 3, their neighbors too, and so on.
+      let levels relig-neighbor-levels
+      while [levels > 1] [
+        set communic-neighbors turtle-set [other pestneighbors] of communic-neighbors
+        set levels levels - 1
+      ]
+      set speakers (turtle-set communic-neighbors speakers)
     ]
   ]
 end
@@ -1615,10 +1622,10 @@ TEXTBOX
 1
 
 TEXTBOX
-216
-845
-772
-981
+546
+846
+1102
+982
 Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents relig value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\nCrop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.\n\nMasceti/temple group colors: white: 1, yellow: 2, red: 3, blue: 4, cyan: 5, pink: 6, orange: 7, lime: 8, sky: 9, violet: 10, magenta: 11, green: 12, turquoise: 13, brown: 14.
 11
 0.0
@@ -2535,7 +2542,7 @@ subaks-mean-global
 subaks-mean-global
 0
 200
-1
+0.025
 0.001
 1
 NIL
@@ -2636,6 +2643,31 @@ false
 "" ""
 PENS
 "default" 1.0 1 -16777216 true "" "; see procedure plot-figs"
+
+SLIDER
+-1
+845
+172
+879
+relig-neighbor-levels
+relig-neighbor-levels
+1
+5
+1
+1
+1
+NIL
+HORIZONTAL
+
+TEXTBOX
+4
+879
+171
+952
+Experimental: If neighbor-levels = 2, pay attention to neighbors of neighbors for relig tran; if = 3, their neighbors too, and so on.
+11
+0.0
+1
 
 @#$#@#$#@
 ## LICENSE
@@ -3012,7 +3044,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.1.0
+NetLogo 5.2.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
