@@ -15,6 +15,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           totWSarea        ; total water stress area (?). data collected every month until end of year.
           avgWS            ; computed from previous two vars at end of year.
           avgharvestha                ; average harvest per hectare?
+          stddevharvestha              ; curr std dev of same quantity across all subaks
           max-avgharvestha            ; max so far
           last-n-years-avgharvesthas  ; FIFO list of previous n years for rolling average, with most recent value at beginning, oldest at end
           num-years-avgharvesthas     ; how many n is in last-n-years-avgharvesthas
@@ -446,6 +447,7 @@ to go
     set avgpestloss totpestloss / totpestlossarea ; average loss due to pests
     set avgWS totWS / totWSarea                   ; average water stress
     set avgharvestha compute-avg-harvest          ; average harvest yield
+    set stddevharvestha compute-stddev-harvest    ; current std dev of pyharvestha across all subaks
     if avgharvestha > max-avgharvestha
       [set max-avgharvestha avgharvestha]
     set last-n-years-avgharvesthas fput avgharvestha last-n-years-avgharvesthas ; add current avg harvest yield
@@ -851,6 +853,7 @@ to determineharvest
     ] ; ask
 end
 
+
 ;; update a list of bins that records number of years that the mean relig-type fell into
 ;; one of several "bins", i.e. ranges of values.  e.g. there might be 20 bins:
 to calc-relig-type-years-bins
@@ -937,6 +940,10 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
+to-report compute-stddev-harvest
+  report stddev [pyharvestha] of subaks
+end
+
 ;; Plot some values.  Code for other plots appears in the plot objects in the UI.
 to plot-figs
   ;; These are slightly complicated--better to do it here:
@@ -971,6 +978,8 @@ to plot-figs
   plot avgharvestha
   set-current-plot-pen "n-year-avg"
   plot mean last-n-years-avgharvesthas
+  set-current-plot-pen "stddev"
+  plot stddevharvestha
   set-current-plot "Pestloss"
   plot avgpestloss
   set-current-plot "Waterstress"
@@ -1453,10 +1462,10 @@ months
 30.0
 
 BUTTON
-3
-10
-58
-43
+4
+12
+59
+45
 NIL
 setup
 NIL
@@ -1471,9 +1480,9 @@ NIL
 
 BUTTON
 59
-10
+12
 114
-43
+45
 NIL
 go
 T
@@ -1534,6 +1543,7 @@ false
 PENS
 "harvest" 1.0 0 -16777216 true "" ""
 "n-year-avg" 1.0 0 -14070903 true "" ""
+"stddev" 1.0 0 -2674135 true "" ""
 
 CHOOSER
 1
@@ -1924,10 +1934,10 @@ NIL
 1
 
 BUTTON
-115
-10
-170
-43
+116
+12
+171
+45
 once
 go
 NIL
@@ -2302,20 +2312,20 @@ NIL
 HORIZONTAL
 
 CHOOSER
-4
-44
-162
-89
+5
+46
+163
+91
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
 2
 
 INPUTBOX
-5
-89
-108
-149
+6
+92
+109
+152
 run-until-month
 0
 1
@@ -2324,9 +2334,9 @@ Number
 
 TEXTBOX
 110
-91
+93
 180
-133
+135
 0: run forever\nN>0: run until\nmonth = N
 8
 0.0
@@ -2355,52 +2365,52 @@ Copy pestneighbors if true:
 
 MONITOR
 775
-249
-855
-294
-Curr harvest
+259
+834
+305
+Curr harv
 avgharvestha
 3
 1
 11
 
 MONITOR
-980
-249
-1091
-294
-Max harvest so far
+957
+259
+1019
+305
+Max harv
 max-avgharvestha
 3
 1
 11
 
 TEXTBOX
-775
-299
-1060
-317
-Current harvest: black, rolling average: blue:
+777
+305
+1104
+324
+Current harvest: black, rolling average: blue, stddev: red:
 11
 0.0
 1
 
 MONITOR
-855
-249
-931
-294
-Rolling avg
+835
+259
+905
+305
+rolling avg
 mean last-n-years-avgharvesthas
 3
 1
 11
 
 MONITOR
-931
-249
-981
-294
+906
+259
+956
+304
 years
 num-years-avgharvesthas
 17
@@ -2522,15 +2532,15 @@ true
 false
 "" ""
 PENS
-"avg" 1.0 0 -2674135 true "" "plot mean [relig-type] of subaks"
-"stdv" 1.0 0 -13345367 true "" "plot stddev [relig-type] of subaks"
+"avg" 1.0 0 -13345367 true "" "plot mean [relig-type] of subaks"
+"stdv" 1.0 0 -2674135 true "" "plot stddev [relig-type] of subaks"
 
 TEXTBOX
 777
 84
-913
-102
-red: mean, blue: std dev:
+914
+113
+blue: mean, red: std dev:
 11
 0.0
 1
@@ -2670,6 +2680,17 @@ Experimental: If neighbor-levels = 2, pay attention to neighbors of neighbors fo
 11
 0.0
 1
+
+MONITOR
+1017
+259
+1087
+305
+curr stdv
+stddevharvestha
+3
+1
+11
 
 @#$#@#$#@
 ## LICENSE
