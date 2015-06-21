@@ -76,8 +76,8 @@ subaks-own [
   masceti ; group of subaks
   dmd  ; water demand. see comment in procedure demandwater.
   ulunswi 
-  pyharvest   ; stores total of (harvest * area) over the course of a year. used to decide who to imitate.
-  pyharvestha ; stores total of (harvest) over the course of a year. used for harvest plot.
+  pyharvest   ; stores total of (harvest * area) over the course of a year.
+  pyharvestha ; stores total of (harvest) over the course of a year. used for harvest plot.  used to decide who to imitate.
   WSS  ; seems to have something to do with water usage during rice growth. "Water Stress Subak"?
   harvest 
   crop ; crop number of the crop am I currently growing this month
@@ -152,7 +152,8 @@ to setup
   set-default-shape damsubaks "line"
   set-default-shape subakdams "line"
   set-default-shape subaksubaks "line"
-  set-default-shape subak-helpers "circle"
+  set-default-shape subak-helpers "thick line half"
+
   set default-pcolor 6 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
   set min-yield 1000000 ; dummy value
   set last-n-years-avgharvesthas []
@@ -319,10 +320,11 @@ to setup
     let this-subak self
     ask patch-here [
       sprout-subak-helpers 1 [
-        set size 0.35
+        set size 2.0
         set my-subak this-subak
         ask this-subak [set my-subak-helper myself]
         set color [color] of this-subak
+        set heading 180
       ]
     ]
   ]
@@ -912,12 +914,12 @@ to display-cropping-plan-etc
     [ask my-subak-helper
       [let reltype [relig-type] of myself
        let anti-reltype 1 - reltype
-       set color rgb ((sigmoid reltype .03 .5) * 255) ((sigmoid anti-reltype .03 .5) * 255) 0]] ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
+       set color rgb ((sigmoid reltype .03 .5) * 255) ((sigmoid anti-reltype .03 .5) * 255) 0 ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
+       let dir 180 + (180 * ([pyharvestha] of myself / 10))
+       set heading dir
+    ]]
     [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent 
-    ; old show-relig-types=true code:
-    ; [ask my-subak-helper [set color (10 - 10 * [relig-type] of myself)]] ; extreme peasant is 1=black (the better option); extreme brahman is 0=white (note relig type is always < 1) 
-  
-  
+    
   ifelse show-subak-values
     [set label (word "[" SCC ":" sd "]")]
     [set label ""]
@@ -1626,7 +1628,7 @@ TEXTBOX
 846
 1102
 982
-Cropping plan colors: Large circle represents crop plan, square represents start month.  Dot in middle represents relig value, ranging from white (no effect on ignoring neighbors) to black (full effect).\n\nCrop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.\n\nMasceti/temple group colors: white: 1, yellow: 2, red: 3, blue: 4, cyan: 5, pink: 6, orange: 7, lime: 8, sky: 9, violet: 10, magenta: 11, green: 12, turquoise: 13, brown: 14.
+Cropping plan colors: Large circle represents crop plan, square represents start month.  Color of line in middle represents relig value, ranging from green (no effect on ignoring neighbors) to red (full effect); black is intermediate.  Direction represents amount of harvest per hectare (pyharvestha), i.e. the \"success\" value that determines who to imitate.  Value ranges from 0 (down) to 10 (up).\n\nCrop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.\n\nMasceti/temple group colors: white: 1, yellow: 2, red: 3, blue: 4, cyan: 5, pink: 6, orange: 7, lime: 8, sky: 9, violet: 10, magenta: 11, green: 12, turquoise: 13, brown: 14.
 11
 0.0
 1
@@ -2307,7 +2309,7 @@ CHOOSER
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
-0
+2
 
 INPUTBOX
 5
@@ -2648,7 +2650,7 @@ SLIDER
 -1
 845
 172
-879
+878
 relig-neighbor-levels
 relig-neighbor-levels
 1
@@ -2977,6 +2979,12 @@ Circle -16777216 true false 30 30 240
 Circle -7500403 true true 60 60 180
 Circle -16777216 true false 90 90 120
 Circle -7500403 true true 120 120 60
+
+thick line half
+true
+0
+Line -7500403 true 150 0 150 150
+Rectangle -7500403 true true 143 2 158 149
 
 tree
 false
