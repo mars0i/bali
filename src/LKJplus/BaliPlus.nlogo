@@ -984,6 +984,10 @@ to plot-figs
   plot avgpestloss
   set-current-plot "Waterstress"
   plot avgWS
+  set-current-plot "relig type distribution" ; no need to run on every tick--it's only updated yearly
+  histogram [relig-type] of subaks
+  set-current-plot "harvest distribution" ; running on every tick is misleading, since pyharvestha goes to zero some months
+  histogram [pyharvestha] of subaks
 end
 
 ;========================= data ========================================
@@ -1526,10 +1530,10 @@ NIL
 HORIZONTAL
 
 PLOT
-773
-318
-1099
-467
+774
+284
+1100
+433
 Harvest
 NIL
 NIL
@@ -1556,10 +1560,10 @@ rainfall-scenario
 2
 
 PLOT
-773
-617
-1100
-763
+774
+583
+1101
+729
 Pestloss
 NIL
 NIL
@@ -1574,10 +1578,10 @@ PENS
 "totpestloss" 1.0 0 -2674135 true "" ""
 
 PLOT
-773
-467
-1099
-616
+774
+433
+1100
+582
 Waterstress
 NIL
 NIL
@@ -1645,9 +1649,9 @@ Cropping plan colors: Large circle represents crop plan, square represents start
 
 OUTPUT
 1105
-635
+756
 1329
-932
+1053
 4
 
 SWITCH
@@ -1883,9 +1887,9 @@ cropplan-u
 
 PLOT
 1105
-497
+618
 1325
-617
+738
 crop plan distribution
 NIL
 NIL
@@ -2162,9 +2166,9 @@ TEXTBOX
 
 TEXTBOX
 1107
-619
+740
 1273
-637
+758
 seed, crop plans in this run:
 11
 0.0
@@ -2225,9 +2229,9 @@ relig-influence?
 
 PLOT
 1105
-376
+497
 1325
-496
+617
 start month distribution
 NIL
 NIL
@@ -2257,13 +2261,13 @@ true
 false
 "set-histogram-num-bars 40" ""
 PENS
-"default" 1.0 1 -16777216 true "" "histogram [relig-type] of subaks"
+"default" 1.0 1 -16777216 true "" "; see plot-figs procedure"
 
 MONITOR
-1006
-50
-1101
-95
+1004
+12
+1099
+57
 mean relig type
 precision (mean [relig-type] of subaks) 3
 17
@@ -2364,10 +2368,10 @@ Copy pestneighbors if true:
 1
 
 MONITOR
-775
-259
-834
-305
+776
+225
+835
+270
 Curr harv
 avgharvestha
 3
@@ -2375,10 +2379,10 @@ avgharvestha
 11
 
 MONITOR
-957
-259
-1019
-305
+958
+225
+1020
+270
 Max harv
 max-avgharvestha
 3
@@ -2386,20 +2390,20 @@ max-avgharvestha
 11
 
 TEXTBOX
-777
-305
-1104
-324
+778
+270
+1105
+289
 Current harvest: black, rolling average: blue, stddev: red:
 11
 0.0
 1
 
 MONITOR
-835
-259
-905
-305
+836
+225
+906
+270
 rolling avg
 mean last-n-years-avgharvesthas
 3
@@ -2407,10 +2411,10 @@ mean last-n-years-avgharvesthas
 11
 
 MONITOR
-906
-259
-956
-304
+907
+225
+957
+270
 years
 num-years-avgharvesthas
 17
@@ -2517,10 +2521,10 @@ NIL
 1
 
 PLOT
-774
-97
-1099
-247
+775
+63
+1100
+213
 relig-type
 NIL
 NIL
@@ -2536,10 +2540,10 @@ PENS
 "stdv" 1.0 0 -2674135 true "" "plot stddev [relig-type] of subaks"
 
 TEXTBOX
-777
-84
-914
-113
+778
+49
+915
+78
 blue: mean, red: std dev:
 11
 0.0
@@ -2606,10 +2610,10 @@ Use above if sigmoidey, below if step.
 1
 
 SLIDER
-960
-16
-1099
-49
+776
+12
+915
+45
 burn-in-months
 burn-in-months
 0
@@ -2640,9 +2644,9 @@ PENS
 
 PLOT
 1105
-252
+373
 1327
-372
+493
 mean years at harvest
 NIL
 NIL
@@ -2682,15 +2686,33 @@ Experimental: If neighbor-levels = 2, pay attention to neighbors of neighbors fo
 1
 
 MONITOR
-1017
-259
-1087
-305
+1022
+225
+1092
+270
 curr stdv
 stddevharvestha
 3
 1
 11
+
+PLOT
+1105
+253
+1328
+373
+harvest distribution
+NIL
+NIL
+0.0
+15.0
+0.0
+172.0
+false
+false
+"set-histogram-num-bars 40" ""
+PENS
+"default" 1.0 1 -16777216 true "" "; see plot-figs procedure"
 
 @#$#@#$#@
 ## LICENSE
