@@ -484,6 +484,11 @@ to go
 end
 ;;;;;;;;;;;;;;; end of go
 
+to go-next-year
+  if month = 11 [go]
+  while [month != 11] [go]
+end
+
 to poss-show-damsubaks
     ifelse viewdamsubaks [
     ask damsubaks [set size distanceab]
@@ -577,6 +582,10 @@ to imitate-best-neighboring-plans
 end
 
 ;; A subak-local procedure
+;; NOTE that this procedure has the following property:
+;; If more than one subak has the best harvest, find-best will always choose
+;; the first such subak found.  This is not a problem because it uses ask, which
+;; always uses a random order.  (Also, ties are probably relatively rare in this model.)  
 to-report find-best [subak-set]
   let best self       ; until I learn of someone better, I'll consider myself to be my best "neighbor".
   let bestharvest pyharvestha ; set bestharvest to my total harvest for the year
@@ -824,7 +833,7 @@ to growpest
 end
 
 to determineharvest
-    let hy 0
+    ;let hy 0
     let croph 0
     let cropf 0
     ask subaks [
@@ -841,7 +850,7 @@ to determineharvest
           set harvest Ymax * pest-damage                     ; compute harvest per hectare from max growth scaled by pest damage (?)
           set pestloss pestloss + Ymax * (1 - pest-damage) * area
           set totLoss totLoss + pestloss
-          set hy hy + harvest * area                         ; harvest for entire area (area is a subak variable) (?)
+          ;set hy hy + harvest * area                         ; harvest for entire area (area is a subak variable) (?)
           set pyharvest pyharvest + harvest * area           ; add this month's total harvest onto total for year to date (?)
           set pyharvestha pyharvestha + harvest              ; add harvest per hectare onto per hectare for ytd
           set totpestloss totpestloss + area * (1 - pest-damage) * Ymax ; global var
@@ -928,6 +937,8 @@ to display-cropping-plan-etc
     [set label ""]
 end
 
+;; This code was originally in plot-figs, but apart from the hack for running on every tick,
+;; is essentially the same as what was in Janssen's model.
 to-report compute-avg-harvest
   let totarea 0
   let totharvest 0
@@ -986,8 +997,14 @@ to plot-figs
   plot avgWS
   set-current-plot "relig type distribution" ; no need to run on every tick--it's only updated yearly
   histogram [relig-type] of subaks
-  set-current-plot "harvest distribution" ; running on every tick is misleading, since pyharvestha goes to zero some months
+  set-current-plot "harvest per area (success)" ; running on every tick is misleading, since pyharvestha goes to zero some months
+  clear-plot
+  set-histogram-num-bars 40
+  set-current-plot-pen "default"
   histogram [pyharvestha] of subaks
+  ;set-current-plot-pen "mean" ; plot vertical line
+  ;plotxy avgharvestha 0
+  ;plotxy avgharvestha 172
 end
 
 ;========================= data ========================================
@@ -2370,7 +2387,7 @@ Copy pestneighbors if true:
 MONITOR
 776
 225
-835
+836
 270
 Curr harv
 avgharvestha
@@ -2610,9 +2627,9 @@ Use above if sigmoidey, below if step.
 1
 
 SLIDER
-776
+865
 12
-915
+1004
 45
 burn-in-months
 burn-in-months
@@ -2701,7 +2718,7 @@ PLOT
 253
 1328
 373
-harvest distribution
+harvest per area (success)
 NIL
 NIL
 0.0
@@ -2710,9 +2727,27 @@ NIL
 172.0
 false
 false
-"set-histogram-num-bars 40" ""
+"" ""
 PENS
 "default" 1.0 1 -16777216 true "" "; see plot-figs procedure"
+"mean" 1.0 0 -7500403 false "" ""
+
+BUTTON
+773
+11
+863
+44
+to next year
+go-next-year
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## LICENSE
