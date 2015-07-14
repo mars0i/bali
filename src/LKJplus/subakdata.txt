@@ -3,7 +3,8 @@
 ;; see what's in the data.  -Marshall
 
 ;; The first element on each is a subak number.  It's ignored in
-;; the NetLogo model; it's not even stored in a variable.
+;; the NetLogo model; it's not even stored in a variable, but as it happens,
+;; it will become the turtle number as well (always?).
 ;; I don't yet know what ulunswi is.  Its value is either 1 or 2.
 
 ;subak	x-coord	y-coord	area	masceti	ulunswi	
@@ -28,9 +29,9 @@
 18	-17	18	78	3	2	
 19	8	15	20	3	2	
 20	-15	18	33	3	2	
-21	-15	16	39	3	2	
+21	-15	16	39	3	2	; was same loc as 23 
 22	-13	18	58	3	2	
-23	-15	16	40	3	2	
+23	-15	16	40	3	2	; was same loc as 21
 24	-13	16	38	3	2	
 25	-15	14	26	3	2	
 26	-17	12	90	3	2	
