@@ -2749,16 +2749,6 @@ NIL
 NIL
 1
 
-TEXTBOX
-788
-743
-938
-793
-this version is rilly dengerous
-20
-0.0
-1
-
 @#$#@#$#@
 ## LICENSE
 
