@@ -2749,6 +2749,16 @@ NIL
 NIL
 1
 
+TEXTBOX
+797
+745
+1069
+795
+Also Sprach Zarathrustra!
+20
+0.0
+1
+
 @#$#@#$#@
 ## LICENSE
 
