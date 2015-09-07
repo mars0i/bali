@@ -2323,7 +2323,7 @@ CHOOSER
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
-2
+0
 
 INPUTBOX
 6
