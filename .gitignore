@@ -11,4 +11,4 @@ pom.xml.asc
 .lein-failures
 .DS_Store
 data
-seeds
+seeds/seed*.txt
