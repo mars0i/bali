@@ -2759,6 +2759,16 @@ Also Sprach Zarathrustra!
 0.0
 1
 
+TEXTBOX
+1065
+784
+1215
+809
+cool
+20
+0.0
+1
+
 @#$#@#$#@
 ## LICENSE
 
