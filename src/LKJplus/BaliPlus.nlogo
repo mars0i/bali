@@ -357,8 +357,17 @@ to setup
 
   
   reset-ticks
+file-mean-relig ;Blake Jackson code
 end
 ;;;;;;;;;;;;;;; end of setup
+
+to file-mean-relig ;Blake Jackson code
+  let filerelig (word seed-dir "religtype" previous-seed ".csv")
+    if file-exists? filerelig
+      [ file-delete filerelig ]
+    file-open filerelig
+    file-print ("\"ticks\",\"mean-relig type\",\"variance\"")
+end
 
 ;; Does the same thing as builtin clear-globals, but allows excluding
 ;; some variables to allow them to carry over values from previous run.
@@ -479,6 +488,8 @@ to go
   ][
     set month month + 1
   ]
+
+write-mean-relig ;Blake Jackson code
 
   tick
 end
@@ -1426,6 +1437,10 @@ to-report stddev [vals]
   report ((n - 1) / n) * (standard-deviation vals)
 end
 
+to write-mean-relig ;Blake Jackson code
+  file-print (word ticks"," mean [relig-type] of subaks"," variance [relig-type] of subaks)
+end
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; The following are based on suggestions by Bryan Head at
@@ -1483,10 +1498,10 @@ months
 30.0
 
 BUTTON
-4
-12
-59
-45
+9
+10
+64
+43
 NIL
 setup
 NIL
@@ -1500,10 +1515,10 @@ NIL
 1
 
 BUTTON
-59
-12
-114
-45
+64
+10
+119
+43
 NIL
 go
 T
@@ -1517,25 +1532,25 @@ NIL
 1
 
 SLIDER
-2
-151
+4
 180
-184
+182
+213
 pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.4
+2.39
 0.01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-2
-185
-179
-218
+4
+214
+181
+247
 pestdispersal-rate
 pestdispersal-rate
 0.6
@@ -1567,10 +1582,10 @@ PENS
 "stddev" 1.0 0 -2674135 true "" ""
 
 CHOOSER
-1
-283
-176
-328
+3
+312
+178
+357
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
@@ -1634,10 +1649,10 @@ Color_subaks
 1
 
 SWITCH
--2
-590
-174
-623
+0
+619
+176
+652
 show-subak-values
 show-subak-values
 1
@@ -1645,10 +1660,10 @@ show-subak-values
 -1000
 
 TEXTBOX
-5
-221
-181
-287
+7
+250
+183
+316
           Correspondences\npestdispersal-rate    d (Janssen 2006)\n     0.6                       0.18\n     1.0                       0.3\n     1.5                       0.45
 8
 0.0
@@ -1766,7 +1781,7 @@ SWITCH
 307
 cropplan-i
 cropplan-i
-1
+0
 1
 -1000
 
@@ -1898,7 +1913,7 @@ SWITCH
 703
 cropplan-u
 cropplan-u
-1
+0
 1
 -1000
 
@@ -1955,10 +1970,10 @@ NIL
 1
 
 BUTTON
-116
-12
-171
-45
+121
+10
+176
+43
 once
 go
 NIL
@@ -2192,10 +2207,10 @@ seed, crop plans in this run:
 1
 
 SLIDER
-3
-372
-179
-405
+5
+401
+181
+434
 ignore-neighbors-prob
 ignore-neighbors-prob
 0
@@ -2207,10 +2222,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-6
-340
-180
-370
+8
+369
+182
+399
 Probability of choosing random crop plan, start month:
 11
 0.0
@@ -2234,10 +2249,10 @@ NIL
 1
 
 SWITCH
-0
-488
-177
-521
+2
+517
+179
+550
 relig-influence?
 relig-influence?
 0
@@ -2292,10 +2307,10 @@ precision (mean [relig-type] of subaks) 3
 11
 
 SLIDER
-0
-454
-177
-487
+2
+483
+179
+516
 relig-tran-stddev
 relig-tran-stddev
 0
@@ -2307,21 +2322,21 @@ NIL
 HORIZONTAL
 
 SWITCH
--2
-555
-177
-588
-show-relig-types
-show-relig-types
 0
+584
+179
+617
+show-relig-types
+show-relig-types
+1
 1
 -1000
 
 SLIDER
--1
-520
-176
-553
+1
+549
+178
+582
 relig-influence
 relig-influence
 1
@@ -2333,20 +2348,20 @@ NIL
 HORIZONTAL
 
 CHOOSER
-5
-46
-163
-91
+7
+75
+165
+120
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
 0
 
 INPUTBOX
-6
-92
-109
-152
+8
+121
+111
+181
 run-until-month
 0
 1
@@ -2354,20 +2369,20 @@ run-until-month
 Number
 
 TEXTBOX
-110
-93
-180
-135
+112
+122
+182
+164
 0: run forever\nN>0: run until\nmonth = N
 8
 0.0
 1
 
 SWITCH
-0
-418
-178
-451
+2
+447
+180
+480
 relig-pestneighbors
 relig-pestneighbors
 0
@@ -2375,10 +2390,10 @@ relig-pestneighbors
 -1000
 
 TEXTBOX
-6
-404
-156
-422
+8
+433
+158
+451
 Copy pestneighbors if true:
 11
 0.0
@@ -2462,17 +2477,17 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
-1.7
+1.71
 0.01
 1
 NIL
 HORIZONTAL
 
 PLOT
-0
-625
-160
-776
+2
+654
+162
+805
 relig effect curve
 NIL
 NIL
@@ -2575,7 +2590,7 @@ subaks-mean-global
 subaks-mean-global
 0
 200
-0.025
+0.023
 0.001
 1
 NIL
@@ -2747,6 +2762,33 @@ NIL
 NIL
 NIL
 NIL
+1
+
+BUTTON
+6
+44
+113
+77
+save work
+file-close
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+TEXTBOX
+788
+744
+938
+764
+the cool squad
+16
+0.0
 1
 
 @#$#@#$#@
@@ -3138,6 +3180,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig08step1global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>file-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -3275,6 +3318,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig05step1global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -3412,6 +3456,7 @@ NetLogo 5.2.0
   <experiment name="NoiseReligLinear1global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -3549,6 +3594,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig225170sigmoidey1global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -3686,6 +3732,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig08step50global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -3823,6 +3870,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig05step50global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -3960,6 +4008,7 @@ NetLogo 5.2.0
   <experiment name="NoiseReligLinear50global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -4097,6 +4146,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig225170sigmoidey50global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -4234,6 +4284,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig08step0025global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -4371,6 +4422,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig05step0025global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -4508,6 +4560,7 @@ NetLogo 5.2.0
   <experiment name="NoiseReligLinear0025global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -4645,6 +4698,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig225170sigmoidey0025global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -4782,6 +4836,7 @@ NetLogo 5.2.0
   <experiment name="NoiseNoRelig60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
@@ -4919,6 +4974,7 @@ NetLogo 5.2.0
   <experiment name="NoNoise60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>list2csv relig-type-years-bins-normalized</metric>
