@@ -2791,6 +2791,17 @@ the cool squad
 0.0
 1
 
+SWITCH
+150
+46
+253
+79
+subak
+subak
+1
+1
+-1000
+
 @#$#@#$#@
 ## LICENSE
 
