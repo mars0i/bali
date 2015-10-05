@@ -357,16 +357,16 @@ to setup
 
   
   reset-ticks
-init-data-file ;Blake Jackson code
+init-relig-data ;Blake Jackson code
 end
 ;;;;;;;;;;;;;;; end of setup
 
-to init-data-file ;Blake Jackson code
+to init-relig-data ;Blake Jackson code
   let filerelig (word seed-dir "religtype" previous-seed ".csv")
     if file-exists? filerelig
       [ file-delete filerelig ]
     file-open filerelig
-    file-print ("\"tick\",\"mean-relig type\",\"stddev mean-relig type\",\"avgharvestha\",\"stddevharvestha\"")
+    file-print ("\"tick\",\"mean relig-type\",\"stddev mean relig-type\",\"avgharvestha\",\"stddevharvestha\"")
 end
 
 ;; Does the same thing as builtin clear-globals, but allows excluding
@@ -489,7 +489,7 @@ to go
     set month month + 1
   ]
 
-write-data-file ;Blake Jackson code
+write-relig-data ;Blake Jackson code
 
   tick
 end
@@ -1437,7 +1437,7 @@ to-report stddev [vals]
   report ((n - 1) / n) * (standard-deviation vals)
 end
 
-to write-data-file ;Blake Jackson code
+to write-relig-data ;Blake Jackson code
   if ticks > burn-in-months - 1 [
      file-print (word ticks "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," avgharvestha "," (0.9970887856713804 * stddevharvestha))
   ]
