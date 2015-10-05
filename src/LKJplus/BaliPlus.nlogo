@@ -357,11 +357,11 @@ to setup
 
   
   reset-ticks
-file-mean-relig ;Blake Jackson code
+init-data-file ;Blake Jackson code
 end
 ;;;;;;;;;;;;;;; end of setup
 
-to file-mean-relig ;Blake Jackson code
+to init-data-file ;Blake Jackson code
   let filerelig (word seed-dir "religtype" previous-seed ".csv")
     if file-exists? filerelig
       [ file-delete filerelig ]
@@ -489,7 +489,7 @@ to go
     set month month + 1
   ]
 
-write-mean-relig ;Blake Jackson code
+write-data-file ;Blake Jackson code
 
   tick
 end
@@ -1437,7 +1437,7 @@ to-report stddev [vals]
   report ((n - 1) / n) * (standard-deviation vals)
 end
 
-to write-mean-relig ;Blake Jackson code
+to write-data-file ;Blake Jackson code
   if ticks > burn-in-months - 1 [
      file-print (word ticks "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," avgharvestha "," (0.9970887856713804 * stddevharvestha))
   ]
