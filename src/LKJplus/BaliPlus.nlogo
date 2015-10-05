@@ -423,6 +423,14 @@ to my-clear-globals
   set avgharvestha-bin-size 0   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
 end
 
+to init-relig-data-file ;Blake Jackson code
+  let filerelig (word seed-dir "religtype" previous-seed ".csv")
+    if file-exists? filerelig
+      [ file-delete filerelig ]
+    file-open filerelig
+    file-print ("\"tick\",\"mean relig-type\",\"stddev mean relig-type\",\"avgharvestha\",\"stddevharvestha\"")
+end
+
 ;;;;;;;;;;;;;;;
 to go
   if run-until-month > 0 and ticks >= run-until-month
@@ -483,15 +491,6 @@ to go
 write-relig-data ;Blake Jackson code
 
   tick
-end
-
-
-to init-relig-data-file ;Blake Jackson code
-  let filerelig (word seed-dir "religtype" previous-seed ".csv")
-    if file-exists? filerelig
-      [ file-delete filerelig ]
-    file-open filerelig
-    file-print ("\"tick\",\"mean relig-type\",\"stddev mean relig-type\",\"avgharvestha\",\"stddevharvestha\"")
 end
 
 ;;;;;;;;;;;;;;; end of go
