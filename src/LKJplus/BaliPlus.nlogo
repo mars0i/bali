@@ -366,7 +366,7 @@ to file-mean-relig ;Blake Jackson code
     if file-exists? filerelig
       [ file-delete filerelig ]
     file-open filerelig
-    file-print ("\"ticks\",\"mean-relig type\",\"variance\"")
+    file-print ("\"tick\",\"mean-relig type\",\"stddev mean-relig type\",\"avgharvestha\",\"stddevharvestha\"")
 end
 
 ;; Does the same thing as builtin clear-globals, but allows excluding
@@ -456,7 +456,7 @@ to go
     set avgpestloss totpestloss / totpestlossarea ; average loss due to pests
     set avgWS totWS / totWSarea                   ; average water stress
     set avgharvestha compute-avg-harvest          ; average harvest yield
-    set stddevharvestha compute-stddev-harvest    ; current std dev of pyharvestha across all subaks
+    set stddevharvestha compute-stddev-harvest   ; current std dev of pyharvestha across all subaks
     if avgharvestha > max-avgharvestha
       [set max-avgharvestha avgharvestha]
     set last-n-years-avgharvesthas fput avgharvestha last-n-years-avgharvesthas ; add current avg harvest yield
@@ -962,7 +962,7 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
-to-report compute-stddev-harvest
+to-report compute-stddev-harvest 
   report stddev [pyharvestha] of subaks
 end
 
@@ -1438,7 +1438,9 @@ to-report stddev [vals]
 end
 
 to write-mean-relig ;Blake Jackson code
-  file-print (word ticks"," mean [relig-type] of subaks"," variance [relig-type] of subaks)
+  if ticks > burn-in-months - 1 [
+     file-print (word ticks "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," avgharvestha "," (0.9970887856713804 * stddevharvestha))
+  ]
 end
 
 
