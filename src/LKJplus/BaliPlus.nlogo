@@ -355,19 +355,10 @@ to setup
     ]
   ]
 
-  
+  init-relig-data-file ;Blake Jackson code
   reset-ticks
-init-relig-data ;Blake Jackson code
 end
 ;;;;;;;;;;;;;;; end of setup
-
-to init-relig-data ;Blake Jackson code
-  let filerelig (word seed-dir "religtype" previous-seed ".csv")
-    if file-exists? filerelig
-      [ file-delete filerelig ]
-    file-open filerelig
-    file-print ("\"tick\",\"mean relig-type\",\"stddev mean relig-type\",\"avgharvestha\",\"stddevharvestha\"")
-end
 
 ;; Does the same thing as builtin clear-globals, but allows excluding
 ;; some variables to allow them to carry over values from previous run.
@@ -493,6 +484,16 @@ write-relig-data ;Blake Jackson code
 
   tick
 end
+
+
+to init-relig-data-file ;Blake Jackson code
+  let filerelig (word seed-dir "religtype" previous-seed ".csv")
+    if file-exists? filerelig
+      [ file-delete filerelig ]
+    file-open filerelig
+    file-print ("\"tick\",\"mean relig-type\",\"stddev mean relig-type\",\"avgharvestha\",\"stddevharvestha\"")
+end
+
 ;;;;;;;;;;;;;;; end of go
 
 to go-next-year
