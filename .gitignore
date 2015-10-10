@@ -10,5 +10,5 @@ pom.xml.asc
 .lein-plugins/
 .lein-failures
 .DS_Store
-data
 seeds/seed*.txt
+data/religtype*.csv
