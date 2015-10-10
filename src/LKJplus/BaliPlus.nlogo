@@ -424,7 +424,7 @@ to my-clear-globals
 end
 
 to init-relig-data-file ;Blake Jackson code
-  let filerelig (word seed-dir "religtype" previous-seed ".csv")
+  let filerelig (word data-dir "religtype" previous-seed ".csv")
     if file-exists? filerelig
       [ file-delete filerelig ]
     file-open filerelig
