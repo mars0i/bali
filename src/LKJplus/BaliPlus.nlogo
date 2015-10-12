@@ -2767,10 +2767,10 @@ NIL
 1
 
 BUTTON
-6
-44
-113
-77
+9
+43
+120
+76
 save work
 file-close
 NIL
