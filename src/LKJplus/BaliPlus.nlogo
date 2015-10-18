@@ -2783,16 +2783,6 @@ NIL
 NIL
 1
 
-TEXTBOX
-788
-744
-938
-764
-the cool squad
-16
-0.0
-1
-
 @#$#@#$#@
 ## LICENSE
 
