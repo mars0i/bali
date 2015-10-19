@@ -355,7 +355,7 @@ to setup
     ]
   ]
 
-  
+  init-relig-data-file ;Blake Jackson code
   reset-ticks
 end
 ;;;;;;;;;;;;;;; end of setup
@@ -423,6 +423,14 @@ to my-clear-globals
   set avgharvestha-bin-size 0   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
 end
 
+to init-relig-data-file ;Blake Jackson code
+  let filerelig (word data-dir "religtype" previous-seed ".csv")
+    if file-exists? filerelig
+      [ file-delete filerelig ]
+    file-open filerelig
+    file-print ("\"tick\",\"mean relig-type\",\"stddev mean relig-type\",\"avgharvestha\",\"stddevharvestha\"")
+end
+
 ;;;;;;;;;;;;;;;
 to go
   if run-until-month > 0 and ticks >= run-until-month
@@ -447,7 +455,7 @@ to go
     set avgpestloss totpestloss / totpestlossarea ; average loss due to pests
     set avgWS totWS / totWSarea                   ; average water stress
     set avgharvestha compute-avg-harvest          ; average harvest yield
-    set stddevharvestha compute-stddev-harvest    ; current std dev of pyharvestha across all subaks
+    set stddevharvestha compute-stddev-harvest   ; current std dev of pyharvestha across all subaks
     if avgharvestha > max-avgharvestha
       [set max-avgharvestha avgharvestha]
     set last-n-years-avgharvesthas fput avgharvestha last-n-years-avgharvesthas ; add current avg harvest yield
@@ -480,8 +488,11 @@ to go
     set month month + 1
   ]
 
+write-relig-data ;Blake Jackson code
+
   tick
 end
+
 ;;;;;;;;;;;;;;; end of go
 
 to go-next-year
@@ -951,7 +962,7 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
-to-report compute-stddev-harvest
+to-report compute-stddev-harvest 
   report stddev [pyharvestha] of subaks
 end
 
@@ -1426,6 +1437,12 @@ to-report stddev [vals]
   report ((n - 1) / n) * (standard-deviation vals)
 end
 
+to write-relig-data ;Blake Jackson code
+  if ticks > burn-in-months - 1 [
+     file-print (word ticks "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," avgharvestha "," (0.9970887856713804 * stddevharvestha))
+  ]
+end
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; The following are based on suggestions by Bryan Head at
@@ -1483,10 +1500,10 @@ months
 30.0
 
 BUTTON
-4
-12
-59
-45
+9
+10
+64
+43
 NIL
 setup
 NIL
@@ -1500,10 +1517,10 @@ NIL
 1
 
 BUTTON
-59
-12
-114
-45
+64
+10
+119
+43
 NIL
 go
 T
@@ -1517,10 +1534,10 @@ NIL
 1
 
 SLIDER
-2
-151
+4
 180
-184
+182
+213
 pestgrowth-rate
 pestgrowth-rate
 2
@@ -1532,10 +1549,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-2
-185
-179
-218
+4
+214
+181
+247
 pestdispersal-rate
 pestdispersal-rate
 0.6
@@ -1567,10 +1584,10 @@ PENS
 "stddev" 1.0 0 -2674135 true "" ""
 
 CHOOSER
-1
-283
-176
-328
+3
+312
+178
+357
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
@@ -1634,10 +1651,10 @@ Color_subaks
 1
 
 SWITCH
--2
-590
-174
-623
+0
+619
+176
+652
 show-subak-values
 show-subak-values
 1
@@ -1645,10 +1662,10 @@ show-subak-values
 -1000
 
 TEXTBOX
-5
-221
-181
-287
+7
+250
+183
+316
           Correspondences\npestdispersal-rate    d (Janssen 2006)\n     0.6                       0.18\n     1.0                       0.3\n     1.5                       0.45
 8
 0.0
@@ -1955,10 +1972,10 @@ NIL
 1
 
 BUTTON
-116
-12
-171
-45
+121
+10
+176
+43
 once
 go
 NIL
@@ -2192,10 +2209,10 @@ seed, crop plans in this run:
 1
 
 SLIDER
-3
-372
-179
-405
+5
+401
+181
+434
 ignore-neighbors-prob
 ignore-neighbors-prob
 0
@@ -2207,10 +2224,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-6
-340
-180
-370
+8
+369
+182
+399
 Probability of choosing random crop plan, start month:
 11
 0.0
@@ -2234,10 +2251,10 @@ NIL
 1
 
 SWITCH
-0
-488
-177
-521
+2
+517
+179
+550
 relig-influence?
 relig-influence?
 0
@@ -2292,10 +2309,10 @@ precision (mean [relig-type] of subaks) 3
 11
 
 SLIDER
-0
-454
-177
-487
+2
+483
+179
+516
 relig-tran-stddev
 relig-tran-stddev
 0
@@ -2307,10 +2324,10 @@ NIL
 HORIZONTAL
 
 SWITCH
--2
-555
-177
-588
+0
+584
+179
+617
 show-relig-types
 show-relig-types
 0
@@ -2318,10 +2335,10 @@ show-relig-types
 -1000
 
 SLIDER
--1
-520
-176
-553
+1
+549
+178
+582
 relig-influence
 relig-influence
 1
@@ -2333,20 +2350,20 @@ NIL
 HORIZONTAL
 
 CHOOSER
-5
-46
-163
-91
+7
+75
+165
+120
 random-seed-source
 random-seed-source
 "new seed" "read from file" "use previous"
 0
 
 INPUTBOX
-6
-92
-109
-152
+8
+121
+111
+181
 run-until-month
 0
 1
@@ -2354,20 +2371,20 @@ run-until-month
 Number
 
 TEXTBOX
-110
-93
-180
-135
+112
+122
+182
+164
 0: run forever\nN>0: run until\nmonth = N
 8
 0.0
 1
 
 SWITCH
-0
-418
-178
-451
+2
+447
+180
+480
 relig-pestneighbors
 relig-pestneighbors
 0
@@ -2375,10 +2392,10 @@ relig-pestneighbors
 -1000
 
 TEXTBOX
-6
-404
-156
-422
+8
+433
+158
+451
 Copy pestneighbors if true:
 11
 0.0
@@ -2469,10 +2486,10 @@ NIL
 HORIZONTAL
 
 PLOT
-0
-625
-160
-776
+2
+654
+162
+805
 relig effect curve
 NIL
 NIL
@@ -2575,7 +2592,7 @@ subaks-mean-global
 subaks-mean-global
 0
 200
-0.025
+1
 0.001
 1
 NIL
@@ -2739,6 +2756,23 @@ BUTTON
 44
 to next year
 go-next-year
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+9
+43
+120
+76
+save work
+file-close
 NIL
 1
 T
@@ -3138,6 +3172,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig08step1global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>file-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -3273,6 +3308,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig05step1global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -3408,6 +3444,7 @@ NetLogo 5.2.0
   <experiment name="NoiseReligLinear1global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -3543,6 +3580,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig225170sigmoidey1global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -3678,6 +3716,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig08step50global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -3813,6 +3852,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig05step50global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -3948,6 +3988,7 @@ NetLogo 5.2.0
   <experiment name="NoiseReligLinear50global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -4083,6 +4124,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig225170sigmoidey50global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -4218,6 +4260,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig08step0025global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -4353,6 +4396,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig05step0025global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -4488,6 +4532,7 @@ NetLogo 5.2.0
   <experiment name="NoiseReligLinear0025global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -4623,6 +4668,7 @@ NetLogo 5.2.0
   <experiment name="NoiseRelig225170sigmoidey0025global60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -4758,6 +4804,7 @@ NetLogo 5.2.0
   <experiment name="NoiseNoRelig60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -4893,6 +4940,7 @@ NetLogo 5.2.0
   <experiment name="NoNoise60KticksPast6KBurnin" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <final>File-close</final>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
     <metric>mean [relig-type] of subaks</metric>
@@ -4921,6 +4969,144 @@ NetLogo 5.2.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-step">
       <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-center">
+      <value value="2.25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-endpt">
+      <value value="1.7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="run-until-month">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-tran-stddev">
+      <value value="0.02"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-influence">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="rainfall-scenario">
+      <value value="&quot;high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestdispersal-rate">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="pestgrowth-rate">
+      <value value="2.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="random-seed-source">
+      <value value="&quot;new seed&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-a">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-b">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-c">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-d">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-e">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-f">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-g">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-h">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-i">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-j">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-k">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-l">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-m">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-n">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-o">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-p">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-q">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-r">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-s">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-t">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cropplan-u">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Color_subaks">
+      <value value="&quot;cropping plans&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="viewdamsubaks">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-relig-types">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-subak-values">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="test" repetitions="1" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <final>file-close</final>
+    <timeLimit steps="660"/>
+    <metric>previous-seed</metric>
+    <metric>list2csv relig-type-years-bins-normalized</metric>
+    <metric>list2csv avgharvestha-bins-normalized</metric>
+    <metric>mean [relig-type] of subaks</metric>
+    <metric>stddev [relig-type] of subaks</metric>
+    <metric>avgharvestha</metric>
+    <metric>max-avgharvestha</metric>
+    <metric>avgWS</metric>
+    <metric>avgpestloss</metric>
+    <enumeratedValueSet variable="burn-in-months">
+      <value value="60"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ignore-neighbors-prob">
+      <value value="0.3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-pestneighbors">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="subaks-mean-global">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-curve">
+      <value value="&quot;step&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-step">
+      <value value="0.8"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-center">
       <value value="2.25"/>
