@@ -8,7 +8,7 @@ netlogo=~/bali/src/NetLogo.jar
 datadir=$HOME/bali/data
 
 function usage () {
-	echo "usage: $0 <BehviorSpaceExperiment> [subdirname] [ additional-netlogo-args ]" >&2
+	echo "usage: $0 <BehaviorSpaceExperiment> [subdirname] [ additional-netlogo-args ]" >&2
 	echo "BehviorSpaceExperiment: The name of a BehaviorSpace experiment defined in BaliPlus.nlogo" >&2
 	echo "subdirname: Name of subdirectory of $datadir.  If missing, put data in $datadir." >&2
 }
@@ -38,7 +38,7 @@ if [ -n "$2" ]; then
         mkdir $datadir/$subdir
     fi
 else
-    subdirname=.
+    subdir=.
 fi
 
 # make unique id number for this invocation of the experiment.
@@ -50,7 +50,7 @@ java -Xmx1024m -Dfile.encoding=UTF-8 -cp "$netlogo" org.nlogo.headless.Main \
   --model $HOME/bali/src/LKJplus/BaliPlus.nlogo \
   --experiment "$experiment" \
   --spreadsheet "$datadir/$subdir/$experiment$runid.csv" \
-  --threads 1
+  --threads 1 \
   "$@"
 
 # notes:
