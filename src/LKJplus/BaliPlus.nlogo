@@ -3140,8 +3140,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -3277,8 +3275,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -3414,8 +3410,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -3551,8 +3545,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -3688,8 +3680,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -3825,8 +3815,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -3962,8 +3950,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -4099,8 +4085,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -4236,8 +4220,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -4373,8 +4355,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -4510,8 +4490,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -4647,8 +4625,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -4784,8 +4760,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
@@ -4921,8 +4895,6 @@ NetLogo 5.2.0
     <go>go</go>
     <timeLimit steps="66000"/>
     <metric>previous-seed</metric>
-    <metric>list2csv relig-type-years-bins-normalized</metric>
-    <metric>list2csv avgharvestha-bins-normalized</metric>
     <metric>mean [relig-type] of subaks</metric>
     <metric>stddev [relig-type] of subaks</metric>
     <metric>avgharvestha</metric>
