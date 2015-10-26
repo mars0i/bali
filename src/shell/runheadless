@@ -29,10 +29,11 @@ if [ -z "$1" ]; then
 fi
 
 experiment="$1"
+shift
 
-if [ -n "$2" ]; then
-    subdir="$2"
-    shift 2
+if [ -n "$1" ]; then
+    subdir="$1"
+    shift
     # if user wants to put data in subdir of data dir, make the subdir if necessary
     if [ ! -e $datadir/$subdir ]; then
         mkdir $datadir/$subdir
