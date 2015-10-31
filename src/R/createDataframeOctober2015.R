@@ -1,17 +1,28 @@
 # R
 
-# Using rbind repeatedly may require too much RAM, but it's simple, so let's try it.
-loadruns <- function(csvs) {
-  n.runs <- length(csvs)
-  # csv1 <- csvs[1]
+# Automatically install data.table package if necessary, and load it.
+# Needed for rbindlist().
+if(!require(data.table)){
+    install.packages("data.table", dependencies=T)
+    library(data.table)
+}
 
-  dfs <- vector("list", length=n.runs)
 
+# Returns a vector of religtype csv file names, by default in every subdir
+# of the current dir.  Pass "." as an argument to get csv file names
+# inside the current dir.
+religtypeCSVs <- function(dirpath="*") {
+  return(Sys.glob(paste0(dirpath, "/religtype*.csv")))
+}
 
-  for (i in 1:n.runs) {
-  	dfs[i] <- read.csv(csvs[i])
-  }
+# Returns a dataframe composed of data from each csv file whose name
+# is listed in csvs.
+csvs2df <- function(csvs) {
+  dfs <- lapply(csvs, read.csv)
+  return(rbindlist(dfs))
+}
 
-  return apply(rbind, dfs) # UNTESTED
-
+# Calls csvs2df on the output of religtypeCSVs.
+loadReligtypeCSVs <- function(dirpath="*") {
+  return(csvs2df(religtypeCSVs(dirpath)))
 }
