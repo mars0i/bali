@@ -34,6 +34,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           relig-effect-center-prev
           relig-effect-endpt-prev
           relig-effect-curve-number ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
+          relig-effect-name
           relig-type-num-bins
           relig-type-years-bins ; collects numbers of years in which relig type falls in each of several ranges
           relig-type-years-bins-normalized ; preceding converted into averages i.e. that sum to 1
@@ -428,7 +429,7 @@ to init-relig-data-file ;Blake Jackson code
     if file-exists? filerelig
       [ file-delete filerelig ]
     file-open filerelig
-    file-print ("\"tick\",\"mean relig-type\",\"stddev mean relig-type\",\"avgharvestha\",\"stddevharvestha\"")
+    file-print ("\"tick\",\"run\",\"experiment\",\"relig-effect\",\"mean relig-type\",\"stddev mean relig-type\",\"avgharvestha\",\"stddevharvestha\",\"global-tran\"")
 end
 
 ;;;;;;;;;;;;;;;
@@ -1439,7 +1440,7 @@ end
 
 to write-relig-data ;Blake Jackson code
   if ticks > burn-in-months - 1 [
-     file-print (word ticks "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," avgharvestha "," (0.9970887856713804 * stddevharvestha))
+     file-print (word ""ticks"" "," ""previous-seed"" "," behaviorspace-experiment-name "," relig-effect-name "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," subaks-mean-global "," avgharvestha "," (0.9970887856713804 * stddevharvestha))
   ]
 end
 
