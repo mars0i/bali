@@ -34,6 +34,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           relig-effect-center-prev
           relig-effect-endpt-prev
           relig-effect-curve-number ; numeric value set from relig-effect-curve string chooser so we don't need to do a string comparison multiple times per year.
+          relig-effect-name
           relig-type-num-bins
           relig-type-years-bins ; collects numbers of years in which relig type falls in each of several ranges
           relig-type-years-bins-normalized ; preceding converted into averages i.e. that sum to 1
@@ -3220,6 +3221,9 @@ NetLogo 5.2.0
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
     </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;step08&quot;"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
     </enumeratedValueSet>
@@ -3357,6 +3361,9 @@ NetLogo 5.2.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;step05&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
@@ -3496,6 +3503,9 @@ NetLogo 5.2.0
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
     </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;linear&quot;"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
     </enumeratedValueSet>
@@ -3633,6 +3643,9 @@ NetLogo 5.2.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;sigmoidey&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
@@ -3772,6 +3785,9 @@ NetLogo 5.2.0
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
     </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;step08&quot;"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
     </enumeratedValueSet>
@@ -3909,6 +3925,9 @@ NetLogo 5.2.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;step05&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
@@ -4048,6 +4067,9 @@ NetLogo 5.2.0
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
     </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;linear&quot;"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
     </enumeratedValueSet>
@@ -4185,6 +4207,9 @@ NetLogo 5.2.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;sigmoidey&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
@@ -4324,6 +4349,9 @@ NetLogo 5.2.0
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
     </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;step08&quot;"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
     </enumeratedValueSet>
@@ -4461,6 +4489,9 @@ NetLogo 5.2.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;step05&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
@@ -4600,6 +4631,9 @@ NetLogo 5.2.0
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
     </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;linear&quot;"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
     </enumeratedValueSet>
@@ -4738,6 +4772,9 @@ NetLogo 5.2.0
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
     </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;sigmoidey&quot;"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
     </enumeratedValueSet>
@@ -4875,6 +4912,9 @@ NetLogo 5.2.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-effect-endpt">
       <value value="1.7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;none&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="run-until-month">
       <value value="0"/>
@@ -5022,6 +5062,9 @@ NetLogo 5.2.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="relig-influence">
       <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="relig-effect-name">
+      <value value="&quot;nonoise&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
       <value value="&quot;high&quot;"/>
