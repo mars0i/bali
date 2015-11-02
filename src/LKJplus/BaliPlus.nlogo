@@ -1441,7 +1441,7 @@ end
 ; ((previous-seed) * -1) is a dirty way to get rid of the "-" that precedes the actual seed
 to write-relig-data ;Blake Jackson code
   if ticks > burn-in-months - 1 [
-     file-print (word "'"ticks"'" "," "'"((previous-seed) * -1)"'" "," behaviorspace-experiment-name "," relig-effect-name "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," subaks-mean-global "," avgharvestha "," (0.9970887856713804 * stddevharvestha))
+     file-print (word "\"" ticks "\",\"" (previous-seed * -1) "\"," behaviorspace-experiment-name "," relig-effect-name "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," subaks-mean-global "," avgharvestha "," (0.9970887856713804 * stddevharvestha))
   ]
 end
 
@@ -2783,16 +2783,6 @@ NIL
 NIL
 NIL
 NIL
-1
-
-TEXTBOX
-788
-744
-938
-764
-the cool squad
-16
-0.0
 1
 
 @#$#@#$#@
