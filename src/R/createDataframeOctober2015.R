@@ -7,6 +7,18 @@ if(!require(data.table)){
     library(data.table)
 }
 
+createDataframeAndSave()
+
+createDataframeAndSave <- function(dirpath="*") {
+  bali.df <- loadReligtypeCSVs(dirpath)
+  save(bali.df, file="balidf.rdata")
+}
+
+# Calls csvs2df on the output of religtypeCSVs.
+# returns a data.table dataframe.
+loadReligtypeCSVs <- function(dirpath="*") {
+  return(csvs2df(religtypeCSVs(dirpath)))
+}
 
 # Returns a vector of religtype csv file names, by default in every subdir
 # of the current dir.  Pass "." as an argument to get csv file names
@@ -20,9 +32,4 @@ religtypeCSVs <- function(dirpath="*") {
 csvs2df <- function(csvs) {
   dfs <- lapply(csvs, read.csv)
   return(rbindlist(dfs))
-}
-
-# Calls csvs2df on the output of religtypeCSVs.
-loadReligtypeCSVs <- function(dirpath="*") {
-  return(csvs2df(religtypeCSVs(dirpath)))
 }
