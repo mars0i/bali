@@ -7,8 +7,6 @@ if(!require(data.table)){
     library(data.table)
 }
 
-createDataframeAndSave()
-
 createDataframeAndSave <- function(dirpath="*") {
   bali.df <- loadReligtypeCSVs(dirpath)
   save(bali.df, file="balidf.rdata")
@@ -33,3 +31,5 @@ csvs2df <- function(csvs) {
   dfs <- lapply(csvs, read.csv)
   return(rbindlist(dfs))
 }
+
+createDataframeAndSave()
