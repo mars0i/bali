@@ -28,8 +28,13 @@ religtypeCSVs <- function(dirpath="*") {
 # Returns a dataframe composed of data from each csv file whose name
 # is listed in csvs.
 csvs2df <- function(csvs) {
-  dfs <- lapply(csvs, read.csv)
-  return(rbindlist(dfs))
+  bigdf <- rbindlist(lapply(csvs, read.csv))
+
+  # The global.tran column might contain only integers.
+  # Either way, we want R to treat the data as "factors", not integers:
+  bigdf$global.tran <- factor(bigdf$global.tran)
+
+  return(bigdf)
 }
 
 createDataframeAndSave()
