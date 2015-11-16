@@ -488,9 +488,9 @@ to go
   ][
     set month month + 1
   ]
-
-write-relig-data ;Blake Jackson code
-
+if month = 11 [
+  write-relig-data ; Blake Jackson Code
+]
   tick
 end
 
@@ -1438,10 +1438,9 @@ to-report stddev [vals]
   report ((n - 1) / n) * (standard-deviation vals)
 end
 
-; ((previous-seed) * -1) is a dirty way to get rid of the "-" that precedes the actual seed
 to write-relig-data ;Blake Jackson code
   if ticks > burn-in-months - 1 [
-     file-print (word "\"" ticks "\",\"" (previous-seed * -1) "\"," behaviorspace-experiment-name "," relig-effect-name "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," subaks-mean-global "," avgharvestha "," (0.9970887856713804 * stddevharvestha))
+     file-print (word "\"" ticks "\",\"" previous-seed "\"," behaviorspace-experiment-name "," relig-effect-name "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," avgharvestha "," (0.9970887856713804 * stddevharvestha)"," subaks-mean-global)
   ]
 end
 
@@ -1593,7 +1592,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-2
+0
 
 PLOT
 774
@@ -2481,7 +2480,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
-1.71
+1.61
 0.01
 1
 NIL
