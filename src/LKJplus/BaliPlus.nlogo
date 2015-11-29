@@ -466,6 +466,7 @@ to go
     calc-avgharvestha-years-bins
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
     imitate-relig-types
+    imitate-relig-types-with-popco ;; DEBUG - TESTING ONLY
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
     maybe-ignore-neighboring-plans                ; possibly forget what you learned from neighbors and do something else
     if Color_subaks = "cropping plans" [ask subaks [display-cropping-plan-etc]]
@@ -633,14 +634,6 @@ to set-listeners-speakers
   ]
 end
 
-;; The number of speakers 
-;to poisson-choose-speakers-with-replacement
-;  ask subaks [
-;    let num-utterances random-poisson subks-mean-global
-;    set speakers turtle-set (rnd:weighted-n-of-with-repeats num-utterances (other subaks) [0.0]) ; NOT RIGHT. turtle-set will collapse repeats
-;  ]
-;end
-
 ;; Get a Poisson-distributed random integer n, and return an agentset with n unique subaks, or 171 subaks if n > 171
 to poisson-choose-speakers
   ask subaks [
@@ -670,11 +663,18 @@ to imitate-relig-types
     set relig-type new-relig-type
   ]
 end
-;; alternatives to using set-listeners-speakers:
-    ;let best find-best pestneighbors  ; note bestneighbor might be self
-    ;let best find-best n-of 10 subaks ; superceded by use of set-listeners-speakers
-    ;let best find-best (turtle-set pestneighbors (n-of relig-tran-global-# (other subaks))) ; combine pestneighbors with random selection from population
 
+to imitate-relig-types-with-popco
+  set-listeners-speakers
+  
+  ;; The load-data procedure ends up giving subaks the same who number (from 0 to 171) every time, so we can use the numbers as ids in popco:
+  let listener-speaker-pairs filter [(first ?) != (last ?)]  ; only keep pairs with different subaks
+                                    [(list who ([who] of find-best speakers))]  ; pair each subak's id with the id of subak from which it will copy
+                                    of subaks
+ 
+  print listener-speaker-pairs ; DEBUG
+  ;; CALL POPCO HERE
+end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; NATURAL PROCESSES: Farming, Water, Pests
@@ -1501,9 +1501,9 @@ months
 30.0
 
 BUTTON
-9
+7
 10
-64
+62
 43
 NIL
 setup
@@ -1518,9 +1518,9 @@ NIL
 1
 
 BUTTON
-64
+62
 10
-119
+117
 43
 NIL
 go
@@ -1973,9 +1973,9 @@ NIL
 1
 
 BUTTON
-121
+119
 10
-176
+174
 43
 once
 go
@@ -2593,7 +2593,7 @@ subaks-mean-global
 subaks-mean-global
 0
 200
-0.023
+7.143
 0.001
 1
 NIL
@@ -2768,10 +2768,10 @@ NIL
 1
 
 BUTTON
-6
-44
-113
-77
+7
+42
+114
+75
 save work
 file-close
 NIL
