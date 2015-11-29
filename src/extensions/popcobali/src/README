@@ -1,0 +1,14 @@
+So far this stuff is just copied from my netlogo-clojure extension.
+Needs a gut-rehab.
+i.e. instead of eval, just use a (possibly special-purpose) popco
+function that will end up calling 'once' (or part of its guts).
+
+Note that I think I'm going to need to persist state from one
+call to another--i.e. the rest of the state of the popco Bali system.
+So maybe stuff it into an atom.
+
+Note that I think NetLogo lists are called LogoList in the
+Scala/Java source.
+And they extend the Collections interface, I think--
+so I think I can just pass them as is to Clojure and use Clojure
+collection/sequence operations.
