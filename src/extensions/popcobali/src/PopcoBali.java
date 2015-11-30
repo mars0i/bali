@@ -3,40 +3,21 @@ import java.net.*;
 
 import clojure.java.api.Clojure;
 import clojure.lang.IFn;
-import clojure.pprint.*;
+//import clojure.pprint.*;
+import popco.core.main.*;
 
-public class Eval extends DefaultReporter {
-
-	// take string as input, report a string
+public class PopcoBali extends DefaultReporter {
 	public Syntax getSyntax() {
-		return Syntax.reporterSyntax(new int[] {Syntax.StringType()}, Syntax.StringType());
+		return Syntax.reporterSyntax(new int[] {Syntax.ListType()}, Syntax.StringType()); // single list as input, return string
 	}
 
-	public Object report(Argument args[], Context context)
-		throws ExtensionException {
+	public Object report(Argument args[], Context context) throws ExtensionException {
 		try {
-			addPath("extensions/clojure/clojure-1.6.0.jar"); // relative to NetLogo's home dir
-
+			addPath("extensions/clojure/clojure-1.7.0.jar"); // (addPath() defined below) <== PUT MY POPCO JAR FILE HERE
 			// Will throw exceptions without the preceding line
-			IFn cljReadString = Clojure.var("clojure.core", "read-string");
-			IFn cljEval = Clojure.var("clojure.core", "eval");
-
-			String clojInput = args[0].getString();  // Whatever NetLogo passed in.
-			Object retObj = cljEval.invoke(cljReadString.invoke(clojInput)); // Now Clojure it.
-
-			// eval returns a null in Java for what's a nil in Clojure.  Need to handle that.
-
-			// Fancy way to convert null back to "nil":
-			//IFn cljCLformat = Clojure.var("clojure.pprint", "cl-format"); // doesn't seem to be right--can't use the function below
-			//Object retObj = cljCLformat.invoke("nil", "~a", cljEval.invoke(cljReadString.invoke(clojInput)));  // throwing unbound function exception
-
-			// Return to NetLogo
-			if (retObj == null) {  // Cheap kludge to convert null to "nil".
-				return "nil";
-			}{
-				return retObj.toString();
-			}
-
+			IFn cljFn = Clojure.var("popco.core.main", "netlogo-test"); // IS THIS REALLY NECESSARY??
+			Object retObj = cljfn.invoke(cljFn.invoke(args[0])); // Now Clojure it.
+			if (retObj == null) { return "nil"; }{ return retObj.toString(); }
 		} catch (Throwable e) {
 			throw new ExtensionException( e.getMessage() ) ;
 		}
@@ -56,6 +37,7 @@ public class Eval extends DefaultReporter {
 	}
 }
 
+// IS THIS NECESSARY??
 class AddToClassLoader extends URLClassLoader{
  
     /**
@@ -67,7 +49,7 @@ class AddToClassLoader extends URLClassLoader{
     
     @Override
     /**
-     * add casspath to the loader.
+     * add classpath to the loader.
      */
     public void addURL(URL url) {
         super.addURL(url);
