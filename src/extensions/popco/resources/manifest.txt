@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-Extension-name: popcobali
-Class-Manager: PopcoBaliExtension
+Extension-name: popco
+Class-Manager: PopcoExtension
 NetLogo-Extension-API-Version: 5.0

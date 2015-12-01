@@ -14,10 +14,11 @@ public class BaliOnce extends DefaultReporter {
 
 	public Object report(Argument args[], Context context) throws ExtensionException {
 		try {
-			addPath("extensions/popcobali/popcobali.jar"); // (addPath() defined below) <== PUT MY POPCO JAR FILE HERE
+			addPath("extensions/popco/clojure-1.7.0.jar"); // (addPath() defined below) 
+			addPath("extensions/popco/popco.jar"); 
 			IFn cljFn = Clojure.var("popco.core.main", "netlogo-test"); // IS THIS REALLY NECESSARY??  Can't I just call Clojure directly?
-			Object retObj = cljFn.invoke(cljFn.invoke(args[0])); // Now Clojure it.
-			if (retObj == null) { return "nil"; }{ return retObj.toString(); }
+			Object retObj = cljFn.invoke(cljFn.invoke(args[0].getList())); // Now Clojure it.
+			if (retObj == null) { return "nil"; }{ return retObj; }
 		} catch (Throwable e) {
 			throw new ExtensionException( e.getMessage() ) ;
 		}
