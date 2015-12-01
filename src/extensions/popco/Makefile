@@ -18,12 +18,12 @@ endif
 
 #JAVAC=$(JAVA_HOME)/bin/javac
 JAVAC=javac
-SRCS=$(wildcard src/java/*.java)
+SRCS=$(wildcard src/*.java)
 
 
 popco.jar popco.jar.pack.gz: $(SRCS) $(MANIFEST) Makefile
 	mkdir -p target/classes
-	$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -source 1.5 -target 1.5 -classpath "$(NETLOGO)"/NetLogo.jar$(COLON)$(POPCO) -d target/classes $(SRCS)
+	$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -source 1.6 -target 1.6 -classpath "$(NETLOGO)"/NetLogo.jar$(COLON)$(POPCO) -d target/classes $(SRCS)
 	jar cmf $(MANIFEST) target/popco.jar -C target/classes .
 	pack200 --modification-time=latest --effort=9 --strip-debug --no-keep-file-order --unknown-attribute=strip target/popco.jar.pack.gz target/popco.jar
 
@@ -36,4 +36,4 @@ popco.zip: popco.jar
 
 install:
 	if [ ! -d "$(EXTENSION)" ]; then mkdir -v "$(EXTENSION)"; fi
-	cp -v target/*.jar* resources/*.jar* src/netlogo/* README.md LICENSE "$(EXTENSION)"
+	cp -v target/*.jar* resources/*.jar* README.md LICENSE "$(EXTENSION)"

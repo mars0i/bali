@@ -1,11 +1,9 @@
-popcobali
+popco
 ====
 
 NetLogo extension by [Marshall
 Abrams](http://members.logical.net/~marshall/) that allows calling
-[Clojure](http://clojure.org) from NetLogo.
-
-Still experimental.
+popco (written in [Clojure](http://clojure.org)) from NetLogo.
 
 Please feel free to contact me with questions, suggestions, etc. at:
 
