@@ -6,9 +6,10 @@ import clojure.lang.IFn;
 //import clojure.pprint.*;
 import popco.core.*;
 
-public class PopcoBali extends DefaultReporter {
+// Implementation of the 'bali-once' extension reporter/function
+public class BaliOnce extends DefaultReporter {
 	public Syntax getSyntax() {
-		return Syntax.reporterSyntax(new int[] {Syntax.ListType()}, Syntax.StringType()); // single list as input, return string
+		return Syntax.reporterSyntax(new int[] {Syntax.ListType()}, Syntax.ListType()); // argument types, return type
 	}
 
 	public Object report(Argument args[], Context context) throws ExtensionException {

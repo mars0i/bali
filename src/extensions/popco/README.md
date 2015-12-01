@@ -12,6 +12,14 @@ Please feel free to contact me with questions, suggestions, etc. at:
 	mabrams ([at]) uab [(dot)] edu
 	marshall ([at]) logical [(dot)] net  
 
+This software is copyright 2015 by [Marshall
+Abrams](http://members.logical.net/~marshall/), and is distributed
+under the [Gnu General Public License version
+3.0](http://www.gnu.org/copyleft/gpl.html) as specified in the file
+LICENSE, except where noted.  (For example, there is source code in
+src/java that was written by other authors, which is released under
+different licenses.)
+
 ### Installation
 
 (These instructions are designed for unix-family systems such as OS X
@@ -40,12 +48,8 @@ To use, put this in the Code tab in netlogo:
 
 For now, that's it.
 
-#### Note:
+### Compiling
 
-*clojure-\<version number\>.jar* is the main Clojure jar file.  This is
-what's needed to run Clojure in any manner at all.
-
-*clojure.jar* is the NetLogo extension jar file.
-
-Similar remarks apply to *\*.jar.pack.gz*, which are needed for Applets.
-
+Type 'make', perhaps after exporting an environmental variable NETLOGO
+that you've defined to point to the directory in which NetLogo is
+installed.
