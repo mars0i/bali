@@ -1,12 +1,13 @@
-CLOJURE=./resources/clojure-1.6.0.jar
-#CLOJURE=$(HOME)/.m2/repository/org/clojure/clojure/1.6.0/clojure-1.6.0.jar 
+POPCO=./resources/popco2-1.0.0-standalone.jar
 MANIFEST=resources/manifest.txt
 
+# Probably better to define the env var NETLOGO to point to your
+# Netlogo installation:
 ifeq ($(origin NETLOGO), undefined)
   NETLOGO=../..
 endif
 
-EXTENSION=$(NETLOGO)/extensions/clojure
+EXTENSION=$(NETLOGO)/extensions/popco
 
 ifneq (,$(findstring CYGWIN,$(shell uname -s)))
   COLON=\;
@@ -20,18 +21,18 @@ JAVAC=javac
 SRCS=$(wildcard src/java/*.java)
 
 
-clojure.jar clojure.jar.pack.gz: $(SRCS) $(MANIFEST) Makefile
+popco.jar popco.jar.pack.gz: $(SRCS) $(MANIFEST) Makefile
 	mkdir -p target/classes
-	$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -source 1.5 -target 1.5 -classpath "$(NETLOGO)"/NetLogo.jar$(COLON)$(CLOJURE) -d target/classes $(SRCS)
-	jar cmf $(MANIFEST) target/clojure.jar -C target/classes .
-	pack200 --modification-time=latest --effort=9 --strip-debug --no-keep-file-order --unknown-attribute=strip target/clojure.jar.pack.gz target/clojure.jar
+	$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -source 1.5 -target 1.5 -classpath "$(NETLOGO)"/NetLogo.jar$(COLON)$(POPCO) -d target/classes $(SRCS)
+	jar cmf $(MANIFEST) target/popco.jar -C target/classes .
+	pack200 --modification-time=latest --effort=9 --strip-debug --no-keep-file-order --unknown-attribute=strip target/popco.jar.pack.gz target/popco.jar
 
-clojure.zip: clojure.jar
-	rm -rf clojure
-	mkdir clojure
-	cp -rp target/clojure.jar target/clojure.jar.pack.gz README.md src $(MANIFEST) $(CLOJURE) $(CLOJURE).pack.gz clojure  # Makefile 
-	zip -rv clojure.zip clojure
-	rm -rf clojure
+popco.zip: popco.jar
+	rm -rf popco
+	mkdir popco
+	cp -rp target/popco.jar target/popco.jar.pack.gz README.md src $(MANIFEST) $(POPCO) $(POPCO).pack.gz popco  # Makefile 
+	zip -rv popco.zip popco
+	rm -rf popco
 
 install:
 	if [ ! -d "$(EXTENSION)" ]; then mkdir -v "$(EXTENSION)"; fi
