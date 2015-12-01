@@ -1,12 +1,11 @@
-CLOJURE=./resources/clojure-1.7.0.jar
-#CLOJURE=$(HOME)/.m2/repository/org/clojure/clojure/1.6.0/clojure-1.6.0.jar 
+CLOJURE=./resources/popco2-1.0.0-standalone.jar
 MANIFEST=resources/manifest.txt
 
 ifeq ($(origin NETLOGO), undefined)
   NETLOGO=../..
 endif
 
-EXTENSION=$(NETLOGO)/extensions/clojure
+EXTENSION=$(NETLOGO)/extensions/popcobali
 
 ifneq (,$(findstring CYGWIN,$(shell uname -s)))
   COLON=\;
@@ -17,21 +16,21 @@ endif
 
 #JAVAC=$(JAVA_HOME)/bin/javac
 JAVAC=javac
-SRCS=$(wildcard src/java/*.java)
+SRCS=$(wildcard src/*.java)
 
 
-clojure.jar clojure.jar.pack.gz: $(SRCS) $(MANIFEST) Makefile
+popcobali.jar popcobali.jar.pack.gz: $(SRCS) $(MANIFEST) Makefile
 	mkdir -p target/classes
-	$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -source 1.5 -target 1.5 -classpath "$(NETLOGO)"/NetLogo.jar$(COLON)$(CLOJURE) -d target/classes $(SRCS)
-	jar cmf $(MANIFEST) target/clojure.jar -C target/classes .
-	pack200 --modification-time=latest --effort=9 --strip-debug --no-keep-file-order --unknown-attribute=strip target/clojure.jar.pack.gz target/clojure.jar
+	$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -source 1.6 -target 1.6 -classpath "$(NETLOGO)"/NetLogo.jar$(COLON)$(CLOJURE) -d target/classes $(SRCS)
+	jar cmf $(MANIFEST) target/popcobali.jar -C target/classes .
+	pack200 --modification-time=latest --effort=9 --strip-debug --no-keep-file-order --unknown-attribute=strip target/popcobali.jar.pack.gz target/popcobali.jar
 
-clojure.zip: clojure.jar
-	rm -rf clojure
-	mkdir clojure
-	cp -rp target/clojure.jar target/clojure.jar.pack.gz README.md src $(MANIFEST) $(CLOJURE) $(CLOJURE).pack.gz clojure  # Makefile 
-	zip -rv clojure.zip clojure
-	rm -rf clojure
+popcobali.zip: popcobali.jar
+	rm -rf popcobali
+	mkdir popcobali
+	cp -rp target/popcobali.jar target/popcobali.jar.pack.gz README.md src $(MANIFEST) $(CLOJURE) $(CLOJURE).pack.gz popcobali  # Makefile 
+	zip -rv popcobali.zip popcobali
+	rm -rf popcobali
 
 install:
 	if [ ! -d "$(EXTENSION)" ]; then mkdir -v "$(EXTENSION)"; fi
