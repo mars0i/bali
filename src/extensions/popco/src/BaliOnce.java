@@ -14,8 +14,8 @@ public class BaliOnce extends DefaultReporter {
 
 	public Object report(Argument args[], Context context) throws ExtensionException {
 		try {
-			addPath("extensions/popco/clojure-1.7.0.jar"); // (addPath() defined below) 
-			addPath("extensions/popco/popco.jar"); 
+			//addPath("extensions/popco/clojure-1.7.0.jar");
+			addPath("extensions/popco/popco2-1.0.0-standalone.jar");  // (addPath() defined below) 
 			IFn cljFn = Clojure.var("popco.core.main", "netlogo-test"); // IS THIS REALLY NECESSARY??  Can't I just call Clojure directly?
 			Object retObj = cljFn.invoke(cljFn.invoke(args[0].getList())); // Now Clojure it.
 			if (retObj == null) { return "nil"; }{ return retObj; }
