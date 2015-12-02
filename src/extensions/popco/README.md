@@ -46,6 +46,10 @@ To use, put this in the Code tab in netlogo:
 
 For now, that's it.
 
+Note: In most NetLogo source dists, there's a file dist/netlogo.sh
+that shows how to run it from the commandline.  netlogo.sh here
+is one of those.
+
 ### Compiling
 
 Type 'make', perhaps after exporting an environmental variable NETLOGO
