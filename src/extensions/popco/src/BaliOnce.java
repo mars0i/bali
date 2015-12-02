@@ -4,7 +4,7 @@ import java.net.*;
 import clojure.java.api.Clojure;
 import clojure.lang.IFn;
 //import clojure.pprint.*;
-import popco.core.*;
+//import popco.core.*;
 
 // Implementation of the 'bali-once' extension reporter/function
 public class BaliOnce extends DefaultReporter {
@@ -18,7 +18,9 @@ public class BaliOnce extends DefaultReporter {
 			addPath("extensions/popco/popco2-1.0.0-standalone.jar");  // (addPath() defined below) 
 			IFn cljFn = Clojure.var("popco.core.main", "netlogo-test"); // IS THIS REALLY NECESSARY??  Can't I just call Clojure directly?
 			Object retObj = cljFn.invoke(cljFn.invoke(args[0].getList())); // Now Clojure it.
-			if (retObj == null) { return "nil"; }{ return retObj; }
+			//Object retObj = cljFn.invoke(null);
+			//Object retObj = popco.core.main.netlogo_test(args[0].getList());
+			if (retObj == null) { return "nil"; }{ return retObj; } // FIXME
 		} catch (Throwable e) {
 			throw new ExtensionException( e.getMessage() ) ;
 		}
