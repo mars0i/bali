@@ -18,7 +18,8 @@ public class BaliOnce extends DefaultReporter {
 			addPath("extensions/popco/popco2-1.0.0-standalone.jar");  // (addPath() defined below) CAN I MOVE THIS TO java command line?
 			Clojure.require("popco.core.main");  // cljutils
 			Var cljFn = Clojure.var("popco.core.main", "nlogotest");  // cljutils
-			Collection retobj = (Collection) cljFn.invoke(args[0].getList());
+			//Collection<Double> retobj = (Collection<Double>) cljFn.invoke(args[0].getList());
+			Collection<?> retobj = (Collection<?>) cljFn.invoke(args[0].getList());
 			LogoList retlist = LogoList.fromJava(retobj);
 			return retlist;
 		} catch (Throwable e) {
