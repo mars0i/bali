@@ -3,7 +3,7 @@ import java.net.*;
 
 import clojure.java.api.Clojure;
 import clojure.lang.IFn;
-import popco.core.*;
+//import popco.core.*;
 
 // Implementation of the 'bali-once' extension reporter/function
 public class BaliOnce extends DefaultReporter {
@@ -13,10 +13,12 @@ public class BaliOnce extends DefaultReporter {
 
 	public Object report(Argument args[], Context context) throws ExtensionException {
 		try {
-			//addPath("extensions/popco/popco2-1.0.0-standalone.jar");  // (addPath() defined below) 
-			//IFn cljFn = Clojure.var("popco.core.nlogo", "once"); // IS THIS REALLY NECESSARY??  Can't I just call Clojure directly?
-			//Object retObj = cljFn.invoke(args[0].getList()); // ERROR HERE
-			Object retObj = Nlogo.once(args[0].getList());
+			addPath("extensions/popco/popco2-1.0.0-standalone.jar");  // (addPath() defined below) 
+			//IFn cljFn = Clojure.var("popco.core.Nlogo", "once");
+			IFn cljFn = Clojure.var("popco.core.main", "nlogotest");
+			System.out.println(cljFn + " Yow!");
+			Object retObj = cljFn.invoke(args[0].getList()); // ERROR HERE
+			//Object retObj = Nlogo.once(args[0].getList());
 			if (retObj == null) { return "nil"; }{ return retObj; } // FIXME
 		} catch (Throwable e) {
 			throw new ExtensionException( e.getMessage() ) ;
