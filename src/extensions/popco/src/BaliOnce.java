@@ -1,8 +1,9 @@
 import org.nlogo.api.*;
 import java.net.*;
-
-import clojure.java.api.Clojure;
-import clojure.lang.IFn;
+//import clojure.java.api.Clojure;
+//import clojure.lang.IFn;
+import clojure.lang.Var;
+import mikera.cljutils.Clojure;
 //import popco.core.*;
 
 // Implementation of the 'bali-once' extension reporter/function
@@ -15,11 +16,12 @@ public class BaliOnce extends DefaultReporter {
 		try {
 			addPath("extensions/popco/popco2-1.0.0-standalone.jar");  // (addPath() defined below) 
 			//IFn cljFn = Clojure.var("popco.core.Nlogo", "once");
-			IFn cljFn = Clojure.var("popco.core.main", "nlogotest");
-			System.out.println(cljFn + " Yow!");
-			Object retObj = cljFn.invoke(args[0].getList()); // ERROR HERE
-			//Object retObj = Nlogo.once(args[0].getList());
-			if (retObj == null) { return "nil"; }{ return retObj; } // FIXME
+			Clojure.require("popco.core.main");  // cljutils
+			Var cljFn = Clojure.var("popco.core.main", "nlogotest");  // cljutils
+			Object retobj = cljFn.invoke(args[0].getList());
+			Object[] retarr = (Object[]) retobj;
+			//LogoList retlist = LogoListBuilder.addAll(retarr).toLogoList();
+			return retobj;
 		} catch (Throwable e) {
 			throw new ExtensionException( e.getMessage() ) ;
 		}
