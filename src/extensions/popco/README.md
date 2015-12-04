@@ -38,11 +38,17 @@ extension from scratch, you probably want to get the original version using
 `git` from https://github.com/mars0i/netlogo-clojure, because the
 Makefile is there and is set up for the directory structure there.)
 
+### To compile from scratch:
+
+	export NETLOGO=<your NetLogo installation here>  
+	make  
+	make install  
+
 ### Usage
 
 To use, put this in the Code tab in netlogo:
 
-	extensions [popcobali]
+	extensions [popco]
 
 For now, that's it.
 
