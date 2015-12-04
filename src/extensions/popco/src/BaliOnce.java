@@ -1,9 +1,10 @@
 import org.nlogo.api.*;
 import java.net.*;
+import java.util.*;
 //import clojure.java.api.Clojure;
 //import clojure.lang.IFn;
 import clojure.lang.Var;
-import mikera.cljutils.Clojure;
+import mikera.cljutils.Clojure; // Instead of using IFn etc. directly. Didn't get that working.
 //import popco.core.*;
 
 // Implementation of the 'bali-once' extension reporter/function
@@ -14,14 +15,12 @@ public class BaliOnce extends DefaultReporter {
 
 	public Object report(Argument args[], Context context) throws ExtensionException {
 		try {
-			addPath("extensions/popco/popco2-1.0.0-standalone.jar");  // (addPath() defined below) 
-			//IFn cljFn = Clojure.var("popco.core.Nlogo", "once");
+			addPath("extensions/popco/popco2-1.0.0-standalone.jar");  // (addPath() defined below) CAN I MOVE THIS TO java command line?
 			Clojure.require("popco.core.main");  // cljutils
 			Var cljFn = Clojure.var("popco.core.main", "nlogotest");  // cljutils
-			Object retobj = cljFn.invoke(args[0].getList());
-			Object[] retarr = (Object[]) retobj;
-			//LogoList retlist = LogoListBuilder.addAll(retarr).toLogoList();
-			return retobj;
+			Collection retobj = (Collection) cljFn.invoke(args[0].getList());
+			LogoList retlist = LogoList.fromJava(retobj);
+			return retlist;
 		} catch (Throwable e) {
 			throw new ExtensionException( e.getMessage() ) ;
 		}
