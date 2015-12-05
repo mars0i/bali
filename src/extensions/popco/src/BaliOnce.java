@@ -16,9 +16,9 @@ public class BaliOnce extends DefaultReporter {
 	public Object report(Argument args[], Context context) throws ExtensionException {
 		try {
 			addPath("extensions/popco/popco2-1.0.0-standalone.jar");  // (addPath() defined below) CAN I MOVE THIS TO java command line?
-			Clojure.require("popco.core.main");  // cljutils
-			Var cljFn = Clojure.var("popco.core.main", "nlogotest");  // cljutils
-			//Collection<Double> retobj = (Collection<Double>) cljFn.invoke(args[0].getList());
+			//addPath("extensions/popco/clojure-utils-0.5.0.jar");  // (addPath() defined below) CAN I MOVE THIS TO java command line?
+			Clojure.require("sims.bali.netlogo");  // cljutils is included in the popco uberjar via core.matrix or vectorz
+			Var cljFn = Clojure.var("sims.bali.netlogo", "bali-once");  // cljutils
 			Collection<?> retobj = (Collection<?>) cljFn.invoke(args[0].getList());
 			LogoList retlist = LogoList.fromJava(retobj);
 			return retlist;
