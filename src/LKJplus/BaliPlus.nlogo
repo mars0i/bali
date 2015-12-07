@@ -671,8 +671,16 @@ to imitate-relig-types-with-popco
   let listener-speaker-pairs filter [(first ?) != (last ?)]  ; only keep pairs with different subaks
                                     [(list who ([who] of find-best speakers))]  ; pair each subak's id with the id of subak from which it will copy
                                     of subaks
+  ; bROKEN                
+  let best-speakers map [
+    [let best find-best speakers
+     ifelse-value best = self
+       [(list)] ; return empty list
+       [[who] of best]    ; return subak id
+    ] of ?
+  ] sort subaks
  
-  print listener-speaker-pairs ; DEBUG
+  print best-speakers; DEBUG
   ;; CALL POPCO HERE
 end
 
