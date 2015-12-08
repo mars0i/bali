@@ -1,4 +1,4 @@
-;extensions [rnd]
+extensions [table]
 
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-data from data in text files
@@ -45,6 +45,7 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           avgharvestha-num-bins
           avgharvestha-bins-max ; max value for the top bin
           avgharvestha-bin-size   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
+          popco-hashtbl ; will contain a table to be passed to popco
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
         ]
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
@@ -171,6 +172,8 @@ to setup
   set avgharvestha-bin-size avgharvestha-bins-max / avgharvestha-num-bins
   set avgharvestha-bins n-values avgharvestha-num-bins [0]
   set avgharvestha-bins-normalized n-values avgharvestha-num-bins [0]
+  set popco-hashtbl table:make ; table mapping speakers to listeners for popco side
+  init-hashtable popco-hashtbl
 
   ask patches [set pcolor default-pcolor]
   
@@ -422,8 +425,9 @@ to my-clear-globals
   set avgharvestha-bins-normalized 0 
   set avgharvestha-num-bins 0
   set avgharvestha-bins-max 0 ; max value for the top bin
-  set avgharvestha-bin-size 0   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
-end
+  set avgharvestha-bin-size 0 ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
+  set popco-hashtbl 0 ; for popco interop
+ end
 
 to init-relig-data-file ;Blake Jackson code
   let filerelig (word data-dir "religtype" previous-seed ".csv")
@@ -669,9 +673,29 @@ end
 ;; Send the ids of speakers, in order of listeners' ids, to popco.
 to imitate-relig-types-with-popco
   set-listeners-speakers
-  let best-speaker-ids map best-speaker-id-or-nil (sort-on [subak-id] subaks) ; 
-  print best-speaker-ids; DEBUG
+  
+  ;; In this program, listeners choose speakers; in popco, speakers choose listeners.
+  ;; What popco needs is a mapping from speakers to listeners.  We make that here.
+  ;; Note that although there is only one best speaker for each subak, the same speaker
+  ;; may be best for multiple subaks.  Thus some speakers may have multiple listeners.
+  init-hashtable popco-hashtbl
+  ask subaks [
+    let speaker find-best speakers
+    if speaker != self [
+      let speaker-id [subak-id] of speaker
+      let listener-ids table:get popco-hashtbl speaker-id
+      table:put popco-hashtbl speaker-id (fput subak-id listener-ids) ; add myself as a listener
+    ]
+  ]
+  
+  print popco-hashtbl; DEBUG
   ;; CALL POPCO HERE
+end
+
+to init-hashtable [tbl]
+  foreach (n-values 172 [?]) [
+    table:put tbl ? [] ; initialize with an empty listener list for each subak id
+  ]
 end
 
 ;; report best speaker of subak, or [] if subak is its own best
