@@ -1,4 +1,5 @@
 import org.nlogo.api.*;
+import org.nlogo.extensions.table.*;
 import java.net.*;
 import java.util.*;
 //import clojure.java.api.Clojure;
