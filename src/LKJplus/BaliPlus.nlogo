@@ -60,6 +60,7 @@ breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine 
 breed [subak-helpers subak-helper] ; no data.  just used for extra flexibility in graphical display of subak state.
 
 subaks-own [
+  subak-id
   old? 
   stillgrowing 
   dpests ; deprecated: used in old vesion of one procedure, so I changed it to a local var, now called newpests -MA
@@ -664,25 +665,28 @@ to imitate-relig-types
   ]
 end
 
+;; For each subak, find its best speaker or a dummy value such as [] if self is best speaker.
+;; Send the ids of speakers, in order of listeners' ids, to popco.
 to imitate-relig-types-with-popco
   set-listeners-speakers
-  
-  ;; The load-data procedure ends up giving subaks the same who number (from 0 to 171) every time, so we can use the numbers as ids in popco:
-  let listener-speaker-pairs filter [(first ?) != (last ?)]  ; only keep pairs with different subaks
-                                    [(list who ([who] of find-best speakers))]  ; pair each subak's id with the id of subak from which it will copy
-                                    of subaks
-  ; bROKEN                
-  let best-speakers map [
-    [let best find-best speakers
-     ifelse-value best = self
-       [(list)] ; return empty list
-       [[who] of best]    ; return subak id
-    ] of ?
-  ] sort subaks
- 
-  print best-speakers; DEBUG
+  let best-speaker-ids map best-speaker-id-or-nil (sort-on [subak-id] subaks) ; 
+  print best-speaker-ids; DEBUG
   ;; CALL POPCO HERE
 end
+
+;; report best speaker of subak, or [] if subak is its own best
+to-report best-speaker-id-or-nil [subak]
+  let best-id "not-yet"
+  ask subak [
+    let best find-best speakers
+    if-else best = self
+      [set best-id [] ]
+      [set best-id (list who [who] of best)]
+  ]
+  report best-id
+end
+    
+  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; NATURAL PROCESSES: Farming, Water, Pests
@@ -1081,7 +1085,7 @@ to load-data
   foreach subak-data [  
     create-subaks 1 [
       set color white 
-      ;; note we skip the 0th element, which is a subak id number.
+      set subak-id (item 0 ?) ; added 12/2015. initially used only in new imitate-relig-types. should be identical to who number, but I don't want to depend on that.
       setxy (item 1 ?) (item 2 ?) 
       set area item 3 ? 
       set masceti item 4 ? 
@@ -2473,7 +2477,7 @@ relig-effect-center
 relig-effect-center
 -5
 10
-2.25
+1.43
 0.01
 1
 NIL
@@ -2601,7 +2605,7 @@ subaks-mean-global
 subaks-mean-global
 0
 200
-7.143
+0.025
 0.001
 1
 NIL
