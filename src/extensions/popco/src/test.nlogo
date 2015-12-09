@@ -1,4 +1,4 @@
-extensions [popco]
+extensions [table popco]
 
 to test
   show popco:bali-once [1 2 7]
