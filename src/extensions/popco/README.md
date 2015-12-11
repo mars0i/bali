@@ -40,6 +40,17 @@ Makefile is there and is set up for the directory structure there.)
 
 ### To compile from scratch:
 
+In popco:
+
+	lein with-profile bali-netlogo uberjar
+
+Here:
+
+You may have to copy or add a link to popco2-1.0.0-standalone.jar in the
+resources dir, and possibly clojure-1.7.0.jar and
+clojure-utils-0.5.0.jar.  (The latter may have to be compiled from
+source at https://github.com/mikera/clojure-utils.)
+
 	export NETLOGO=<your NetLogo installation here>  
 	make  
 	make install  
@@ -50,11 +61,9 @@ To use, put this in the Code tab in netlogo:
 
 	extensions [popco]
 
-For now, that's it.
-
-Note: In most NetLogo source dists, there's a file dist/netlogo.sh
-that shows how to run it from the commandline.  netlogo.sh here
-is one of those.
+You may need to also run this with the popco uberjar in the classpath,
+copying the specialized netlog.sh script into the NetLogo dir and
+running NetLogo with that.
 
 ### Compiling
 
