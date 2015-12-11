@@ -1,4 +1,4 @@
-extensions [table]
+extensions [table popco]
 
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-data from data in text files
@@ -688,8 +688,8 @@ to imitate-relig-types-with-popco
     ]
   ]
   
-  print popco-hashtbl; DEBUG
-  ;; CALL POPCO HERE
+  ;print popco-hashtbl; DEBUG
+  let avg-activns-from-popco popco:bali-once popco-hashtbl  ; let is TEMPORARY KLUDGE
 end
 
 to init-hashtable [tbl]
