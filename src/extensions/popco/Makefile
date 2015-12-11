@@ -7,7 +7,7 @@ ifeq ($(origin NETLOGO), undefined)
   NETLOGO=../..
 endif
 
-OTHERS=$(NETLOGO)/extensions/table/table.jar
+OTHERS="$(NETLOGO)/extensions/table/table.jar"
 
 EXTENSION=$(NETLOGO)/extensions/popco
 
