@@ -2,6 +2,7 @@ import org.nlogo.api.*;
 import org.nlogo.extensions.table.*;
 import java.net.*;
 import java.util.*;
+import java.io.*;
 //import clojure.java.api.Clojure;
 //import clojure.lang.IFn;
 import clojure.lang.Var;
@@ -26,7 +27,10 @@ public class BaliOnce extends DefaultReporter {
 			LogoList retlist = LogoList.fromJava(retobj);                                   // which we convert to a NetLogo list
 			return retlist;
 		} catch (Throwable e) {
-			throw new ExtensionException( e.getMessage() ) ;
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			throw new ExtensionException(sw.toString());
+			//throw new ExtensionException( e.getMessage() ) ;
 		}
 	}
 
