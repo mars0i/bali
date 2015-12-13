@@ -690,6 +690,7 @@ to imitate-relig-types-with-popco
   
   ;print popco-hashtbl; DEBUG
   let avg-activns-from-popco popco:bali-once popco-hashtbl  ; let is TEMPORARY KLUDGE
+  print avg-activns-from-popco ; DEBUG
 end
 
 to init-hashtable [tbl]
