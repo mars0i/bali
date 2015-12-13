@@ -65,6 +65,12 @@ You may need to also run this with the popco uberjar in the classpath,
 copying the specialized netlog.sh script into the NetLogo dir and
 running NetLogo with that.
 
+NOTE: If you're not running java 1.6, you may need to run NetLogo
+using the netlogo.sh script to prevent the normal run method from
+starting it as if it's running under java 1.6.  If you're not running
+java 1.6, then popco will end up being compiled for whatever version
+you have, and you need NetLogo to run under the same version of java.
+
 ### Compiling
 
 Type 'make', perhaps after exporting an environmental variable NETLOGO
