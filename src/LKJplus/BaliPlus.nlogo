@@ -470,8 +470,9 @@ to go
     calc-relig-type-years-bins
     calc-avgharvestha-years-bins
     plot-figs                                     ; UI plots (uses avgpestloss and avgWS)
-    imitate-relig-types
-    imitate-relig-types-with-popco ;; DEBUG - TESTING ONLY
+    if-else use-popco
+      [imitate-relig-types-with-popco]
+      [imitate-relig-types]
     imitate-best-neighboring-plans                ; cultural transmission of cropping plans and start months
     maybe-ignore-neighboring-plans                ; possibly forget what you learned from neighbors and do something else
     if Color_subaks = "cropping plans" [ask subaks [display-cropping-plan-etc]]
@@ -674,8 +675,10 @@ end
 to imitate-relig-types-with-popco
   set-listeners-speakers
   
-  ;; In this program, listeners choose speakers; in popco, speakers choose listeners.
-  ;; What popco needs is a mapping from speakers to listeners.  We make that here.
+  ;; In this BaliPlus.nlogo, listeners choose speakers; in popco, speakers choose listeners.
+  ;; So what popco needs is a mapping from speakers to listeners.  We make that here:
+  ;; A hashtable that reflects all speaker-listener relationships that result from choosing
+  ;; best neighbors-or-global-interlocutors on this tick.
   ;; Note that although there is only one best speaker for each subak, the same speaker
   ;; may be best for multiple subaks.  Thus some speakers may have multiple listeners.
   init-hashtable popco-hashtbl
@@ -687,10 +690,10 @@ to imitate-relig-types-with-popco
       table:put popco-hashtbl speaker-id (fput subak-id listener-ids) ; add myself as a listener
     ]
   ]
-  
-  ;print popco-hashtbl; DEBUG
-  let avg-activns-from-popco popco:bali-once popco-hashtbl  ; let is TEMPORARY KLUDGE
-  print avg-activns-from-popco ; DEBUG
+
+  let scaled-activns-from-popco popco:bali-once popco-hashtbl
+  print scaled-activns-from-popco ; DEBUG
+  (foreach (sort-on [subak-id] subaks) scaled-activns-from-popco [ask ?1 [set relig-type ?2]]) ; outer parens needed for multiple-list foreach
 end
 
 to init-hashtable [tbl]
@@ -2368,7 +2371,7 @@ SWITCH
 617
 show-relig-types
 show-relig-types
-1
+0
 1
 -1000
 
@@ -2807,7 +2810,7 @@ NIL
 BUTTON
 7
 42
-114
+70
 75
 save work
 file-close
@@ -2820,6 +2823,17 @@ NIL
 NIL
 NIL
 1
+
+SWITCH
+69
+42
+178
+75
+use-popco
+use-popco
+1
+1
+-1000
 
 @#$#@#$#@
 ## LICENSE
