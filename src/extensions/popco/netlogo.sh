@@ -1,5 +1,9 @@
 #!/bin/sh
-cd "`dirname "$0"`"             # the copious quoting is for handling paths with spaces
+if [ "$NETLOGO" ]; then
+    cd "$NETLOGO"
+else
+    cd "`dirname "$0"`"             # the copious quoting is for handling paths with spaces
+fi
 # -Djava.library.path=./lib     ensure JOGL can find native libraries
 # -Djava.ext.dirs=              ignore any existing JOGL installation
 # -XX:MaxPermSize=128m          avoid OutOfMemory errors for large models
