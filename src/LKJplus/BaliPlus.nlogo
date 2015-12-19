@@ -1583,7 +1583,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.39
+2.4
 0.01
 1
 NIL
