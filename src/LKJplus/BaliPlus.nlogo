@@ -691,7 +691,7 @@ to imitate-relig-types-with-popco
     ]
   ]
 
-  let scaled-activns-from-popco popco:bali-once popco-hashtbl
+  let scaled-activns-from-popco popco:bali-talk popco-hashtbl
   ;print scaled-activns-from-popco ; DEBUG
   (foreach (sort-on [subak-id] subaks) scaled-activns-from-popco [ask ?1 [set relig-type ?2]]) ; outer parens needed for multiple-list foreach
 end

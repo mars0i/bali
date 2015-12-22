@@ -13,7 +13,7 @@ import mikera.cljutils.Clojure; // Instead of using IFn etc. directly. Didn't ge
 // using netlogo table extension
 // cf. https://groups.google.com/d/msg/netlogo-devel/__LLPtPbqu4/N83gE0LSCQAJ
 // cf.  http://stackoverflow.com/a/1665172/1455243
-public class BaliOnce extends DefaultReporter {
+public class BaliTalk extends DefaultReporter {
 	public Syntax getSyntax() {
 		return Syntax.reporterSyntax(new int[] {Syntax.WildcardType()}/* org.nlogo.extensions.Table */, Syntax.ListType()); // argument types, return type
 	}
@@ -22,7 +22,7 @@ public class BaliOnce extends DefaultReporter {
 		try {
 			addPath("extensions/popco/popco2-1.0.0-standalone.jar");  // (addPath() defined below) CAN I MOVE THIS TO java command line?
 			Clojure.require("sims.bali.netlogo");  // cljutils is included in the popco uberjar via core.matrix or vectorz
-			Var cljFn = Clojure.var("sims.bali.netlogo", "bali-once");  // cljutils
+			Var cljFn = Clojure.var("sims.bali.netlogo", "talk");  // cljutils
 			Collection<?> retobj = (Collection<?>) cljFn.invoke( (HashMap) args[0].get() ); // return value is a Clojure sequence
 			LogoList retlist = LogoList.fromJava(retobj);                                   // which we convert to a NetLogo list
 			return retlist;
