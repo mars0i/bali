@@ -2,12 +2,12 @@ extensions [table popco]
 
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-data from data in text files
-          new-subaks subaks_array dams_array subakdams_array 
-          damsubaks_array Rel Rem Reh 
+          new-subaks subaks_array dams_array subakdams_array
+          damsubaks_array Rel Rem Reh
           month ; actual month in the current year
-          ET RRT LRS Xf devtime yldmax 
+          ET RRT LRS Xf devtime yldmax
           pestsens ; holds sensitivity to pests of each of the rice varieties NoNoise60KticksPastBurnin
-          growthrates cropuse 
+          growthrates cropuse
           totpestloss      ; data collected every month until end of year
           totpestlossarea  ; data collected every month until end of year
           avgpestloss      ; computed from previous two vars at end of year
@@ -62,37 +62,37 @@ breed [subak-helpers subak-helper] ; no data.  just used for extra flexibility i
 
 subaks-own [
   subak-id
-  old? 
-  stillgrowing 
+  old?
+  stillgrowing
   dpests ; deprecated: used in old vesion of one procedure, so I changed it to a local var, now called newpests -MA
   pestneighbors ; agentset (formerly list) of neighbors to/from which pests can travel. Also default cropplan/startmonth transmission network.
-  damneighbors 
-  totharvestarea 
-  area 
+  damneighbors
+  totharvestarea
+  area
   SCC ;Subak's crop plan
   sd ; start date (month).  This is an offset added to the actual month (in global month).
   mip ; "month in progress" or "month in plan"? mip is always = sd + the global var month  (Note never init'ed just takes default val of 0.)
   new-SCC; help variable during imitation process
   new-sd ;help variable during imitation process
-  pests 
+  pests
   nMS ; counter for number of subaks in masceti  ; <- Janssen's comment.  Variable appears to be UNUSED.
   MS ; masceti (i.e. temple group: a group of subaks)  ; <- Janssen's comment.  Variable appears to be UNUSED.
   masceti ; group of subaks
   dmd  ; water demand. see comment in procedure demandwater.
-  ulunswi 
+  ulunswi
   pyharvest   ; stores total of (harvest * area) over the course of a year.
   pyharvestha ; stores total of (harvest) over the course of a year. used for harvest plot.  used to decide who to imitate.
   WSS  ; seems to have something to do with water usage during rice growth. "Water Stress Subak"?
-  harvest 
+  harvest
   crop ; crop number of the crop am I currently growing this month
   ricestage ; How much of the water needed to grow this rice variety has already been received.
             ; This is initially set by a call to ricestageplan in the setup routine.
             ; After that, it's set in procedure growrice as a function of the water stress variable WSS
             ; and the growing time (from global devtime) of the rice variety (represented by subak variable crop).
-  Ymax 
-  pest-damage 
-  pestloss 
-  totLoss 
+  Ymax
+  pest-damage
+  pestloss
+  totLoss
   source ; dam from which I get water (?)
   return ; dam to which I send leftover water (?)
   relig-type ; a number in [0,1]: peasant-style religious values 1 vs. Brahmanic religious values 0
@@ -101,11 +101,11 @@ subaks-own [
   speakers ; subaks who will (maybe only try to) transmit to me (probably only relig-type).  [agentset or list? may be different in diff versions of code]
 ]
 
-dams-own [flow0 flow elevation 
+dams-own [flow0 flow elevation
 WSarea ; WSarea is area (ha) of dams' watershed
-damht rain 
+damht rain
 EWS ; Effective Watershed Area
-areadam Runoff d1 d3 XS 
+areadam Runoff d1 d3 XS
 WSD ; Water Stress Dam
 totWSD]
 
@@ -134,7 +134,7 @@ to setup
   file-close-all
   set data-dir "../../data/" ; this is relative to where this .nlogo file resides
   set seed-dir "../../seeds/"
-  
+
   let seed 0
   ifelse random-seed-source = "new seed"
     [set seed new-seed]
@@ -176,13 +176,13 @@ to setup
   init-hashtable popco-hashtbl
 
   ask patches [set pcolor default-pcolor]
-  
+
   ;; These will be filled by load-data.  subaks_array and dams_array will then be refilled soon after load-data is called.
   set subaks_array []
   set dams_array []
   set subakdams_array []
   set damsubaks_array []
-  
+
   ;; There are four possible crops: 3 varieties of rice, and a vegetable.
   ;; Based on procedure growrice, it appears that 0 reps fallow, and 1, 2, 3 rep rice varieties.  4 reps another crop, but that's never used here.
   ;; Note that the fastest-growing, highest max yield is also most sensitive to pests.
@@ -190,19 +190,19 @@ to setup
   ;; and 4 reps an alternate non-rice crop paliwiga (from a comment below).  Note none of these crop plans includes that crop.
   ;; It appears that variety 1 requires 6 months to grow, variety 2 requires 4 months to grow, and variety 3 requires 3 months to grow.
   ;; That's why not all possible combinations of 0's, 1's, 2's, and 3's are included.
-  
+
   ;show (word "initial cropplan-bools: " cropplan-bools)
   ;ifelse cropplan-bools = 0
   ;  [show "initial cropplan-bools was 0.  Really!"]
   ;  [show "initial cropplan-bools was actually not 0."]
-  
+
   ;; COMMENT OUT TO SET THIS DIRECTLY IN BEHAVIOR SPACE??
   set cropplan-bools (list cropplan-a  cropplan-b  cropplan-c  cropplan-d  cropplan-e  cropplan-f  cropplan-g cropplan-h cropplan-i  cropplan-j  cropplan-k cropplan-l cropplan-m cropplan-n cropplan-o cropplan-p cropplan-q cropplan-r cropplan-s cropplan-t cropplan-u)
 
   ;show (word "cropplan-bools after possibly setting: " cropplan-bools)
- 
+
   ;; The possible crop plans (indexed by SCC in subak) beginning from a start month (sd in subak)
-  ;; 
+  ;;
   ;;            crop/fallow in month        crop plan number (SCC in subak)
   set all-cropplans [
                      [3 3 3 0 3 3 3 0 3 3 3 0]  ;  0  three fast-growing variety plantings
@@ -255,35 +255,35 @@ to setup
                           [0 0.33 0.67 0 0 0.25 0.5 0.75 0 0 0 0]          ; 19
                           [0 0.33 0.67 0 0 0 0 0 0.25 0.5 0.75 0]          ; 20
                          ]
-  
+
   set cropplans filter-plans all-cropplans
   set ricestageplans filter-plans all-ricestageplans
-  
+
   if shuffle-cropplans? [shuffle-cropplans] ; see whether reordering cropplans affects outcomes
-  
+
   ;set-current-plot "crop plan distribution"
   ;set-histogram-num-bars (length cropplans) ; will apply to whatever is the first histogram
-  
+
   list-cropplans
-  
+
   set-relig-effect-curve-number
 
   set devtime [0 6 4 3] ; development time for crops. first one is no-crop, i.e. fallow.  the rest are for the three varieties of rice.
   set yldmax [0 5 5 10] ; maximum yld of rice crops
   set pestsens [0 0.5 0.75 1.0] ; sensitivity of crops to pests
-  
+
   ;; There are 5 elements next, 4 above.  Maybe above is fallow + 3 rice varieties, and this includes also vegetable?
   ;; Or above is vegetable plus rice, and we have fallow here as well?
   ;; Maybe the fifth entries are for the vegetable, since the values are so different.  (?)
-  
+
   ;; The middle 3 values in the next line will be ignored: They're about to be replaced by a value from a slider:
   set growthrates [0.1 2.2 2.2 2.2 0.33] ; monthly pest growth rate parameter. cf. Janssen 2006 pp. 173, 177, 178.  Rice values usually between 2.0 and 2.4 per Janssen 2006 pp. 173, 180
   set growthrates replace-item 1 growthrates pestgrowth-rate  ; i.e. replace the second element in growthrates with value of the pestgrowth-rate slider
   set growthrates replace-item 2 growthrates pestgrowth-rate  ; i.e. replace the third element ...
   set growthrates replace-item 3 growthrates pestgrowth-rate  ; etc.
-  
+
   set cropuse [0 0.015 0.015 0.015 0.003]  ; use of water per crop parameter. i.e. fallow uses no water, rice use is 0.015, and paliwiga use is 0.003.
-  
+
   set month 0  ; actual month in this year starts with zero
   set totpestloss 0       ; reported in the Pestloss plot
   set totpestlossarea 0
@@ -294,7 +294,7 @@ to setup
   set RRT ET + 50 / 30000 ;between 0 and 100 Rain-Runoff threshold for 1:1, mm/mon => m/d
   set LRS 1 - ET / RRT  ;LowRainSlope, below threshold for RR relation
   set Xf 1.0 ;between 0.8 and 1.2 X factor for changing minimum groundwater flow
-  
+
   load-data
 
   ask subaks [set size 0.75]
@@ -312,7 +312,7 @@ to setup
     set sourcedam [a] of one-of damsubaks with [b = subak]
     let areasubak area
     ifelse (returndam = sourcedam) [
-      ask returndam [set areadam areadam + areasubak] 
+      ask returndam [set areadam areadam + areasubak]
     ][
       ask sourcedam [set areadam areadam + areasubak]
     ]
@@ -322,7 +322,7 @@ to setup
     ;if Color_subaks = "cropping plans"         ; NOTE that since the crop plan is changed in a moment, this coloring will be inaccurate
     ;   [display-cropping-plan-etc] ; new version  ; so I'm going to add in this coloring code below -MA
     ;   ;[set color SCC * 6 + sd] ; original Janssen version
-    
+
     let this-subak self
     ask patch-here [
       sprout-subak-helpers 1 [
@@ -350,7 +350,7 @@ to setup
     set old? false
     cropplan SCC sd            ; Note: OVERWRITES VALUE A FEW LINES ABOVE (why?). Note we use sd here since initially, mip = sd. In go we use mip.
     ricestageplan SCC sd
-    set relig-type random-float 1 
+    set relig-type random-float 1
     if Color_subaks = "cropping plans"  ; added by Marshall. changes apparently irrelevant coloring above.
        [display-cropping-plan-etc]
     let subak1 self
@@ -422,7 +422,7 @@ to my-clear-globals
   set relig-type-bins-max 0 ; max value for the top bin
   set relig-type-bin-size 0   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
   set avgharvestha-bins 0 ; collects numbers of years in which average harvest falls in each of several ranges
-  set avgharvestha-bins-normalized 0 
+  set avgharvestha-bins-normalized 0
   set avgharvestha-num-bins 0
   set avgharvestha-bins-max 0 ; max value for the top bin
   set avgharvestha-bin-size 0 ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
@@ -441,7 +441,7 @@ end
 to go
   if run-until-month > 0 and ticks >= run-until-month
     [stop] ; exit go-forever if user specified a stop tick
-    
+
   if ticks mod 12000 = 0 [print (word "run " behaviorspace-run-number " tick " ticks)]
 
   poss-show-damsubaks ; display dam-subak-relations if requested from UI
@@ -482,14 +482,14 @@ to go
   ; (worry: do any of these variables affect operation? does zeroing them bias the process? -MA)
   ifelse month = 11 [
     set month 0
-    set totWSarea 0 
-    set totWS 0 
+    set totWSarea 0
+    set totWS 0
     ask subaks [
-      set pyharvest 0 
-      set pyharvestha 0 
-      set totpestloss 0 
-      set totpestlossarea 0 
-      set totharvestarea 0 
+      set pyharvest 0
+      set pyharvestha 0
+      set totpestloss 0
+      set totpestlossarea 0
+      set totharvestarea 0
       set pests 0.01
     ]
   ][
@@ -524,7 +524,7 @@ to update-subak-months
     set mip sd + month
     if mip > 11 [set mip mip - 12] ; sd is start month. this line increments subak's internal growing month month. (month is inc'ed below.
   ]
-  
+
   ask subaks [
     cropplan SCC mip ; note we use mip, not sd.  sd is start month.  mip is subak's internal month in the cycle.
     if stillgrowing [if ((crop = 0) or (crop = 4)) [set stillgrowing false]]
@@ -534,7 +534,7 @@ end
 to-report filter-plans [plans]
   if not is-list? cropplan-bools [error (word "croppplan-bools has value: " cropplan-bools)]
   if cropplan-bools = 0 [error (word "croppplan-bools has value: " cropplan-bools)]
-    
+
   report filter-plans-helper plans cropplan-bools
 end
 
@@ -576,7 +576,7 @@ to maybe-ignore-neighboring-plans
     ;print (1 - (relig-effect relig-type)) ; DEBUG
     ; The closer relig-influence is to 0, the less probable ignoring best neighbor is:
     let prob-ignore ignore-neighbors-prob * (ifelse-value relig-influence? [(1 - (relig-effect relig-type)) * (1 / relig-influence)] [1])
-    if random-float 1 < prob-ignore [  
+    if random-float 1 < prob-ignore [
       set SCC random (length cropplans)
       set sd random 12
     ]
@@ -593,7 +593,7 @@ to imitate-best-neighboring-plans
       set new-sd [sd] of bestneighbor   ; copy start month
     ]
   ]
-  
+
   ask subaks [
     set SCC new-SCC
     set sd new-sd
@@ -604,7 +604,7 @@ end
 ;; NOTE that this procedure has the following property:
 ;; If more than one subak has the best harvest, find-best will always choose
 ;; the first such subak found.  This is not a problem because it uses ask, which
-;; always uses a random order.  (Also, ties are probably relatively rare in this model.)  
+;; always uses a random order.  (Also, ties are probably relatively rare in this model.)
 to-report find-best [subak-set]
   let best self       ; until I learn of someone better, I'll consider myself to be my best "neighbor".
   let bestharvest pyharvestha ; set bestharvest to my total harvest for the year
@@ -615,7 +615,7 @@ to-report find-best [subak-set]
          set best self       ; and you will be my best neighbor so far
     ]
   ]
-  
+
   report best
 end
 
@@ -655,7 +655,7 @@ end
 ;; to another.  (As a speaker, each subak has the same number of listeners, however.)
 to imitate-relig-types
   set-listeners-speakers ; give every (listener) subak a (possibly empty) set of speaker subaks for this tick
-  
+
   ask subaks [
     let best find-best speakers ; usually there will be only one
     ifelse best = self
@@ -664,7 +664,7 @@ to imitate-relig-types
     if new-relig-type > 1 [ set new-relig-type 1]
     if new-relig-type < 0 [set new-relig-type 0]
   ]
-  
+
   ask subaks [
     set relig-type new-relig-type
   ]
@@ -674,7 +674,7 @@ end
 ;; Send the ids of speakers, in order of listeners' ids, to popco.
 to imitate-relig-types-with-popco
   set-listeners-speakers
-  
+
   ;; In this BaliPlus.nlogo, listeners choose speakers; in popco, speakers choose listeners.
   ;; So what popco needs is a mapping from speakers to listeners.  We make that here:
   ;; A hashtable that reflects all speaker-listener relationships that result from choosing
@@ -713,8 +713,8 @@ to-report best-speaker-id-or-nil [subak]
   ]
   report best-id
 end
-    
-  
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; NATURAL PROCESSES: Farming, Water, Pests
@@ -763,13 +763,13 @@ to demandwater
     set returndam [b] of one-of subakdams with [a = subak]
     set sourcedam [a] of one-of damsubaks with [b = subak]
     ifelse (returndam = sourcedam)
-    [ 
+    [
       let dmdsubak dmd
       ifelse dmd > 0 [
         ask returndam [set d1 d1 + dmdsubak]
       ][
         ask returndam [set XS XS - dmdsubak]]]
-;     Any excess of rain>dmd for Subaks in basin but source outside 
+;     Any excess of rain>dmd for Subaks in basin but source outside
 ;    Excess always returned to this dam, i.e. location = the downstream dam
       [
         let dmdsubak dmd
@@ -822,7 +822,7 @@ to growrice
       if crop = 0 [set ricestage 0 set WSS 1] ; Fallow period -- i.e. not growing anything
       if crop = 4 [set ricestage 0 set WSS 1] ; Growing paliwiga -- i.e. not growing rice
       if ((crop = 1) or (crop = 2) or (crop = 3)) [  ; i.e. 1, 2, and 3 are the rice varieties
-        set WSS [WSD] of source 
+        set WSS [WSD] of source
         set ricestage ricestage + (WSS / (item crop devtime)) ; i.e. advance growing stage as a function of the rice variety and available water?
         ; devtime is a global that stores the growing time of the three rice varieties
  ]]
@@ -845,7 +845,7 @@ end
 ;; pestdisperal-rate * dt / dxx   d       [p. 173 says eq. (1) is for monthly timesteps]
 ;; cs                             p_n1,j,t + p_n2,j,t + p_n3,j,t + p_n4,j,t - 4p_j,t
 ;;
-;;   [note: The "- 4p_j,t" in eq. (1) in Janssen 2006 is needed because in that equation, the 
+;;   [note: The "- 4p_j,t" in eq. (1) in Janssen 2006 is needed because in that equation, the
 ;;    comparison is with 4 neighbors.  In the NetLogo version, the number of neighbors varies from
 ;;    0 to 4, and subtracting the current subak's pest count (p_j,t or pests) is done in the inner
 ;;    ask subaks used to calculate cs.]
@@ -854,7 +854,7 @@ to growpest
   let dxx 100           ; i.e. dx as in "dt/dx" in the ODD. causes pestdispersal-rate to be treated as a percentage. ("dx" is the name of a built-in function in NetLogo.)
   let dt 30             ; days (i.e. per month. this is why the ODD makes dx/dt = 0.3)
   let minimumpests 0.01 ; clamp lower values of pests to this number
-  
+
   ask subaks [
     let subak1 self
     let newpests 0        ; temp var: next-tick value for subak's pests
@@ -873,7 +873,7 @@ to growpest
 
     if newpests < minimumpests
       [set newpests minimumpests]
-    
+
     set pests newpests
 
     if Color_subaks = "pests" [
@@ -967,13 +967,13 @@ to display-cropping-plan-etc
   let low-scc-base-color 4
   let high-scc-base-color 6
   let sd-base-color 2
-  
+
   ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
-  
+
   ifelse SCC < 14
     [set color low-scc-base-color + (10 * SCC)]         ; colors from column low-scc-base-color of swatches
     [set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
-    
+
   ifelse show-relig-types
     [ask my-subak-helper
       [let reltype [relig-type] of myself
@@ -982,8 +982,8 @@ to display-cropping-plan-etc
        let dir 180 + (180 * ([pyharvestha] of myself / 10))
        set heading dir
     ]]
-    [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent 
-    
+    [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
+
   ifelse show-subak-values
     [set label (word "[" SCC ":" sd "]")]
     [set label ""]
@@ -1003,7 +1003,7 @@ to-report compute-avg-harvest
     [report totharvest / totarea]
 end
 
-to-report compute-stddev-harvest 
+to-report compute-stddev-harvest
   report stddev [pyharvestha] of subaks
 end
 
@@ -1068,15 +1068,15 @@ to load-data
     file-open "subakdata.txt"
     while [ not file-at-end? ]
     [
-      ;; file-read gives you variables.  
+      ;; file-read gives you variables.
       ;; We store them in a double list (ex [[1 2 3 4 5 6] [1 2 3 4 5 6] ...
       set subak-data sentence subak-data (list (list file-read file-read file-read file-read file-read file-read)) ; 6 reads
     ]
     file-close
-  ][ 
-    user-message "There is no subakdata.txt file in current directory!" 
+  ][
+    user-message "There is no subakdata.txt file in current directory!"
   ]
-  
+
   ifelse ( file-exists? "damdata.txt" )
   [
     set dam-data []
@@ -1084,8 +1084,8 @@ to load-data
     while [ not file-at-end? ]
       [set dam-data sentence dam-data (list (list file-read file-read file-read file-read file-read file-read file-read))] ; 7 reads
     file-close
-  ][ 
-    user-message "There is no damdata.txt file in current directory!" 
+  ][
+    user-message "There is no damdata.txt file in current directory!"
   ]
 
   ifelse ( file-exists? "subaksubakdata.txt" )
@@ -1095,10 +1095,10 @@ to load-data
     while [ not file-at-end? ]
       [set subaksubak-data sentence subaksubak-data (list (list file-read file-read))] ; 2 reads
     file-close
-  ][ 
-    user-message "There is no subaksubakdata.txt file in current directory!" 
+  ][
+    user-message "There is no subaksubakdata.txt file in current directory!"
   ]
-  
+
   ifelse ( file-exists? "subakdamdata.txt" )
   [
     set subakdam-data []
@@ -1106,21 +1106,21 @@ to load-data
     while [ not file-at-end? ]
       [ set subakdam-data sentence subakdam-data (list (list file-read file-read file-read))] ; 2 reads
     file-close
-  ][ 
-    user-message "There is no subakdamdata.txt file in current directory!" 
+  ][
+    user-message "There is no subakdamdata.txt file in current directory!"
   ]
-  
-  foreach subak-data [  
+
+  foreach subak-data [
     create-subaks 1 [
-      set color white 
+      set color white
       set subak-id (item 0 ?) ; added 12/2015. initially used only in new imitate-relig-types. should be identical to who number, but I don't want to depend on that.
-      setxy (item 1 ?) (item 2 ?) 
-      set area item 3 ? 
-      set masceti item 4 ? 
+      setxy (item 1 ?) (item 2 ?)
+      set area item 3 ?
+      set masceti item 4 ?
       set ulunswi item 5 ? ; what is this? (?)
       ;set pestneighbors []
       set pestneighbors no-turtles
-      set damneighbors [] 
+      set damneighbors []
       set subaks_array lput self subaks_array ; will be overwritten in go soon after this is called, but not before being used in its present form below.
       if Color_subaks = "Temple groups" [
         ask patch-here [set pcolor default-pcolor]
@@ -1137,17 +1137,17 @@ to load-data
         if masceti = 11 [set color magenta]
         if masceti = 12 [set color green]
         if masceti = 13 [set color turquoise]
-        if masceti = 14 [set color brown] 
+        if masceti = 14 [set color brown]
    ]]]
 
   foreach dam-data [
-    create-dams 1 [ 
+    create-dams 1 [
       set color yellow
-      ;; we skip the 0th element 
-      setxy (item 1 ?) (item 2 ?) 
-      set flow0 item 3 ? 
-      set elevation item 4 ? 
-      set WSarea item 5 ? 
+      ;; we skip the 0th element
+      setxy (item 1 ?) (item 2 ?)
+      set flow0 item 3 ?
+      set elevation item 4 ?
+      set WSarea item 5 ?
       set damht item 6 ?
       set dams_array lput self dams_array ; will be overwritten in go soon after this is called, but not before being used in its present form below.
   ]]
@@ -1207,7 +1207,7 @@ to rainfall [hight level]
     set Rel [215 227 205 100 121  51   6   4  67  45 138 243]
     set Rem [282 274 319 181 206 141  95 138 249 265 267 327]
     set Reh [349 321 433 262 291 231 184 272 431 485 396 411]
-  levelrainfall level] 
+  levelrainfall level]
 
   if hight = 3 [
     set Rel [148 210 120  53  53  54   8  13   0  45 112 192]
@@ -1219,14 +1219,14 @@ to rainfall [hight level]
     set Rel [289 234 249 125  78  13   0   6  10  57 141 281]
     set Rem [418 384 372 246 208 128 114  68  77 162 268 405]
     set Reh [547 534 495 367 338 243 228 130 144 267 395 529]
-  levelrainfall level] 
+  levelrainfall level]
 
 end
 
 to levelrainfall [level]
-  if level = 0 [set rain item month Rel] 
-  if level = 1 [set rain item month Rem] 
-  if level = 2 [set rain item month Reh] 
+  if level = 0 [set rain item month Rel]
+  if level = 1 [set rain item month Rem]
+  if level = 2 [set rain item month Reh]
 end
 
 to make-damdam [dam1 dam2]
@@ -1248,7 +1248,7 @@ to make-subaksubak [s1 s2]
     reposition-edges
   ]
   ;ask s1 [set pestneighbors lput s2 pestneighbors] ; Note this makes it a one-way link
-  ask s1 [set pestneighbors (turtle-set s2 pestneighbors)] ; Note this makes it a one-way link  
+  ask s1 [set pestneighbors (turtle-set s2 pestneighbors)] ; Note this makes it a one-way link
 end
 
 ;; I think:
@@ -1273,7 +1273,7 @@ to make-subakdams [s1 s2 s3]
     if not viewdamsubaks [set size 0]
   ]
   ask s1 [
-    set source s3 
+    set source s3
     set return s2
   ]
 end
@@ -1443,9 +1443,9 @@ to plot-relig-effect-curve
   set-current-plot "relig effect curve"
   set-current-plot-pen "effect-curve"
   clear-plot
-  
+
   set-relig-effect-curve-number
-  
+
   let x-min plot-x-min
   let x-max plot-x-max
   let y-min plot-y-min
@@ -1491,21 +1491,21 @@ end
 
 ;  ;; Bryan Head wrote that one can call the following as:
 ;  ;;      ask-list agents-with-replacement task [ do-stuff ]
-;  ;; Where `agents-with-replacement` is your list of agents. 
-;  ;; Note the `task` primitive is unfortunately required. 
+;  ;; Where `agents-with-replacement` is your list of agents.
+;  ;; Note the `task` primitive is unfortunately required.
 ;  ;; Besides that, this should pretty much be a drop-in replacement
-;  ;; for `ask` after you switch to using a list. 
+;  ;; for `ask` after you switch to using a list.
 ;  to ask-list [ agent-list commands ]
 ;    foreach agent-list [ ask ? [ run commands ] ]
 ;  end
-;  
+;
 ;  ;; Bryan Head wrote:
 ;  ;; `of` could be similarly transformed:
 ;  ;; Called like: of-list agents-with-replacement task [ turtle-variable ]
 ;  to-report of-list [ agent-list reporter ]
 ;    report map [ [ runresult reporter ] of ? ] agent-list
 ;  end
-;  
+;
 ;  ;; Bryan Head wrote:
 ;  ;; Now `with`:
 ;  ;; Called like: with-list agents-with-replacement task [ turtle-variable = 5 ]
@@ -1824,7 +1824,7 @@ SWITCH
 307
 cropplan-i
 cropplan-i
-0
+1
 1
 -1000
 
@@ -1956,7 +1956,7 @@ SWITCH
 703
 cropplan-u
 cropplan-u
-0
+1
 1
 -1000
 
@@ -2840,78 +2840,78 @@ use-popco
 
 This is a replication of the model reported in Lansing, J.S., J.N. Kremer (1993) Emergent properties of Balinese water temples. American Anthropologist 95 (1), 97-114, based on code provided by the authors
 
-The replication is performed by Marco A. Janssen, Arizona State University, November 2006.  
-Replication of Lansing and Kremer model Copyright (C) 1993 Lansing and Kremer ((original) Copyright (C) 2006 M.A. Janssen (replication)  
-This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.  
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.  
+The replication is performed by Marco A. Janssen, Arizona State University, November 2006.
+Replication of Lansing and Kremer model Copyright (C) 1993 Lansing and Kremer ((original) Copyright (C) 2006 M.A. Janssen (replication)
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ## ODD DESCRIPTION
 
-The purpose of this model is to understand how local interactions between subaks, local irrigation communities, lead to high performance of rice production is a complex irrigation network.  
+The purpose of this model is to understand how local interactions between subaks, local irrigation communities, lead to high performance of rice production is a complex irrigation network.
 Reference: Lansing, J. Stephen, and James N. Kremer (1993) Emergent properties of Balinese water temples. American Anthropologist 95:97-114.
 
 State variables and scales
 
-The model consists of 172 subaks, who act as independent agents. These subaks are within a complex irrigation network that describes 2 rivers. A total of 11 dams act as points where subaks get their water or return their water left over.  
+The model consists of 172 subaks, who act as independent agents. These subaks are within a complex irrigation network that describes 2 rivers. A total of 11 dams act as points where subaks get their water or return their water left over.
 Subaks are indirectly connected via waterways, they share water from the same dams, and directly via spatial proximity which makes it possible for pests to spread between neighboring subaks. Each subak has a specific area of land available which affect the demand for water.
 
 Process overview and scheduling
 
-One time step is equivalent to one month. Subaks decide each year which of the 21 cropping patterns to follow. A cropping pattern determines which crop to plant in which month. There are 3 rice variety, fallow and vegetables.  
-Subaks imitate the cropping pattern of a neighbor, if there is a neighboring subak who had a higher harvest per ha during the previous year. Since Lansing and Kremer are not clear in their definition of neighbors, we implemented two type of neighbors, those who are directly connected in the spread of pests, and secondly, those subaks with whom a subak share the same dam as the source of water.  
-Practically, a subak can not directly implement a new cropping pattern in the new year, since it may still have crops on the fields. It is not clear how Lansing and Kremer implemented this. To reproduce their results, we assumed that each year the pest start at initial values (0.01) and a new cropping pattern. 
+One time step is equivalent to one month. Subaks decide each year which of the 21 cropping patterns to follow. A cropping pattern determines which crop to plant in which month. There are 3 rice variety, fallow and vegetables.
+Subaks imitate the cropping pattern of a neighbor, if there is a neighboring subak who had a higher harvest per ha during the previous year. Since Lansing and Kremer are not clear in their definition of neighbors, we implemented two type of neighbors, those who are directly connected in the spread of pests, and secondly, those subaks with whom a subak share the same dam as the source of water.
+Practically, a subak can not directly implement a new cropping pattern in the new year, since it may still have crops on the fields. It is not clear how Lansing and Kremer implemented this. To reproduce their results, we assumed that each year the pest start at initial values (0.01) and a new cropping pattern.
 
-The monthly schedule of activities is to determine for all subaks the following processes:  
-- Demand for water  
-- Water flows  
-- Rice  
-- Pest  
+The monthly schedule of activities is to determine for all subaks the following processes:
+- Demand for water
+- Water flows
+- Rice
+- Pest
 - Harvest
 
 Design concepts
 
-Emergence: the evolving pattern of cropping plans mimic the temple groups at the masceti temple level. Thus local adjustments of synchronization of cropping plans lead to high performance of harvest with similar organization structures as observed in the field.  
-Adaptation: Each year the subak can adapt their cropping plan.  
-Fitness: harvest of rice per ha is used to evaluate the performance of a cropping plan for a subak.  
+Emergence: the evolving pattern of cropping plans mimic the temple groups at the masceti temple level. Thus local adjustments of synchronization of cropping plans lead to high performance of harvest with similar organization structures as observed in the field.
+Adaptation: Each year the subak can adapt their cropping plan.
+Fitness: harvest of rice per ha is used to evaluate the performance of a cropping plan for a subak.
 Stochasticity: the only stochasticity is the initialization of the cropping plans.
 
-Initialization  
+Initialization
 Each subaks get randomly allocated one of the 21 cropping plans, and start this plan in a randomly determined month.
 
-Inputs  
-The following data are input in the model, and are provided in the code of the model:  
-- Water network of dams and subaks  
-- Network of subaks who can disperse pest to eachother  
-- rainfall per month for different elevations (three different scenarios are provided)  
-- cropping plans.  
-- area of subaks  
-- masceti temple subaks belong to  
+Inputs
+The following data are input in the model, and are provided in the code of the model:
+- Water network of dams and subaks
+- Network of subaks who can disperse pest to eachother
+- rainfall per month for different elevations (three different scenarios are provided)
+- cropping plans.
+- area of subaks
+- masceti temple subaks belong to
 - for each crop: maximum yield, duration of crop on land before harvest, sensitivity to pests, growth rate of pests when specific crop in on the land.
 
-Submodels  
-Demand for irrigation water  
+Submodels
+Demand for irrigation water
 Demand for irrigation water for a subak depends on the difference between the water the crop needs per ha and the rain that fell per ha. This difference is multiplied by the area of land available in the subak.
 
 Demand = (cropuse - rain)*area
 
-     
 
-Water flows  
+
+Water flows
 Starting with dams upstream, the waterflows in dams and subaks are calculated taking into account rainfall and water streaming into canals from upstream.
 
-Rice  
+Rice
 If not enough water is derived for rice, there is waterstress. If rice takes X months to grow, each month the rice is assumed to grow 1/X part. If only a fraction Y<1 of the demanded water is provided, the rice grows that month for a smaller part: Y/X
 
-Pest  
-For all neighboring subaks between which pests can disperse calculate the sum (sumpestdif) of pests level of the own subak minus the pest level of a neighboring subak.  
-Then calculate dc   
-dc = (pestdispersal-rate / dx) * sumpestdif * dt  
-and finally determine the pest level:  
+Pest
+For all neighboring subaks between which pests can disperse calculate the sum (sumpestdif) of pests level of the own subak minus the pest level of a neighboring subak.
+Then calculate dc
+dc = (pestdispersal-rate / dx) * sumpestdif * dt
+and finally determine the pest level:
 Pests = growthrate * (Pests + 0.5 * dc)) + (0.5 * dc)
 
-Harvest  
-If it is time to harvest, the harvest of a subak is calculated as follows:  
+Harvest
+If it is time to harvest, the harvest of a subak is calculated as follows:
 harvest = ricestage * yldmax * (1 - pests * pestsens) * area,
 
 where ricestage is a value between 0 and 1 representing which fraction of the water demand is provided over the course of the time rice was on the land, yldmax is the maximum yield in optimal conditions, and pestsens is the amount of rice lost for a unit of pest on the land.
@@ -3216,7 +3216,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.2.0
+NetLogo 5.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
