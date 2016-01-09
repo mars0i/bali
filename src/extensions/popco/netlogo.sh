@@ -11,4 +11,5 @@ fi
 # -Dfile.encoding=UTF-8         ensure Unicode characters in model files are compatible cross-platform
 # -jar NetLogo.jar              specify main jar
 # "$@"                          pass along any command line arguments
-java -Djava.library.path=./lib -Djava.ext.dirs= -XX:MaxPermSize=128m -Xmx1024m -Dfile.encoding=UTF-8 -jar NetLogo.jar "$@"
+java -Djava.library.path=./lib -Djava.ext.dirs= -Xmx1024m -Dfile.encoding=UTF-8 -jar Java/NetLogo.jar "$@"
+#java -Djava.library.path=./lib -Djava.ext.dirs= -XX:MaxPermSize=128m -Xmx1024m -Dfile.encoding=UTF-8 -jar NetLogo.jar "$@"

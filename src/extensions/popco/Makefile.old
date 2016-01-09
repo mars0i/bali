@@ -1,19 +1,32 @@
 POPCO=./resources/popco2-1.0.0-standalone.jar
 MANIFEST=resources/manifest.txt
-OTHERS="$(NETLOGO)/extensions/table/table.jar"
-EXTENSION=$(NETLOGO)/extensions/popco
-SRCS=$(wildcard src/*.java)
-JAVAC=javac
 
-ifeq ($(OS),Windows_NT)
-	SEP=\;
-else
-	SEP=:
+# Probably better to define the env var NETLOGO to point to your
+# Netlogo installation:
+ifeq ($(origin NETLOGO), undefined)
+  NETLOGO=../..
 endif
+
+OTHERS="$(NETLOGO)/extensions/table/table.jar"
+
+EXTENSION=$(NETLOGO)/extensions/popco
+
+ifneq (,$(findstring CYGWIN,$(shell uname -s)))
+  COLON=\;
+  JAVA_HOME := `cygpath -up "$(JAVA_HOME)"`
+else
+  COLON=:
+endif
+
+#JAVAC=$(JAVA_HOME)/bin/javac
+JAVAC=javac
+SRCS=$(wildcard src/*.java)
+
 
 popco.jar popco.jar.pack.gz: $(SRCS) $(MANIFEST) Makefile
 	mkdir -p target/classes
-	$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -classpath "$(NETLOGO)"/Java/NetLogo.jar$(SEP)$(POPCO)$(SEP)$(OTHERS) -d target/classes $(SRCS)
+	$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -classpath "$(NETLOGO)"/NetLogo.jar$(COLON)$(POPCO)$(COLON)$(OTHERS) -d target/classes $(SRCS)
+	#$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -source 1.6 -target 1.6 -classpath "$(NETLOGO)"/NetLogo.jar$(COLON)$(POPCO)$(COLON)$(OTHERS) -d target/classes $(SRCS)
 	jar cmf $(MANIFEST) target/popco.jar -C target/classes .
 	pack200 --modification-time=latest --effort=9 --strip-debug --no-keep-file-order --unknown-attribute=strip target/popco.jar.pack.gz target/popco.jar
 
@@ -27,7 +40,3 @@ popco.zip: popco.jar
 install:
 	if [ ! -d "$(EXTENSION)" ]; then mkdir -v "$(EXTENSION)"; fi
 	cp -v target/*.jar* resources/*.jar* README.md LICENSE "$(EXTENSION)"
-
-
-#$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -classpath "$(NETLOGO)"/NetLogo.jar$(SEP)$(POPCO)$(SEP)$(OTHERS) -d target/classes $(SRCS)
-#$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -source 1.6 -target 1.6 -classpath "$(NETLOGO)"/NetLogo.jar$(SEP)$(POPCO)$(SEP)$(OTHERS) -d target/classes $(SRCS)
