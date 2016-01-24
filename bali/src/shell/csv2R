@@ -1,0 +1,8 @@
+#!/bin/sh
+# Convert csv file containing only binned data to a series of
+# variable defs in R code.
+
+sed -e '1s/"[^"]*\([0-9][0-9]*\)"/"\1"/g' \
+    -e '1s/\(.*\),/bins <- c(\1)/' \
+    -e '2,$s/\(.*\)/dat <- c(\1)/' \
+    "$@"

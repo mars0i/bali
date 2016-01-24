@@ -1,0 +1,5 @@
+#!/bin/sh
+# Extracts the header rows of a NetLogo "spreadsheet" CSV file,
+# i.e. everything up to but not including data that's specific to runs.
+
+sed -n '1,/^"\[initial & final values\]"/p' $1

@@ -1,0 +1,11 @@
+#!/bin/sh
+# check whether headers of NetLogo "spreadsheet" files are the same.
+
+# first run ~/bali/src/shell/spreadsheetCSVextractHeader on one of the
+# files, and pipe the output into a file named header.  Then do you
+# can run the current script to check that all the headers are the same
+# except for time stamps.
+
+for f in "$@"; do
+   ~/bali/src/shell/spreadsheetCSVextractHeader $f | diff header.csv --to-file=-
+done

@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# should be run from where the raw data is
+
+srcdir=~/bali/src/shell
+parentdatadir=~/src/data.bali/april2015
+
+if [ -z "$3" ]; then
+	echo usage: "${0##*/} global-tran-type relig-effect-typ csv-file ..."  >&2
+	exit 1
+fi
+
+globalTran="$1"
+religEffect="$2"
+shift 2
+
+# make sure that needed directories exist:
+
+if [ ! -d $parentdatadir/$globalTran ]; then
+	mkdir $parentdatadir/cooked/$globalTran 
+fi
+
+if [ ! -d $parentdatadir/$globalTran/$religEffect ]; then
+	mkdir $parentdatadir/cooked/$globalTran/$religEffect
+fi
+
+if [ ! -d $parentdatadir/$globalTran/$religEffect/runs ]; then
+	mkdir $parentdatadir/cooked/$globalTran/$religEffect/runs
+fi
+
+cookdir=$parentdatadir/cooked/$globalTran/$religEffect
+
+set -x
+
+# create coooked individual-run data files:
+for f in "$@"; do 
+	$srcdir/fixcsv50bins "$f" > "$cookdir/runs/$f"
+done
+
+pushd $cookdir/runs
+# create header file from one of the raw data files:
+$srcdir/spreadsheetCSVextractHeader "$1" > $cookdir/header.csv
+# create data file from all of the raw data files:
+$srcdir/spreadsheetsCSVextractData "$@" > $cookdir/data.csv
+popd
+
+# now extract specific data files from the main data file:
+$srcdir/cooked2avgharvesthaOnly $cookdir/data.csv > $cookdir/avgharvestha.csv
+$srcdir/cooked2religtypeOnly $cookdir/data.csv > $cookdir/religtype.csv
