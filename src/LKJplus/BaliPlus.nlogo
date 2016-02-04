@@ -2593,7 +2593,7 @@ subaks-mean-global
 subaks-mean-global
 0
 200
-0.025
+0.027
 0.001
 1
 NIL
@@ -3165,7 +3165,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.3
+NetLogo 5.2.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -3224,7 +3224,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -3365,7 +3365,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -3506,7 +3506,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -3647,7 +3647,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -3788,7 +3788,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -3929,7 +3929,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -4070,7 +4070,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -4211,7 +4211,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -4352,7 +4352,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -4493,7 +4493,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -4634,7 +4634,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -4775,7 +4775,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -4916,7 +4916,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -5057,7 +5057,7 @@ NetLogo 5.3
       <value value="&quot;nonoise&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
@@ -5198,7 +5198,7 @@ NetLogo 5.3
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;high&quot;"/>
+      <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
       <value value="1.5"/>
