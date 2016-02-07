@@ -1543,7 +1543,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.4
+2
 0.01
 1
 NIL
@@ -1558,7 +1558,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1.5
+0.6
 0.01
 1
 NIL
@@ -3227,10 +3227,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -3368,10 +3368,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -3509,10 +3509,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -3650,10 +3650,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -3791,10 +3791,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -3932,10 +3932,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4073,10 +4073,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4214,10 +4214,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4355,10 +4355,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4496,10 +4496,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4637,10 +4637,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4778,10 +4778,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4919,10 +4919,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -5060,10 +5060,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -5201,10 +5201,10 @@ NetLogo 5.2.0
       <value value="&quot;low&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="1.5"/>
+      <value value="0.6"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2.4"/>
+      <value value="2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
