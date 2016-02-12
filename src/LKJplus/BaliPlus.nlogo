@@ -1543,7 +1543,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2
+2.2
 0.01
 1
 NIL
@@ -1558,7 +1558,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-0.6
+1.01
 0.01
 1
 NIL
@@ -3224,13 +3224,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -3365,13 +3365,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -3506,13 +3506,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -3647,13 +3647,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -3788,13 +3788,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -3929,13 +3929,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4070,13 +4070,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4211,13 +4211,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4352,13 +4352,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4493,13 +4493,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4634,13 +4634,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4775,13 +4775,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -4916,13 +4916,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -5057,13 +5057,13 @@ NetLogo 5.2.0
       <value value="&quot;nonoise&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
@@ -5198,13 +5198,13 @@ NetLogo 5.2.0
       <value value="1.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="rainfall-scenario">
-      <value value="&quot;low&quot;"/>
+      <value value="&quot;middle&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestdispersal-rate">
-      <value value="0.6"/>
+      <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="pestgrowth-rate">
-      <value value="2"/>
+      <value value="2.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed-source">
       <value value="&quot;new seed&quot;"/>
