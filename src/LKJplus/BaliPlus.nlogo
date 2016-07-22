@@ -148,15 +148,16 @@ to setup
 
   set shuffle-cropplans? false ; currently turned off permanently.  Can be put back in UI if desired.
 
-  set-default-shape subaks "circle"
+  set-default-shape subaks "thick line half"
   set-default-shape dams "square"
   set-default-shape damdam "line"
   set-default-shape damsubaks "line"
   set-default-shape subakdams "line"
   set-default-shape subaksubaks "line"
-  set-default-shape subak-helpers "thick line half"
 
-  set default-pcolor 6 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
+  set default-pcolor 9.9 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
+  ask subaks [set color white
+    set size 3]
   set min-yield 1000000 ; dummy value
   set last-n-years-avgharvesthas []
   set num-years-avgharvesthas 10
@@ -319,16 +320,17 @@ to setup
     ;   [display-cropping-plan-etc] ; new version  ; so I'm going to add in this coloring code below -MA
     ;   ;[set color SCC * 6 + sd] ; original Janssen version
 
-    let this-subak self
-    ask patch-here [
-      sprout-subak-helpers 1 [
-        set size 2.0
-        set my-subak this-subak
-        ask this-subak [set my-subak-helper myself]
-        set color [color] of this-subak
-        set heading 180
-      ]
-    ]
+;;stops subak-helpers from existing for publication aesthetics
+;    let this-subak self
+;    ask patch-here [
+;      sprout-subak-helpers 1 [
+;        set size 2.0
+;        set my-subak this-subak
+;        ask this-subak [set my-subak-helper myself]
+;        set color [color] of this-subak
+;        set heading 180
+;      ]
+;    ]
   ]
 
   ask dams [set flow0 flow0 * Xf * 86400]
@@ -357,6 +359,13 @@ to setup
   ]
 
   init-relig-data-file ;Blake Jackson code
+  ;; jackson (who is ALSO working on this)
+  ask subaks [
+    set size 4
+    ask patch-here [
+      set pcolor [0 0 0]
+    ]
+  ]
   reset-ticks
 end
 ;;;;;;;;;;;;;;; end of setup
@@ -928,21 +937,30 @@ to display-cropping-plan-etc
   let high-scc-base-color 6
   let sd-base-color 2
 
-  ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
+ ;; ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
 
-  ifelse SCC < 14
-    [set color low-scc-base-color + (10 * SCC)]         ; colors from column low-scc-base-color of swatches
-    [set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
+  ;; ifelse SCC < 14
+    ;[set color low-scc-base-color + (10 * SCC)]         ; colors from column low-scc-base-color of swatches
+   ;[set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
 
-  ifelse show-relig-types
-    [ask my-subak-helper
-      [let reltype [relig-type] of myself
-       let anti-reltype 1 - reltype
-       set color rgb ((sigmoid reltype .03 .5) * 255) ((sigmoid anti-reltype .03 .5) * 255) 0 ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
-       let dir 180 + (180 * ([pyharvestha] of myself / 10))
-       set heading dir
-    ]]
-    [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
+
+;blake
+ask subaks [
+  let dir 0 + (72 * SCC) + (sd * 6)
+  ;let dir ([SCC] of myself)
+  set heading dir
+]
+
+
+ ; ifelse show-relig-types
+  ; [ask my-subak-helper
+   ;   [let reltype [relig-type] of myself
+    ;   let anti-reltype 1 - reltype
+     ;  set color rgb ((sigmoid reltype .03 .5) * 255) ((sigmoid anti-reltype .03 .5) * 255) 0 ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
+      ; let dir 180 + (180 * ([pyharvestha] of myself / 10))
+       ;set heading dir
+    ;]]
+    ;[ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
 
   ifelse show-subak-values
     [set label (word "[" SCC ":" sd "]")]
@@ -2593,7 +2611,7 @@ subaks-mean-global
 subaks-mean-global
 0
 200
-0.025
+0
 0.001
 1
 NIL
