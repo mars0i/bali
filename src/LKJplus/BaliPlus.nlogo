@@ -148,7 +148,7 @@ to setup
 
   set shuffle-cropplans? false ; currently turned off permanently.  Can be put back in UI if desired.
 
-  set-default-shape subaks "thick line half"
+  ;set-default-shape subaks "thick line half"
   set-default-shape dams "square"
   set-default-shape damdam "line"
   set-default-shape damsubaks "line"
@@ -156,8 +156,8 @@ to setup
   set-default-shape subaksubaks "line"
 
   set default-pcolor 9.9 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
-  ask subaks [set color white
-    set size 3]
+  ask subaks [set color black
+    set size 1]
   set min-yield 1000000 ; dummy value
   set last-n-years-avgharvesthas []
   set num-years-avgharvesthas 10
@@ -358,12 +358,17 @@ to setup
     ]
   ]
 
+  ;;blake jackson
+  ;;asks subaks to set shape according to crop plan
+
+  set-subak-shape-crop-plan
+
   init-relig-data-file ;Blake Jackson code
   ;; jackson (who is ALSO working on this)
   ask subaks [
-    set size 4
+    set size 2
     ask patch-here [
-      set pcolor [0 0 0]
+      set pcolor white
     ]
   ]
   reset-ticks
@@ -433,6 +438,25 @@ to my-clear-globals
   set avgharvestha-bin-size 0   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
 end
 
+;;blake jackson
+;;sets shape of subaks according to crop plan
+to set-subak-shape-crop-plan
+  ask subaks [
+    ifelse SCC = 0 [set shape "star"] ;suitless
+      [ifelse SCC = 1 [set shape "suit heart"]
+        [ifelse SCC = 2 [set shape "suit diamond"]
+          [ifelse SCC = 3 [set shape "suit spade"]
+            [ifelse SCC = 4 [set shape "suit club"]    [set shape "thick line half"]
+            ]
+          ]
+        ]
+      ]
+      if color != black [
+        set color black
+      ]
+  ]
+end
+
 to init-relig-data-file ;Blake Jackson code
   let filerelig (word data-dir "religtype" previous-seed ".csv")
     if file-exists? filerelig
@@ -479,6 +503,9 @@ to go
     maybe-ignore-neighboring-plans                ; possibly forget what you learned from neighbors and do something else
     if Color_subaks = "cropping plans" [ask subaks [display-cropping-plan-etc]]
   ]
+
+;;blake jackson
+set-subak-shape-crop-plan
 
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
   ; (worry: do any of these variables affect operation? does zeroing them bias the process? -MA)
@@ -3102,6 +3129,37 @@ false
 0
 Polygon -7500403 true true 151 1 185 108 298 108 207 175 242 282 151 216 59 282 94 175 3 108 116 108
 
+suit club
+false
+0
+Circle -7500403 true true 148 119 122
+Circle -7500403 true true 30 119 122
+Polygon -7500403 true true 134 137 135 253 121 273 105 284 195 284 180 273 165 253 159 138
+Circle -7500403 true true 88 39 122
+
+suit diamond
+false
+0
+Polygon -7500403 true true 150 15 45 150 150 285 255 150
+
+suit heart
+false
+0
+Circle -7500403 true true 135 43 122
+Circle -7500403 true true 43 43 122
+Polygon -7500403 true true 255 120 240 150 210 180 180 210 150 240 146 135
+Line -7500403 true 150 209 151 80
+Polygon -7500403 true true 45 120 60 150 90 180 120 210 150 240 154 135
+
+suit spade
+false
+0
+Circle -7500403 true true 135 120 122
+Polygon -7500403 true true 255 165 240 135 210 105 183 80 167 61 158 47 150 30 146 150
+Circle -7500403 true true 43 120 122
+Polygon -7500403 true true 45 165 60 135 90 105 117 80 133 61 142 47 150 30 154 150
+Polygon -7500403 true true 135 210 135 253 121 273 105 284 195 284 180 273 165 253 165 210
+
 target
 false
 0
@@ -3183,7 +3241,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.3
+NetLogo 5.3.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
