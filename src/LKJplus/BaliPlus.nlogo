@@ -149,6 +149,7 @@ to setup
   set shuffle-cropplans? false ; currently turned off permanently.  Can be put back in UI if desired.
 
   ;set-default-shape subaks "thick line half"
+  set-default-shape subak-helpers "thick line half"
   set-default-shape dams "square"
   set-default-shape damdam "line"
   set-default-shape damsubaks "line"
@@ -320,17 +321,16 @@ to setup
     ;   [display-cropping-plan-etc] ; new version  ; so I'm going to add in this coloring code below -MA
     ;   ;[set color SCC * 6 + sd] ; original Janssen version
 
-;;stops subak-helpers from existing for publication aesthetics
-;    let this-subak self
-;    ask patch-here [
-;      sprout-subak-helpers 1 [
-;        set size 2.0
-;        set my-subak this-subak
-;        ask this-subak [set my-subak-helper myself]
-;        set color [color] of this-subak
-;        set heading 180
-;      ]
-;    ]
+    let this-subak self
+    ask patch-here [
+      sprout-subak-helpers 1 [
+        set size 2.7
+        set my-subak this-subak
+        ask this-subak [set my-subak-helper myself]
+        set color gray ; [color] of this-subak
+        set heading 180
+      ]
+    ]
   ]
 
   ask dams [set flow0 flow0 * Xf * 86400]
@@ -964,19 +964,26 @@ to display-cropping-plan-etc
   let high-scc-base-color 6
   let sd-base-color 2
 
- ;; ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
+  ;; ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
 
   ;; ifelse SCC < 14
     ;[set color low-scc-base-color + (10 * SCC)]         ; colors from column low-scc-base-color of swatches
-   ;[set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
+    ;[set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
 
 
-;blake
-ask subaks [
-  let dir 0 + (72 * SCC) + (sd * 6)
-  ;let dir ([SCC] of myself)
-  set heading dir
-]
+  ;blake
+  ask subaks [
+    let dir 0 + (72 * SCC) + (sd * 6)
+    ;let dir ([SCC] of myself)
+    set heading dir
+  ]
+
+  ask subaks [
+    let dir 30 * sd
+    ask my-subak-helper [
+      set heading dir
+    ]
+  ]
 
 
  ; ifelse show-relig-types
@@ -2263,7 +2270,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0.3
+0
 0.05
 1
 NIL
@@ -2303,7 +2310,7 @@ SWITCH
 550
 relig-influence?
 relig-influence?
-0
+1
 1
 -1000
 
@@ -3113,6 +3120,12 @@ Polygon -7500403 true true 135 105 90 60 45 45 75 105 135 135
 Polygon -7500403 true true 165 105 165 135 225 105 255 45 210 60
 Polygon -7500403 true true 135 90 120 45 150 15 180 45 165 90
 
+spinner
+true
+0
+Polygon -7500403 true true 150 0 105 75 195 75
+Polygon -7500403 true true 135 74 135 150 139 159 147 164 154 164 161 159 165 151 165 74
+
 square
 false
 0
@@ -3241,7 +3254,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.3.1
+NetLogo 5.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
