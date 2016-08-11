@@ -1,4 +1,0 @@
-This file has to be kept around to trick git into being willing to
-create a seeds directory when it clones the repo.  This directory
-is used by the BaliPlus program to store files containing random seeds
-(which should be excluded by .gitignore).

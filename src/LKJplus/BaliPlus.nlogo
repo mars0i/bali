@@ -986,16 +986,16 @@ to display-cropping-plan-etc
    ;[set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
 
 
-;blake
-ask subaks [
-  ask my-subak-helper [
-    let dir 0 + (30 * SCC)
-    set heading dir
-  ;let dir 0 + (72 * SCC) + (sd * 6)
-  ;let dir ([SCC] of myself)
-  set heading dir
-  ]
-]
+;;blake
+;ask subaks [
+;  ask my-subak-helper [
+;    let dir 0 + (30 * SCC)
+;    set heading dir
+;  ;let dir 0 + (72 * SCC) + (sd * 6)
+;  ;let dir ([SCC] of myself)
+;  set heading dir
+;  ]
+;]
 
 
   ifelse show-relig-types
