@@ -50,13 +50,13 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 
 ;patches-own [r1]
+breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine which subaks' cropping patterns can be copied, and how pests spread.
+                               ; Note that these are one-way links, so in order for communication to go in both directions, two subaksubaks are needed.
 breed [subaks]  ; Water-management collectives
 breed [dams]    ; Dams are used to manage ho  w water is divided between subaks
 breed [damdam]  ; Links specifying how water travels directly from dam to dam (?)
 breed [damsubaks damsubak]     ; Links from subaks to the dams to which they can send water (?)
 breed [subakdams subakdam]     ; Links from dams to the subaks to which they can send water (?)
-breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine which subaks' cropping patterns can be copied, and how pests spread.
-                               ; Note that these are one-way links, so in order for communication to go in both directions, two subaksubaks are needed.
 breed [subak-helpers subak-helper] ; no data.  just used for extra flexibility in graphical display of subak state.
 
 subaks-own [
