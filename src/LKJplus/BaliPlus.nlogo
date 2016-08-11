@@ -979,6 +979,10 @@ to display-cropping-plan-etc
   let high-scc-base-color 6
   let sd-base-color 2
 
+  ask my-subak-helper [
+    set heading 30 * ([sd] of myself)
+  ]
+
  ;; ask patch-here [set pcolor (2 + (([sd] of myself) * 10))]
 
   ;; ifelse SCC < 14
@@ -1654,7 +1658,7 @@ CHOOSER
 rainfall-scenario
 rainfall-scenario
 "low" "middle" "high"
-0
+1
 
 PLOT
 774
@@ -2280,7 +2284,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0.3
+0
 0.05
 1
 NIL
@@ -2320,7 +2324,7 @@ SWITCH
 550
 relig-influence?
 relig-influence?
-0
+1
 1
 -1000
 
@@ -3258,7 +3262,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.3.1
+NetLogo 5.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
