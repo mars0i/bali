@@ -156,6 +156,7 @@ to setup
   set-default-shape subaksubaks "line"
 
   set default-pcolor 9.9 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
+  ask dams [set color [0 0 0 0]]
   ask subaks [set color black
     set size 1]
   set min-yield 1000000 ; dummy value
