@@ -156,7 +156,6 @@ to setup
   set-default-shape subaksubaks "line"
 
   set default-pcolor 9.9 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
-  ask dams [set color [0 0 0 0]]
   ask subaks [set color black
     set size 1]
   set min-yield 1000000 ; dummy value
@@ -1166,10 +1165,10 @@ to load-data
         if masceti = 13 [set color turquoise]
         if masceti = 14 [set color brown]
    ]]]
-
+;blake dams
   foreach dam-data [
     create-dams 1 [
-      set color yellow
+      set color [0 0 0 0]
       ;; we skip the 0th element
       setxy (item 1 ?) (item 2 ?)
       set flow0 item 3 ?
@@ -1256,10 +1255,11 @@ to levelrainfall [level]
   if level = 2 [set rain item month Reh]
 end
 
+;blake damdam
 to make-damdam [dam1 dam2]
   create-damdam 1
   [
-    set color blue
+    set color [0 0 0 0]
     set a dam1
     set b dam2
     reposition-edges
@@ -3263,7 +3263,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.3
+NetLogo 5.3.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
