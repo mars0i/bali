@@ -3196,6 +3196,7 @@ true
 0
 Line -7500403 true 150 0 150 150
 Rectangle -7500403 true true 143 2 158 149
+Polygon -7500403 true true 105 60 135 0 165 0 195 60 105 60 105 60 135 0
 
 tree
 false
