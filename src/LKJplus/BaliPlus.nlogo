@@ -320,17 +320,18 @@ to setup
     ;   [display-cropping-plan-etc] ; new version  ; so I'm going to add in this coloring code below -MA
     ;   ;[set color SCC * 6 + sd] ; original Janssen version
 
-;;stops subak-helpers from existing for publication aesthetics
-;    let this-subak self
-;    ask patch-here [
-;      sprout-subak-helpers 1 [
-;        set size 2.0
-;        set my-subak this-subak
-;        ask this-subak [set my-subak-helper myself]
-;        set color [color] of this-subak
-;        set heading 180
-;      ]
-;    ]
+;stops subak-helpers from existing for publication aesthetics
+    let this-subak self
+    ask patch-here [
+      sprout-subak-helpers 1 [
+        set size 2.0
+        set shape "thick line half"
+        set my-subak this-subak
+        ask this-subak [set my-subak-helper myself]
+        set color [color] of this-subak
+        set heading 180
+      ]
+    ]
   ]
 
   ask dams [set flow0 flow0 * Xf * 86400]
@@ -363,10 +364,16 @@ to setup
 
   set-subak-shape-crop-plan
 
+  ;;blake jackson again
+ask subak-helpers [
+  set color black
+]
+
   init-relig-data-file ;Blake Jackson code
   ;; jackson (who is ALSO working on this)
   ask subaks [
     set size 2
+    set color gray
     ask patch-here [
       set pcolor white
     ]
@@ -506,6 +513,14 @@ to go
 
 ;;blake jackson
 set-subak-shape-crop-plan
+
+;;blake jackson again
+ask subak-helpers [
+  set color black
+]
+ask subaks [
+  set color gray
+]
 
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
   ; (worry: do any of these variables affect operation? does zeroing them bias the process? -MA)
@@ -973,21 +988,23 @@ to display-cropping-plan-etc
 
 ;blake
 ask subaks [
-  let dir 0 + (72 * SCC) + (sd * 6)
+  ask my-subak-helper [
+    let dir 0 + (30 * SCC)
+    set heading dir
+  ;let dir 0 + (72 * SCC) + (sd * 6)
   ;let dir ([SCC] of myself)
   set heading dir
+  ]
 ]
 
 
- ; ifelse show-relig-types
-  ; [ask my-subak-helper
-   ;   [let reltype [relig-type] of myself
-    ;   let anti-reltype 1 - reltype
-     ;  set color rgb ((sigmoid reltype .03 .5) * 255) ((sigmoid anti-reltype .03 .5) * 255) 0 ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
-      ; let dir 180 + (180 * ([pyharvestha] of myself / 10))
-       ;set heading dir
-    ;]]
-    ;[ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
+  ifelse show-relig-types
+   [ask my-subak-helper
+      [let reltype [relig-type] of myself
+       let anti-reltype 1 - reltype
+       set color rgb ((sigmoid reltype .03 .5) * 255) ((sigmoid anti-reltype .03 .5) * 255) 0 ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
+    ]]
+    [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
 
   ifelse show-subak-values
     [set label (word "[" SCC ":" sd "]")]
