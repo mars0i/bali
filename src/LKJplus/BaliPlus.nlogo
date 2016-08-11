@@ -1544,8 +1544,8 @@ end
 GRAPHICS-WINDOW
 180
 10
-773
-690
+774
+713
 -1
 -1
 11.0
@@ -1560,8 +1560,8 @@ GRAPHICS-WINDOW
 1
 -24
 28
--30
-28
+-31
+29
 1
 1
 1
@@ -1699,10 +1699,10 @@ PENS
 "totWS" 1.0 0 -13345367 true "" ""
 
 SWITCH
-618
-739
-770
+620
+763
 772
+796
 viewdamsubaks
 viewdamsubaks
 1
@@ -1710,10 +1710,10 @@ viewdamsubaks
 -1000
 
 CHOOSER
-617
-690
-769
-735
+619
+713
+771
+758
 Color_subaks
 Color_subaks
 "Temple groups" "cropping plans" "crops" "pests"
@@ -1741,10 +1741,10 @@ TEXTBOX
 1
 
 TEXTBOX
-546
-846
-1102
-982
+548
+869
+1104
+1005
 Cropping plan colors: Large circle represents crop plan, square represents start month.  Color of line in middle represents relig value, ranging from green (no effect on ignoring neighbors) to red (full effect); black is intermediate.  Direction represents amount of harvest per hectare (pyharvestha), i.e. the \"success\" value that determines who to imitate.  Value ranges from 0 (down) to 10 (up).\n\nCrop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.\n\nMasceti/temple group colors: white: 1, yellow: 2, red: 3, blue: 4, cyan: 5, pink: 6, orange: 7, lime: 8, sky: 9, violet: 10, magenta: 11, green: 12, turquoise: 13, brown: 14.
 11
 0.0
@@ -2525,10 +2525,10 @@ num-years-avgharvesthas
 11
 
 SLIDER
-159
-693
-590
-726
+162
+716
+593
+749
 relig-effect-center
 relig-effect-center
 -5
@@ -2540,10 +2540,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-159
-727
-590
-760
+162
+750
+593
+783
 relig-effect-endpt
 relig-effect-endpt
 -10
@@ -2573,10 +2573,10 @@ PENS
 "effect-curve" 1.0 0 -7500403 true "" "; See plot-relig-effect-curve procedure."
 
 BUTTON
-162
-760
-240
-794
+164
+783
+242
+817
 plot curve
 plot-relig-effect-curve
 T
@@ -2653,10 +2653,10 @@ blue: mean, red: std dev:
 1
 
 SLIDER
-0
-807
-1107
-840
+2
+830
+1109
+863
 subaks-mean-global
 subaks-mean-global
 0
@@ -2678,20 +2678,20 @@ per-subak mean # global speakers:
 1
 
 CHOOSER
-241
-761
-414
-806
+243
+784
+416
+829
 relig-effect-curve
 relig-effect-curve
 "linear" "step" "sigmoidey"
 1
 
 SLIDER
-414
-775
-586
-808
+416
+798
+588
+831
 relig-effect-step
 relig-effect-step
 0
@@ -2703,10 +2703,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-417
-763
-615
-782
+419
+786
+617
+805
 Use above if sigmoidey, below if step.
 9
 0.0
@@ -2764,10 +2764,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "; see procedure plot-figs"
 
 SLIDER
--1
-845
-172
-878
+2
+868
+175
+901
 relig-neighbor-levels
 relig-neighbor-levels
 1
@@ -2779,10 +2779,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-4
-879
-171
-952
+6
+903
+173
+976
 Experimental: If neighbor-levels = 2, pay attention to neighbors of neighbors for relig tran; if = 3, their neighbors too, and so on.
 11
 0.0
@@ -3197,7 +3197,7 @@ true
 0
 Line -7500403 true 150 0 150 150
 Rectangle -7500403 true true 143 2 158 149
-Polygon -7500403 true true 105 60 135 0 165 0 195 60 105 60 105 60 135 0
+Polygon -7500403 true true 105 60 135 0 165 0 195 60 105 60 135 0
 Rectangle -7500403 true true 135 60 165 150
 
 tree
@@ -3266,7 +3266,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.3.1
+NetLogo 5.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
