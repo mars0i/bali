@@ -1266,10 +1266,11 @@ to make-damdam [dam1 dam2]
   ]
 end
 
+;blake subaksubak
 to make-subaksubak [s1 s2]
   create-subaksubaks 1
   [
-    set color green
+    set color [125 125 125]
     set a s1
     set b s2
     reposition-edges
@@ -3197,6 +3198,7 @@ true
 Line -7500403 true 150 0 150 150
 Rectangle -7500403 true true 143 2 158 149
 Polygon -7500403 true true 105 60 135 0 165 0 195 60 105 60 105 60 135 0
+Rectangle -7500403 true true 135 60 165 150
 
 tree
 false
