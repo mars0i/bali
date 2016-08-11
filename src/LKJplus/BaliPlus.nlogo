@@ -148,7 +148,6 @@ to setup
 
   set shuffle-cropplans? false ; currently turned off permanently.  Can be put back in UI if desired.
 
-  ;set-default-shape subaks "thick line half"
   set-default-shape dams "square"
   set-default-shape damdam "line"
   set-default-shape damsubaks "line"
@@ -156,8 +155,7 @@ to setup
   set-default-shape subaksubaks "line"
 
   set default-pcolor 9.9 ; gray means 5. 6 to 9 are lighter grays, lower integers get closer to black
-  ask subaks [set color black
-    set size 1]
+  ask subaks [set size 1]
   set min-yield 1000000 ; dummy value
   set last-n-years-avgharvesthas []
   set num-years-avgharvesthas 10
@@ -320,16 +318,16 @@ to setup
     ;   [display-cropping-plan-etc] ; new version  ; so I'm going to add in this coloring code below -MA
     ;   ;[set color SCC * 6 + sd] ; original Janssen version
 
-;stops subak-helpers from existing for publication aesthetics
     let this-subak self
     ask patch-here [
       sprout-subak-helpers 1 [
         set size 2.0
+        set color black
         set shape "thick line half"
         set my-subak this-subak
         ask this-subak [set my-subak-helper myself]
-        set color [color] of this-subak
-        set heading 180
+        set color [50 50 50]
+        set heading 0
       ]
     ]
   ]
@@ -359,18 +357,10 @@ to setup
     ]
   ]
 
-  ;;blake jackson
-  ;;asks subaks to set shape according to crop plan
-
   set-subak-shape-crop-plan
 
-  ;;blake jackson again
-ask subak-helpers [
-  set color black
-]
-
   init-relig-data-file ;Blake Jackson code
-  ;; jackson (who is ALSO working on this)
+  ;; jackson
   ask subaks [
     set size 2
     set color gray
@@ -514,13 +504,12 @@ to go
 ;;blake jackson
 set-subak-shape-crop-plan
 
-;;blake jackson again
-ask subak-helpers [
-  set color black
-]
-ask subaks [
-  set color gray
-]
+  ask subak-helpers [
+    set color [50 50 50]
+  ]
+  ask subaks [
+    set color gray
+  ]
 
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
   ; (worry: do any of these variables affect operation? does zeroing them bias the process? -MA)
@@ -756,7 +745,7 @@ to demandwater
       if crop = 2 [ set color yellow] ; rice variety 2
       if crop = 3 [ set color white]  ; rice variety 3
       if crop = 4 [ set color red]    ; alternate, non-rice crop (?)
-      ask my-subak-helper [set color [color] of myself]
+      ;ask my-subak-helper [set color [color] of myself]
     ]
     set dmd item crop cropuse - [rain] of return
     set dmd dmd * area * 10000
@@ -890,7 +879,7 @@ to growpest
     if Color_subaks = "pests" [
       ask patch-here [set pcolor default-pcolor]
       set color 62 + pests
-      ask my-subak-helper [set color [color] of myself]
+      ;ask my-subak-helper [set color [color] of myself]
     ]
   ] ; outer ask
 end
@@ -990,25 +979,24 @@ to display-cropping-plan-etc
    ;[set color high-scc-base-color + (10 * (SCC - 14))]  ; colors from column high-scc-base-color of swatches
 
 
-;;blake
-;ask subaks [
-;  ask my-subak-helper [
-;    let dir 0 + (30 * SCC)
-;    set heading dir
-;  ;let dir 0 + (72 * SCC) + (sd * 6)
-;  ;let dir ([SCC] of myself)
-;  set heading dir
-;  ]
-;]
+  ;;blake
+  ;ask subaks [
+  ;  ask my-subak-helper [
+  ;    let dir 0 + (30 * SCC)
+  ;    set heading dir
+  ;  ;let dir 0 + (72 * SCC) + (sd * 6)
+  ;  ;let dir ([SCC] of myself)
+  ;  set heading dir
+  ;  ]
+  ;]
 
-
-  ifelse show-relig-types
-   [ask my-subak-helper
-      [let reltype [relig-type] of myself
-       let anti-reltype 1 - reltype
-       set color rgb ((sigmoid reltype .03 .5) * 255) ((sigmoid anti-reltype .03 .5) * 255) 0 ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
-    ]]
-    [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
+  ;ifelse show-relig-types
+  ; [ask my-subak-helper
+  ;    [let reltype [relig-type] of myself
+  ;     let anti-reltype 1 - reltype
+  ;     set color rgb ((sigmoid reltype .03 .5) * 255) ((sigmoid anti-reltype .03 .5) * 255) 0 ; slide linearly between bright red for relig-type = 1, and bright green for = 0.
+  ; ]]
+  ; [ask my-subak-helper [set color [0 0 0 0]]] ; an RGBA color--0 as last element means completely transparent
 
   ifelse show-subak-values
     [set label (word "[" SCC ":" sd "]")]
@@ -1138,7 +1126,7 @@ to load-data
 
   foreach subak-data [
     create-subaks 1 [
-      set color white
+      ;set color [145 145 145]
       ;; note we skip the 0th element, which is a subak id number.
       setxy (item 1 ?) (item 2 ?)
       set area item 3 ?
@@ -1168,7 +1156,7 @@ to load-data
 ;blake dams
   foreach dam-data [
     create-dams 1 [
-      set color [0 0 0 0]
+      set color [0 0 0 0] ; transparent for publication
       ;; we skip the 0th element
       setxy (item 1 ?) (item 2 ?)
       set flow0 item 3 ?
@@ -1259,7 +1247,7 @@ end
 to make-damdam [dam1 dam2]
   create-damdam 1
   [
-    set color [0 0 0 0]
+    set color [0 0 0 0] ; transparent for publication
     set a dam1
     set b dam2
     reposition-edges
@@ -1270,7 +1258,7 @@ end
 to make-subaksubak [s1 s2]
   create-subaksubaks 1
   [
-    set color [125 125 125]
+    set color [40 40 40] ; publication color
     set a s1
     set b s2
     reposition-edges
