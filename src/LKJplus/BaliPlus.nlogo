@@ -438,11 +438,17 @@ end
 ;;sets shape of subaks according to crop plan
 to set-subak-shape-crop-plan
   ask subaks [
-    ifelse SCC = 0 [set shape "star"] ;suitless
-      [ifelse SCC = 1 [set shape "suit heart"]
-        [ifelse SCC = 2 [set shape "suit diamond"]
-          [ifelse SCC = 3 [set shape "suit spade"]
-            [ifelse SCC = 4 [set shape "suit club"]    [set shape "thick line half"]
+    ifelse SCC = 0
+      [set shape "star"] ;suitless
+      [ifelse SCC = 1
+        [set shape "suit heart"]
+        [ifelse SCC = 2
+          [set shape "suit diamond"]
+          [ifelse SCC = 3
+            [set shape "suit spade"]
+            [ifelse SCC = 4
+              [set shape "suit club"]
+              [set shape "thick line half"] ; arbitrary--shouldn't happen unless using non-traditional rice varieties
             ]
           ]
         ]
