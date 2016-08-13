@@ -326,7 +326,6 @@ to setup
         set shape "thick line half"
         set my-subak this-subak
         ask this-subak [set my-subak-helper myself]
-        set color [50 50 50]
         set heading 0
       ]
     ]
@@ -448,9 +447,6 @@ to set-subak-shape-crop-plan
           ]
         ]
       ]
-      if color != black [
-        set color black
-      ]
   ]
 end
 
@@ -501,15 +497,12 @@ to go
     if Color_subaks = "cropping plans" [ask subaks [display-cropping-plan-etc]]
   ]
 
-;;blake jackson
-set-subak-shape-crop-plan
+  ;;blake jackson
+  set-subak-shape-crop-plan
 
-  ask subak-helpers [
-    set color [50 50 50]
-  ]
-  ask subaks [
-    set color gray
-  ]
+  ;ask subaks [
+  ;  set color gray
+  ;]
 
   ; at end of year, set month back to 0 and empty all summary variables that collect info over the year
   ; (worry: do any of these variables affect operation? does zeroing them bias the process? -MA)
@@ -1532,8 +1525,8 @@ end
 GRAPHICS-WINDOW
 180
 10
-774
-713
+773
+712
 -1
 -1
 11.0
