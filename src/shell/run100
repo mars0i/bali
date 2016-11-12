@@ -5,4 +5,4 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-qsub -M marshall@logical.net -N $1 -t 1-100 /home/mabrams/bali/src/qsub/submitanything.job /home/mabrams/bali/src/shell/runheadless $2 $2
+qsub -M mabrams@uab.edu -N $1 -t 1-100 /home/mabrams/bali/src/qsub/submitanything.job /home/mabrams/bali/src/shell/runheadless $2 $2
