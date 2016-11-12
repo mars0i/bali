@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+  echo usage: $0 jobname experimentname
+  exit 1
+fi
+
+qsub -M marshall@logical.net -N $1 -t 1-100 /home/mabrams/bali/src/qsub/submitanything.job /home/mabrams/bali/src/shell/runheadless $2 $2
