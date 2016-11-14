@@ -14,12 +14,12 @@ function usage () {
 }
 
 if [ ! -r "$netlogo" ]; then 
-	echo "NetLogo jar file '$netlogo' is missing or unreadable."
+	echo "NetLogo jar file '$netlogo' is missing or unreadable." >&2
 	exit 1
 fi
 
 if [ ! -r "$datadir" ]; then 
-	echo "Data directory '$datadir' is missing."
+	echo "Data directory '$datadir' is missing." >&2
 	exit 2
 fi
 
