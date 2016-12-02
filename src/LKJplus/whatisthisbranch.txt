@@ -1,0 +1,2 @@
+This branch "netlogoweb" is a modified version of the master branch,
+edited to allow the model to run in NetLogo Web.
