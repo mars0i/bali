@@ -26,8 +26,8 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
           cropplan-bools
           default-pcolor ; color of all patches except when patch color used to indicate start month
           shuffle-cropplans?  ; can be put back into UI if desired
-          data-dir ; where data files will be written
-          seed-dir ; where random seed files will be written
+          ;data-dir ; where data files will be written
+          ;seed-dir ; where random seed files will be written
           min-yield
           previous-seed ; holds seed from previous run
           months-past-burn-in      ; will contain ticks - burn-in-months
@@ -129,20 +129,21 @@ to setup
   clear-all-plots
   plot-relig-effect-curve
   clear-output
-  file-close-all
-  set data-dir "../../data/" ; this is relative to where this .nlogo file resides
-  set seed-dir "../../seeds/"
+  ;file-close-all
+  ;set data-dir "../../data/" ; this is relative to where this .nlogo file resides
+  ;set seed-dir "../../seeds/"
 
   let seed 0
   ifelse random-seed-source = "new seed"
     [set seed new-seed]
-    [ifelse random-seed-source = "read from file"
-      [carefully
-        [file-open user-file
-         set seed file-read]
-        [set seed new-seed]   ; if user declines to choose a file, use a random seed
-       file-close]  ; do this no matter what
-      [set seed previous-seed]] ; inner else. random-seed-source = "use previous"
+    [set seed previous-seed] ; random-seed-source = "use previous"
+    ;[ifelse random-seed-source = "read from file"
+    ;  [carefully
+    ;    [file-open user-file
+    ;     set seed file-read]
+    ;    [set seed new-seed]   ; if user declines to choose a file, use a random seed
+    ;   file-close]  ; do this no matter what
+    ;  [set seed previous-seed]] ; inner else. random-seed-source = "use previous"
   set-random-seed seed
   set previous-seed seed
 
@@ -356,7 +357,7 @@ to setup
     ]
   ]
 
-  init-relig-data-file ;Blake Jackson code
+  ;init-relig-data-file ;Blake Jackson code
   reset-ticks
 end
 ;;;;;;;;;;;;;;; end of setup
@@ -404,8 +405,8 @@ to my-clear-globals
   set cropplan-bools 0
   set default-pcolor 0
   set shuffle-cropplans? 0
-  set data-dir 0
-  set seed-dir 0
+  ;set data-dir 0
+  ;set seed-dir 0
   set min-yield 0
   ; set previous-seed 0  ; we want this to be available in the next run
   set months-past-burn-in 0      ; will contain ticks - burn-in-months
@@ -424,20 +425,20 @@ to my-clear-globals
   set avgharvestha-bin-size 0   ; bin size, i.e. size of range for each bin, calcuated from max and num-bins
 end
 
-to init-relig-data-file ;Blake Jackson code
-  let filerelig (word data-dir "religtype" previous-seed ".csv")
-    if file-exists? filerelig
-      [ file-delete filerelig ]
-    file-open filerelig
-    file-print ("\"tick\",\"run\",\"experiment\",\"relig-effect\",\"mean relig-type\",\"stddev mean relig-type\",\"avgharvestha\",\"stddevharvestha\",\"global-tran\"")
-end
+;to init-relig-data-file ;Blake Jackson code
+;  let filerelig (word data-dir "religtype" previous-seed ".csv")
+;    if file-exists? filerelig
+;      [ file-delete filerelig ]
+;    file-open filerelig
+;    file-print ("\"tick\",\"run\",\"experiment\",\"relig-effect\",\"mean relig-type\",\"stddev mean relig-type\",\"avgharvestha\",\"stddevharvestha\",\"global-tran\"")
+;end
 
 ;;;;;;;;;;;;;;;
 to go
   if run-until-month > 0 and ticks >= run-until-month
     [stop] ; exit go-forever if user specified a stop tick
 
-  if ticks mod 12000 = 0 [print (word "run " behaviorspace-run-number " tick " ticks)]
+  ;if ticks mod 12000 = 0 [print (word "run " behaviorspace-run-number " tick " ticks)]
 
   poss-show-damsubaks ; display dam-subak-relations if requested from UI
   update-subak-months ; update month, crop states, etc. in subaks
@@ -488,9 +489,9 @@ to go
   ][
     set month month + 1
   ]
-if month = 11 [
-  write-relig-data ; Blake Jackson Code
-]
+;if month = 11 [
+;  write-relig-data ; Blake Jackson Code
+;]
   tick
 end
 
@@ -1339,12 +1340,12 @@ end
 ;; General-purpose utilities
 
 to set-random-seed [seed]
-  let filename (word seed-dir "seed" seed ".txt")
+  ;let filename (word seed-dir "seed" seed ".txt")
   random-seed seed
-  file-open filename
-  file-write seed
-  file-close
-  output-print (word "Seed: " seed "; file: " filename)
+  ;file-open filename
+  ;file-write seed
+  ;file-close
+  output-print (word "Seed: " seed); "; file: " filename)
 end
 
 ;; generate integers from 0 to n-1
@@ -1438,11 +1439,11 @@ to-report stddev [vals]
   report ((n - 1) / n) * (standard-deviation vals)
 end
 
-to write-relig-data ;Blake Jackson code
-  if ticks > burn-in-months - 1 [
-     file-print (word "\"" ticks "\",\"" previous-seed "\"," behaviorspace-experiment-name "," relig-effect-name "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," avgharvestha "," (0.9970887856713804 * stddevharvestha)"," subaks-mean-global)
-  ]
-end
+;to write-relig-data ;Blake Jackson code
+;  if ticks > burn-in-months - 1 [
+;     file-print (word "\"" ticks "\",\"" previous-seed "\"," behaviorspace-experiment-name "," relig-effect-name "," mean [relig-type] of subaks "," (0.9970887856713804 * standard-deviation [relig-type] of subaks) "," avgharvestha "," (0.9970887856713804 * stddevharvestha)"," subaks-mean-global)
+;  ]
+;end
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2357,7 +2358,7 @@ CHOOSER
 120
 random-seed-source
 random-seed-source
-"new seed" "read from file" "use previous"
+"new seed" "use previous"
 0
 
 INPUTBOX
@@ -2757,23 +2758,6 @@ BUTTON
 44
 to next year
 go-next-year
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-6
-44
-113
-77
-save work
-file-close
 NIL
 1
 T
