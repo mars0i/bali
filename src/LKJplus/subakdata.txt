@@ -1,11 +1,7 @@
-;; I took subakdata.txt, and broke the one long line into separate lines,
-;; one subak per line, and replaced spaces with tabs to make it easier to 
-;; see what's in the data.  -Marshall
-
 ;; The first element on each is a subak number.  It's ignored in
 ;; the NetLogo model; it's not even stored in a variable, but as it happens,
 ;; it will become the turtle number as well (always?).
-;; I don't yet know what ulunswi is.  Its value is either 1 or 2.
+;; I don't yet know what ulunswi is.  Its value is either 1 or 2. -MA
 
 ;subak	x-coord	y-coord	area	masceti	ulunswi	
 0	-19	8	32	3	2	
