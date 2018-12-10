@@ -295,17 +295,21 @@ to setup
 
   ask subaks [set size 0.75]
   ask subaks [set old? false]
-  set dams_array sort-by [[who] of ?1 < [who] of ?2] dams      ; overwrites filling of dams_array in load-data
-  set subaks_array sort-by [[who] of ?1 < [who] of ?2] subaks  ; overwrites filling of subaks_array in load-data
+  ;; I think this can just be done using < without the anonymous procedure, but not sure (-MA):
+  set dams_array   sort-by [[dam1 dam2] -> [who] of dam1 < [who] of dam2] dams    ; overwrites filling of dams_array in load-data
+  set subaks_array sort-by [[sub1 sub2] -> [who] of sub1 < [who] of sub2] subaks  ; overwrites filling of subaks_array in load-data
+  ;; netlogo 5:
+;  set dams_array sort-by [[who] of ?1 < [who] of ?2] dams      ; overwrites filling of dams_array in load-data
+;  set subaks_array sort-by [[who] of ?1 < [who] of ?2] subaks  ; overwrites filling of subaks_array in load-data
 
   ask dams [set areadam 0]
   ask subaks [
     let returndam self ; dummy value initialization: overwritten a few lines down
     let sourcedam self ; dummy value initialization: overwritten a few lines down
-    let subak self
+    let this-subak self
     set stillgrowing false
-    set returndam [b] of one-of subakdams with [a = subak]
-    set sourcedam [a] of one-of damsubaks with [b = subak]
+    set returndam [b] of one-of subakdams with [a = this-subak]
+    set sourcedam [a] of one-of damsubaks with [b = this-subak]
     let areasubak area
     ifelse (returndam = sourcedam) [
       ask returndam [set areadam areadam + areasubak]
@@ -319,7 +323,7 @@ to setup
     ;   [display-cropping-plan-etc] ; new version  ; so I'm going to add in this coloring code below -MA
     ;   ;[set color SCC * 6 + sd] ; original Janssen version
 
-    let this-subak self
+    ;let this-subak self
     ask patch-here [
       sprout-subak-helpers 1 [
         set size 2.0
@@ -554,11 +558,12 @@ to list-cropplans
   let i 0
   ;output-print "Crop plans:"
   foreach cropplans
-    [if (i < 10)
-       [output-type " "]
-     output-type (word i ": ")
-     output-print ?
-     set i i + 1]
+    [[croppl] ->
+      if (i < 10)
+        [output-type " "]
+        output-type (word i ": ")
+        output-print croppl
+        set i i + 1]
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -719,9 +724,9 @@ to demandwater
   ask subaks [
     let returndam self
     let sourcedam self
-    let subak self
-    set returndam [b] of one-of subakdams with [a = subak]
-    set sourcedam [a] of one-of damsubaks with [b = subak]
+    let this-subak self
+    set returndam [b] of one-of subakdams with [a = this-subak]
+    set sourcedam [a] of one-of damsubaks with [b = this-subak]
     ifelse (returndam = sourcedam)
     [
       let dmdsubak dmd
@@ -911,7 +916,7 @@ end
 
 to-report normalize-bins [bins]
   let bins-total sum bins ; do this once here, since map will reexecute calcs each time
-  report map [? / bins-total] bins
+  report map [[bin] -> bin / bins-total] bins
 end
 
 to-report list2csv [ls]
@@ -979,8 +984,9 @@ to plot-figs
     set-plot-x-range 0 relig-type-bins-max
     set-plot-pen-interval relig-type-bin-size ; gives bars the appropriate width. must come after clear-plot.
     set x 0
-    foreach relig-type-years-bins-normalized [
-      plotxy x ?
+    foreach relig-type-years-bins-normalized
+    [[rty] ->
+      plotxy x rty
       set x x + relig-type-bin-size ; need this in addition to set-plot-pen-interval.
     ]
     ;; average harvest bins:
@@ -990,8 +996,9 @@ to plot-figs
     set-plot-x-range 0 avgharvestha-bins-max
     set-plot-pen-interval avgharvestha-bin-size ; gives bars the appropriate width. must come after clear-plot.
     set x 0
-    foreach avgharvestha-bins-normalized [
-      plotxy x ?
+    foreach avgharvestha-bins-normalized
+    [[ahb] ->
+      plotxy x ahb
       set x x + avgharvestha-bin-size ; need this in addition to set-plot-pen-interval.
     ]
   ]
@@ -1070,14 +1077,15 @@ to load-data
     user-message "There is no subakdamdata.txt file in current directory!"
   ]
 
-  foreach subak-data [
+  foreach subak-data
+  [[row] ->
     create-subaks 1 [
       set color white
       ;; note we skip the 0th element, which is a subak id number.
-      setxy (item 1 ?) (item 2 ?)
-      set area item 3 ?
-      set masceti item 4 ?
-      set ulunswi item 5 ? ; what is this? (?)
+      setxy (item 1 row) (item 2 row)
+      set area item 3 row
+      set masceti item 4 row
+      set ulunswi item 5 row ; what is this? (?)
       ;set pestneighbors []
       set pestneighbors no-turtles
       set damneighbors []
@@ -1100,23 +1108,24 @@ to load-data
         if masceti = 14 [set color brown]
    ]]]
 
-  foreach dam-data [
+  foreach dam-data
+  [[row] ->
     create-dams 1 [
       set color yellow
       ;; we skip the 0th element
-      setxy (item 1 ?) (item 2 ?)
-      set flow0 item 3 ?
-      set elevation item 4 ?
-      set WSarea item 5 ?
-      set damht item 6 ?
+      setxy (item 1 row) (item 2 row)
+      set flow0 item 3 row
+      set elevation item 4 row
+      set WSarea item 5 row
+      set damht item 6 row
       set dams_array lput self dams_array ; will be overwritten in go soon after this is called, but not before being used in its present form below.
   ]]
 
   linkdams
 
   ;; here we use the versions of subaks_array and dams_array created in the present procedure load-data.  After it's run, these vars will be filled again.
-  foreach subaksubak-data [make-subaksubak (item first ? subaks_array) (item last ? subaks_array)]
-  foreach subakdam-data [make-subakdams (item first ? subaks_array) (item (item 1 ?) dams_array) (item last ? dams_array)]
+  foreach subaksubak-data [[row] -> make-subaksubak (item first row subaks_array) (item last row subaks_array)]
+  foreach subakdam-data [[row] -> make-subakdams (item first row subaks_array) (item (item 1 row) dams_array) (item last row dams_array)]
 
 end
 
@@ -1361,7 +1370,7 @@ end
 
 ;; generate a list of values selected from vals in the order given by idxs
 to-report reorder-by [idxs vals]
-  report map [item ? vals] idxs
+  report map [[idx] -> item idx vals] idxs
 end
 
 ; see e.g. http://en.wikipedia.org/wiki/Hyperbolic_function for this definition
