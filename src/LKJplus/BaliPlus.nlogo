@@ -50,9 +50,9 @@ globals [ subak-data dam-data subaksubak-data subakdam-data   ; filled by load-d
 ;;;; IMPORTANT: ADD VARIABLE TO my-clear-globals (or don't, but for a reason) WHENEVER YOU ADD A GLOBAL VARIABLE
 
 ;patches-own [r1]
-breed [subaks]  ; Water-management collectives
-breed [dams]    ; Dams are used to manage ho  w water is divided between subaks
-breed [damdam]  ; Links specifying how water travels directly from dam to dam (?)
+breed [subaks subak]  ; Water-management collectives
+breed [dams dam]    ; Dams are used to manage ho  w water is divided between subaks
+breed [damdams damdam]  ; Links specifying how water travels directly from dam to dam (?)
 breed [damsubaks damsubak]     ; Links from subaks to the dams to which they can send water (?)
 breed [subakdams subakdam]     ; Links from dams to the subaks to which they can send water (?)
 breed [subaksubaks subaksubak] ; Neighbor links between subaks: These determine which subaks' cropping patterns can be copied, and how pests spread.
@@ -108,7 +108,7 @@ WSD ; Water Stress Dam
 totWSD]
 
 ;; These are links between subaks and dams, so the distanceab is the distance between then (?)
-damdam-own [a b distanceab]
+damdams-own [a b distanceab]
 damsubaks-own [a b distanceab]
 subakdams-own [a b distanceab]
 subaksubaks-own [a b distanceab]
@@ -150,7 +150,7 @@ to setup
 
   set-default-shape subaks "circle"
   set-default-shape dams "square"
-  set-default-shape damdam "line"
+  set-default-shape damdams "line"
   set-default-shape damsubaks "line"
   set-default-shape subakdams "line"
   set-default-shape subaksubaks "line"
@@ -748,7 +748,7 @@ to determineflow
         set flow flow0 + Runoff - d1 + XS - d3
         foreach dams_array [
           let flowadd flow
-          if (count damdam with [a = self and b = dam1] + count damdam with [a = dam1 and b = self]) > 0 [
+          if (count damdams with [a = self and b = dam1] + count damdams with [a = dam1 and b = self]) > 0 [
              ask dam1 [set flow flow + flowadd]
           ]
         ]
@@ -1137,16 +1137,16 @@ to ricestageplan [nr m]
 end
 
 to linkdams
-  make-damdam (item 0 dams_array) (item 5 dams_array)
-  make-damdam (item 5 dams_array) (item 6 dams_array)
-  make-damdam (item 6 dams_array) (item 8 dams_array)
-  make-damdam (item 1 dams_array) (item 7 dams_array)
-  make-damdam (item 7 dams_array) (item 8 dams_array)
-  make-damdam (item 2 dams_array) (item 9 dams_array)
-  make-damdam (item 3 dams_array) (item 9 dams_array)
-  make-damdam (item 4 dams_array) (item 9 dams_array)
-  make-damdam (item 9 dams_array) (item 10 dams_array)
-  make-damdam (item 10 dams_array) (item 11 dams_array)
+  make-damdams (item 0 dams_array) (item 5 dams_array)
+  make-damdams (item 5 dams_array) (item 6 dams_array)
+  make-damdams (item 6 dams_array) (item 8 dams_array)
+  make-damdams (item 1 dams_array) (item 7 dams_array)
+  make-damdams (item 7 dams_array) (item 8 dams_array)
+  make-damdams (item 2 dams_array) (item 9 dams_array)
+  make-damdams (item 3 dams_array) (item 9 dams_array)
+  make-damdams (item 4 dams_array) (item 9 dams_array)
+  make-damdams (item 9 dams_array) (item 10 dams_array)
+  make-damdams (item 10 dams_array) (item 11 dams_array)
 end
 
 to rainfall [hight level]
@@ -1189,8 +1189,8 @@ to levelrainfall [level]
   if level = 2 [set rain item month Reh]
 end
 
-to make-damdam [dam1 dam2]
-  create-damdam 1
+to make-damdams [dam1 dam2]
+  create-damdams 1
   [
     set color blue
     set a dam1
@@ -1476,8 +1476,8 @@ end
 GRAPHICS-WINDOW
 180
 10
-773
-690
+771
+668
 -1
 -1
 11.0
@@ -1543,7 +1543,7 @@ pestgrowth-rate
 pestgrowth-rate
 2
 2.4
-2.4
+0.0
 0.01
 1
 NIL
@@ -1558,7 +1558,7 @@ pestdispersal-rate
 pestdispersal-rate
 0.6
 1.5
-1.5
+0.0
 0.01
 1
 NIL
@@ -2218,7 +2218,7 @@ ignore-neighbors-prob
 ignore-neighbors-prob
 0
 1
-0.3
+0.0
 0.05
 1
 NIL
@@ -2318,7 +2318,7 @@ relig-tran-stddev
 relig-tran-stddev
 0
 1.0
-0.02
+0.0
 0.01
 1
 NIL
@@ -2344,7 +2344,7 @@ relig-influence
 relig-influence
 1
 2
-1.5
+0.0
 0.05
 1
 NIL
@@ -2366,7 +2366,7 @@ INPUTBOX
 111
 181
 run-until-month
-0
+0.0
 1
 0
 Number
@@ -2465,7 +2465,7 @@ relig-effect-center
 relig-effect-center
 -5
 10
-2.25
+0.0
 0.01
 1
 NIL
@@ -2480,7 +2480,7 @@ relig-effect-endpt
 relig-effect-endpt
 -10
 4
-1.7
+0.0
 0.01
 1
 NIL
@@ -2593,7 +2593,7 @@ subaks-mean-global
 subaks-mean-global
 0
 200
-0.025
+0.0
 0.001
 1
 NIL
@@ -2628,7 +2628,7 @@ relig-effect-step
 relig-effect-step
 0
 1
-0.8
+0.0
 0.05
 1
 NIL
@@ -2653,7 +2653,7 @@ burn-in-months
 burn-in-months
 0
 24000
-60
+0.0
 60
 1
 NIL
@@ -2704,7 +2704,7 @@ relig-neighbor-levels
 relig-neighbor-levels
 1
 5
-1
+0.0
 1
 1
 NIL
@@ -3163,9 +3163,8 @@ false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
-
 @#$#@#$#@
-NetLogo 5.3
+NetLogo 6.0.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -5298,7 +5297,6 @@ true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
-
 @#$#@#$#@
 0
 @#$#@#$#@
