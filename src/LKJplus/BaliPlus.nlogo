@@ -1674,9 +1674,9 @@ TEXTBOX
 
 TEXTBOX
 546
-846
+854
 1102
-982
+990
 Cropping plan colors: Large circle represents crop plan, square represents start month.  Color of line in middle represents relig value, ranging from green (no effect on ignoring neighbors) to red (full effect); black is intermediate.  Direction represents amount of harvest per hectare (pyharvestha), i.e. the \"success\" value that determines who to imitate.  Value ranges from 0 (down) to 10 (up).\n\nCrop colors: green: fallow, cyan: rice 1, yellow: rice 2, white: rice 3.\n\nMasceti/temple group colors: white: 1, yellow: 2, red: 3, blue: 4, cyan: 5, pink: 6, orange: 7, lime: 8, sky: 9, violet: 10, magenta: 11, green: 12, turquoise: 13, brown: 14.
 11
 0.0
@@ -2488,9 +2488,9 @@ HORIZONTAL
 
 PLOT
 2
-654
+653
 162
-805
+804
 relig effect curve
 NIL
 NIL
@@ -2586,9 +2586,9 @@ blue: mean, red: std dev:
 
 SLIDER
 0
-807
+815
 1107
-840
+848
 subaks-mean-global
 subaks-mean-global
 0
@@ -2600,10 +2600,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-3
-794
-162
-813
+2
+804
+161
+822
 per-subak mean # global speakers:
 8
 0.0
@@ -2697,9 +2697,9 @@ PENS
 
 SLIDER
 -1
-845
+853
 172
-878
+886
 relig-neighbor-levels
 relig-neighbor-levels
 1
@@ -2712,9 +2712,9 @@ HORIZONTAL
 
 TEXTBOX
 4
-879
+887
 171
-952
+960
 Experimental: If neighbor-levels = 2, pay attention to neighbors of neighbors for relig tran; if = 3, their neighbors too, and so on.
 11
 0.0
@@ -3165,7 +3165,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.3
+NetLogo 5.3.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
